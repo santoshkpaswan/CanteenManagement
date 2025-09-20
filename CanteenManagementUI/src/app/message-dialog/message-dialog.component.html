@@ -1,0 +1,10 @@
+<div class="modal-header">
+    <h4 class="modal-title" style="width: 90%;">{{ title }}</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="dismiss()"></button>
+    </div>
+    <div class="modal-body multiline">
+      {{ message }}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="dismiss()">{{ btnCancelText }}</button>
+    </div>

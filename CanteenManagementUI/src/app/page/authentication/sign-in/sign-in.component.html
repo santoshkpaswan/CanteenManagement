@@ -1,0 +1,27 @@
+<div class="auth-wrapper">
+  <div class="auth-content">
+    <div class="card">
+      <div class="row align-items-center text-center">
+        <div class="col-md-12">
+          <div class="card-body">
+            <img src="assets/images/logo.png" alt="logo" class="img-fluid mb-4" />
+            <h6 style="text-align:center;">Canteen Management</h6>
+            <form [formGroup]="signInForm" #signInNgForm="ngForm">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1"><i class="feather icon-mail"></i></span>
+              <input type="text" class="form-control" placeholder="User Name" aria-label="Username" aria-describedby="basic-addon1" [formControlName]="'username'" />
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1"><i class="feather icon-lock"></i></span>
+              <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" [formControlName]="'password'" />
+            </div>
+            <div class="d-grid">
+              <button class="btn btn-block btn-primary mb-4" (click)="signIn()">Signin</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

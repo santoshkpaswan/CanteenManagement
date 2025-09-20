@@ -1,0 +1,106 @@
+// Theme Font
+@import 'scss/themes/font/theme-font';
+
+// main framework
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'scss/settings/custom-variables';
+@import 'scss/settings/theme-variables';
+
+// bootstrap
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap/scss/mixins';
+@import 'node_modules/bootstrap/scss/utilities';
+@import 'node_modules/bootstrap/scss/utilities/api';
+// @import '../node_modules/bootstrap/dist/css/bootstrap.css';
+@import 'scss/themes/general';
+@import 'scss/themes/generic';
+@import 'scss/themes/minixs/function';
+
+// icon
+@import 'scss/themes/font/datta-icon';
+@import 'scss/themes/font/feather';
+@import 'scss/themes/font/fontawesome';
+@import 'scss/themes/font/flaticon';
+
+// component
+@import 'scss/themes/component/component';
+
+// theme layouts
+@import 'scss/themes/layouts/menu-lite';
+@import 'scss/themes/layouts/menu-ng';
+
+// dashboard
+@import 'scss/themes/pages/dashboard.scss';
+@import 'scss/themes/pages/authentication';
+
+@import 'scss/themes/chat/chat';
+
+// custom
+@import 'scss/themes/custom';
+
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+.mat-snack-bar-handset {
+  margin-top: 70px !important; 
+  z-index: 999999 !important;
+}
+
+.multiline {
+  white-space: pre-wrap;
+}
+input.ng-invalid.ng-touched {
+  border: red 1px solid;
+}
+
+select.ng-invalid.ng-touched {
+  border: red 1px solid;
+}
+
+textarea.ng-invalid.ng-touched {
+  border: red 1px solid;
+}
+
+.rightalign{
+  text-align: right !important;
+}
+
+.mdc-data-table__cell{
+  overflow: visible !important;
+}
+
+.flex-parent-element {
+  display: flex;
+  width: 100%;
+}
+
+.flex-child-element {
+  flex: 1;
+  margin: 10px;
+  width: 20%;
+}
+
+textarea{
+  height: 70px;
+}
+
+
+$form-select-indicator-dark: url('data:image/svg+xml;utf8,<svg>...</svg>');
+
+.form-select {
+  --mat-form-select-bg-img: #{escape-svg($form-select-indicator-dark)};
+}
+
+::ng-deep .mat-select-arrow {
+  display: none; // Hide Angular Material default arrow
+}
+
+// Add custom arrow if necessary
+.form-select {
+  background-image: var(--mat-form-select-bg-img);
+  background-repeat: no-repeat;
+  background-position: right center;
+  padding-right: 1% !important;
+}
+
+

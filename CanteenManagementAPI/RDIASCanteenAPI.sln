@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RDIASCanteenAPI", "RDIASCanteenAPI\RDIASCanteenAPI.csproj", "{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D0CCECD5-FE2D-42C4-AF10-C554185983E3}
+	EndGlobalSection
+EndGlobal
