@@ -18,7 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options=>options.UseSqlServer(builde
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularClient", 
-        policy => { policy.WithOrigins("http://localhost:4200") // Angular dev server
+        policy => { policy.WithOrigins("http://localhost:4200") // Angular dev server 
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
