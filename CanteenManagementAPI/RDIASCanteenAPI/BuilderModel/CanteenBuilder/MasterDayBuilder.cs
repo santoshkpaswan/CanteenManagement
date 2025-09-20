@@ -64,9 +64,9 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             }
             existing.DaysName = foodDayUpdateModel.DaysName;
             existing.DayNo = foodDayUpdateModel.DayNo;
-            existing.IsActive = foodDayUpdateModel.IsActive;
+            existing.IsActive = true;
             existing.ModifiedDate = DateTime.Now;  // optional
-            existing.ModifiedBy = foodDayUpdateModel.ModifiedBy; // optional if you track users
+            existing.ModifiedBy = 1; // optional if you track users
             await _context.SaveChangesAsync();
            return foodDayUpdateModel;     
         }

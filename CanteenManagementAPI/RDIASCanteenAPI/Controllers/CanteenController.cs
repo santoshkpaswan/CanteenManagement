@@ -50,7 +50,7 @@ namespace RDIASCanteenAPI.Controllers
                 return StatusCode(500, new { Success = false, Detail = ex.Message });
             }
         }
-        [HttpPut("UpdateFoodDay")]
+        [HttpPost("UpdateFoodDay")]
         public async Task<IActionResult> UpdateMasterDay([FromBody] FoodDayUpdateModelView foodDayUpdateModel)
         {
             if (!ModelState.IsValid)
@@ -70,7 +70,7 @@ namespace RDIASCanteenAPI.Controllers
                 return StatusCode(500, new { Success = false, Detail = ex.Message });
             }
         }
-        [HttpDelete("DeleteFoodDay/{dayId}")]
+        [HttpPost("DeleteFoodDay/{dayId}")]
         public async Task<IActionResult> DeleteMasterDay(int dayId)
         {
             try
@@ -141,7 +141,7 @@ namespace RDIASCanteenAPI.Controllers
                 return StatusCode(500, new { Success = false, Detail = ex.Message });
             }
         }
-        [HttpDelete("DeleteFoodMenuItem/{FoodMenuItemId}")]
+        [HttpPost("DeleteFoodMenuItem/{FoodMenuItemId}")]
         public async Task<IActionResult> DeleteFoodMenuItem(int FoodMenuItemId)
         {
             try

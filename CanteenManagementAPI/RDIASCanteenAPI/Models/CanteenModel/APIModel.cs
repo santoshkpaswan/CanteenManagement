@@ -18,9 +18,6 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public int DayId { get; set; }
         public string DaysName { get; set; }
         public int DayNo { get; set; }
-        public bool IsActive { get; set; }
-        public int ModifiedBy { get; set; }
-        public DateTime ModifiedDate { get; set; }
 
     }
     #endregion

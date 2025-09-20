@@ -117,13 +117,14 @@
             <div class="mb-4">
                 <label>Day Name<strong style="color: red;">*</strong></label>
                 <div class="input-group">
-                    <input [formControlName]="'dayName'" class="form-control" required>
+                    <input [formControlName]="'daysName'" class="form-control" required>
+                    <input type="hidden" [formControlName]="'dayId'" class="form-control" required>
                 </div>
             </div>
             <div class="mb-4">
                 <label>Day Number<strong style="color: red;">*</strong></label>
                 <div class="input-group">
-                    <input [formControlName]="'dayNumber'" class="form-control">
+                    <input [formControlName]="'dayNo'" class="form-control">
                 </div>
             </div>
         </div>

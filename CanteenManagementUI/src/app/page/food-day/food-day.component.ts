@@ -25,7 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'app-food-day',
   standalone: true,
   providers: [],
-  imports: [ReactiveFormsModule, CommonModule, MatTooltipModule, FormsModule, MatSelectModule, MatGridListModule, MatCardModule, ReactiveFormsModule, MatExpansionModule, MatDialogModule, MatIconModule, MatExpansionModule, MatSortModule, MatPaginatorModule, MatCheckboxModule, MatTableModule,MatPaginatorModule, MatTooltipModule],
+  imports: [ReactiveFormsModule, CommonModule, MatTooltipModule, FormsModule, MatSelectModule, MatGridListModule, MatCardModule, ReactiveFormsModule, MatExpansionModule, MatDialogModule, MatIconModule, MatExpansionModule, MatSortModule, MatPaginatorModule, MatCheckboxModule, MatTableModule, MatPaginatorModule, MatTooltipModule],
   templateUrl: './food-day.component.html',
   styleUrl: './food-day.component.scss'
 })
@@ -35,6 +35,14 @@ export class FoodDayComponent implements OnInit {
   currentPage: any = 0;
   pageSize: any = 10;
   daysList: any = [];
+  
+  displayedColumns: string[] = ['sno', 'dayname', 'dayno', 'edit', 'delete'];
+  @Input("enableBulkAction") enableBulkAction: boolean = false;
+  dataSource = new MatTableDataSource<any>();
+  selection = new SelectionModel<any>(true, []);
+  @ViewChild(MatSort, { static: true }) sort!: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+
 
   @Inject(MAT_DIALOG_DATA) public data: any
   private modalService = inject(NgbModal);
@@ -52,27 +60,22 @@ export class FoodDayComponent implements OnInit {
     });
 
     this.editCanteenDayForm = _formBuilder.group({
-      canteenDayId: [null, Validators.required],
-      dayName: ['', Validators.required],
-      dayNumber: ['', Validators.required]
+      daysName: ['', Validators.required],
+      dayNo: ['', Validators.required],
+      dayId:['', Validators.required]
     });
   }
-  displayedColumns: string[] = ['sno', 'dayname', 'dayno', 'edit', 'delete'];
- @Input("enableBulkAction") enableBulkAction: boolean = false;
-  dataSource = new MatTableDataSource<any>();
-  selection = new SelectionModel<any>(true, []);
-  @ViewChild(MatSort,{ static: true }) sort!: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-  
+
+
 
   ngOnInit(): void {
-    this. getGridData();
+    this.getGridData();
   }
 
   getGridData() {
     this._canteenService.getFoodDays().subscribe((response) => {
       this.dataSource = response.data;
-      this.daysList=response.data;
+      this.daysList = response.data;
       debugger
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -103,6 +106,14 @@ export class FoodDayComponent implements OnInit {
     }
     this.editCanteenDayForm.disable();
 
+    this._canteenService.updateFoodDay(this.editCanteenDayForm.value).subscribe((data) => {
+      this._coreService.openSnackBar(data.message, 'Ok');
+      this.modalService.dismissAll();
+      this.editCanteenDayForm.enable();
+      this.editCanteenDayForm.reset();
+      this.getGridData();
+    })
+
   }
 
   deleteCanteenDay(element: any) {
@@ -125,16 +136,16 @@ export class FoodDayComponent implements OnInit {
   }
 
   openEditCanteenDayTemplate(element: any, content: TemplateRef<any>) {
+debugger
     this.editCanteenDayForm = this._formBuilder.group({
-      categoryId: [element.category_id, Validators.required],
-      categoryName: [element.category_name, Validators.required],
-      categoryAlias: [element.category_alias],
-      categoryDescription: [element.category_description]
+      daysName: [element.daysName, Validators.required],
+      dayNo: [element.dayNo, Validators.required],
+      dayId:[element.dayId, Validators.required],
     });
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
 
-  ChangeEvent(event:any){
+  ChangeEvent(event: any) {
     debugger
     this._coreService.openSnackBar("You have selected : " + event.value, 'Ok');
   }
