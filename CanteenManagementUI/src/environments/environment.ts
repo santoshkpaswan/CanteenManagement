@@ -7,7 +7,7 @@ import packageInfo from '../../package.json';
 export const environment = {
   appVersion: packageInfo.version,
   production: false,
-  apiUrl : 'https://localhost:7232/api',
+  apiUrl : 'http://localhost:5093/api',
   apiLoginUrl: 'http://eshaala.rdias.ac.in:86/API/Account/'
 };
 

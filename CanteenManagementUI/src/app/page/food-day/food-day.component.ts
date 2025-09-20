@@ -34,6 +34,8 @@ export class FoodDayComponent implements OnInit {
   editCanteenDayForm: FormGroup;
   currentPage: any = 0;
   pageSize: any = 10;
+  daysList: any = [];
+
   @Inject(MAT_DIALOG_DATA) public data: any
   private modalService = inject(NgbModal);
   constructor(
@@ -69,7 +71,9 @@ export class FoodDayComponent implements OnInit {
 
   getGridData() {
     this._canteenService.getFoodDays().subscribe((response) => {
-      this.dataSource = response.data
+      this.dataSource = response.data;
+      this.daysList=response.data;
+      debugger
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
@@ -128,6 +132,11 @@ export class FoodDayComponent implements OnInit {
       categoryDescription: [element.category_description]
     });
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
+  }
+
+  ChangeEvent(event:any){
+    debugger
+    this._coreService.openSnackBar("You have selected : " + event.value, 'Ok');
   }
 
 
