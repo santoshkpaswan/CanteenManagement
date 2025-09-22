@@ -46,6 +46,20 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         url: '/canteen/food-day',
         icon: 'feather icon-file-text'
+      },
+      {
+        id: 'foodmenuitem',
+        title: 'food menu item',
+        type: 'item',
+        url: '/canteen/food-menu-item',
+        icon: 'feather icon-file-text'
+      },
+      {
+        id: 'foodmenuitemprice',
+        title: 'food menu item Price',
+        type: 'item',
+        url: '/canteen/food-menu-item-price',
+        icon: 'feather icon-file-text'
       }
     ]
   },

@@ -3,6 +3,7 @@ using RDIASCanteenAPI.Data;
 using RDIASCanteenAPI.Interface.CanteenInterface;
 using RDIASCanteenAPI.Models.CanteenModel;
 
+
 namespace RDIASCanteenAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -67,7 +68,7 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return StatusCode(500, new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("DeleteFoodDay/{dayId}")]
@@ -192,7 +193,7 @@ namespace RDIASCanteenAPI.Controllers
                 return StatusCode(500, new { Success = false, Detail = ex.Message });
             }
         }
-        [HttpPut("UpdateFoodMenuItemPrice")]
+        [HttpPost("UpdateFoodMenuItemPrice")]
         public async Task<IActionResult> UpdateFoodMenuItemPrice([FromBody] FoodMenuItemPriceUpdateModelView menuItemPriceUpdateModelView)
         {
             if (!ModelState.IsValid)
@@ -212,7 +213,7 @@ namespace RDIASCanteenAPI.Controllers
                 return StatusCode(500, new { Success = false, Detail = ex.Message });
             }
         }
-        [HttpDelete("DeleteFoodMenuItemPrice/{FoodMenuItemPriceId}")]
+        [HttpPost("DeleteFoodMenuItemPrice/{FoodMenuItemPriceId}")]
         public async Task<IActionResult> DeleteFoodMenuItemPrice(int FoodMenuItemPriceId)
         {
             try
@@ -261,7 +262,7 @@ namespace RDIASCanteenAPI.Controllers
                 return StatusCode(500, new { Success = false, Detail = ex.Message });
             }
         }
-        [HttpPut("UpdateDayWiseFoodMenuItem")]
+        [HttpPost("UpdateDayWiseFoodMenuItem")]
         public async Task<IActionResult> UpdateDayWiseFoodMenuItem([FromBody] DayWiseFoodMenuItemUpdateModelView wiseFoodMenuItemUpdateModelView)
         {
             if (!ModelState.IsValid)
@@ -281,7 +282,7 @@ namespace RDIASCanteenAPI.Controllers
                 return StatusCode(500, new { Success = false, Detail = ex.Message });
             }
         }
-        [HttpDelete("DeleteDayWiseFoodMenuItem/{DayWiseFoodMenuItemId}")]
+        [HttpPost("DeleteDayWiseFoodMenuItem/{DayWiseFoodMenuItemId}")]
         public async Task<IActionResult> DeleteDayWiseFoodMenuItem(int DayWiseFoodMenuItemId)
         {
             try
@@ -331,7 +332,7 @@ namespace RDIASCanteenAPI.Controllers
             }
         }
 
-        [HttpPut("UpdateOrder")]
+        [HttpPost("UpdateOrder")]
         public async Task<IActionResult> UpdateOrder([FromBody] OrderUpdateModelView orderUpdateModelView)
         {
             if (!ModelState.IsValid)
@@ -351,7 +352,7 @@ namespace RDIASCanteenAPI.Controllers
                 return StatusCode(500, new { Success = false, Detail = ex.Message });
             }
         }
-        [HttpDelete("DeleteOrder/{OrderNumber}")]
+        [HttpPost("DeleteOrder/{OrderNumber}")]
         public async Task<IActionResult> DeleteOrder(string OrderNumber)
         {
             try
@@ -401,7 +402,7 @@ namespace RDIASCanteenAPI.Controllers
             }
         }
 
-        [HttpPut("UpdateOrderItem")]
+        [HttpPost("UpdateOrderItem")]
         public async Task<IActionResult> UpdateOrderItem([FromBody] OrderItemUpdateModelView orderItemUpdateModel)
         {
             if (!ModelState.IsValid)
@@ -421,7 +422,7 @@ namespace RDIASCanteenAPI.Controllers
                 return StatusCode(500, new { Success = false, Detail = ex.Message });
             }
         }
-        [HttpDelete("DeleteOrderItem/{OrderItemId}")]
+        [HttpPost("DeleteOrderItem/{OrderItemId}")]
         public async Task<IActionResult> DeleteOrderItem(int OrderItemId)
         {
             try

@@ -1,0 +1,144 @@
+<div class="card text-center" style="margin-top: 10px;">
+    <div class="card-header">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-sm-6 d-flex">
+                <h5 class="card-title fw-bold">Food Menu Item</h5>
+            </div>
+
+            <div class="col-sm-6 d-flex flex-column flex-sm-row justify-content-sm-end">
+                <button type="button" style="margin-left: 10px;" class="btn btn-md btn-primary"
+                     (click)="openAddCanteenMenuItemTemplate(canteenMenuItemAdd)">New</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body" style="overflow-x: scroll;">
+
+
+
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="sno">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell class="sno" *matCellDef="let lookup; let i = index" style="text-align: left;">
+                  {{
+                    (currentPage * pageSize) + i + 1 }} 
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="itemname">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Name </th>
+               <td mat-cell *matCellDef="let element"> {{element.itemName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="itemurl">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Image </th>
+                <td mat-cell *matCellDef="let element"> {{element.itemURL}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="itemDescriptin">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Descriptin </th>
+                <td mat-cell *matCellDef="let element"> {{element.itemDescriptin}} </td> 
+            </ng-container>
+
+
+            <ng-container matColumnDef="edit">
+                <th mat-header-cell *matHeaderCellDef> Edit </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-dialog-actions>
+                        <button class="btn btn-sm" style="color: green;" (click)="openEditCanteenMenuItemTemplate(element,aanteenMenuItemEdit)"
+                            > <!---->
+                            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit"></mat-icon>
+                        </button>
+                    </mat-dialog-actions>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef> Delete </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-dialog-actions>
+                    <button class="btn btn-sm" style="color: red;" (click)="deleteCanteenMenuItem(element)" >
+                            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
+                        </button>
+                    </mat-dialog-actions>
+                </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+            </tr>
+        </table>
+    </div>
+    <div class="card-footer text-muted">
+        <div class="row justify-content-between align-items-center">
+            <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 200,500]" 
+                showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+</div>
+
+<!-- ---------------------------------- Angular Template for adding a new ------------------------------------ -->
+<ng-template #canteenMenuItemAdd let-modal>
+    <form [formGroup]="addCanteenMenuItemForm" #signInNgForm="ngForm">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Add Food Menu</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-4">
+                <label>Item Name<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input [formControlName]="'ItemName'" class="form-control" required>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label>Item URL<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input [formControlName]="'itemURL'" class="form-control" required>
+                </div>
+            </div>
+             <div class="mb-4">
+                <label>Item Descriptin<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input [formControlName]="'ItemDescriptin'" class="form-control" required>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-md btn-primary" (click)="addNewCanteenMenuItem()">Save</button>
+        </div>
+    </form>
+</ng-template>
+
+<!-- ---------------------------------- Angular Template for updating a existing ------------------------------------ -->
+<ng-template #aanteenMenuItemEdit let-modal>
+    <form [formGroup]="editCanteenMenuItemForm" #signInNgForm="ngForm">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Edit Food Menu Item</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-4">
+                <label>Item Name<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input [formControlName]="'itemName'" class="form-control" required>
+                    <input type="hidden" [formControlName]="'foodMenuItemId'" class="form-control" required>
+                </div>
+            </div>
+              <div class="mb-4">
+                <label>Item URL<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input [formControlName]="'itemURL'" class="form-control">
+                </div>
+            </div>
+            <div class="mb-4">
+                <label>Item Descriptin<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input [formControlName]="'itemDescriptin'" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-md btn-primary" (click)="updateMenuItemName()">Update</button>
+        </div>
+    </form>
+</ng-template>

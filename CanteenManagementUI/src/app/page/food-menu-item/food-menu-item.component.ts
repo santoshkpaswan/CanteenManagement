@@ -18,55 +18,55 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ConfirmationDialogService } from 'src/app/confirmation-dialog/confirmation-dialog.service';
-import * as XLSX from 'xlsx';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-food-day',
+  selector: 'app-food-menu-item',
   standalone: true,
   providers: [],
   imports: [ReactiveFormsModule, CommonModule, MatTooltipModule, FormsModule, MatSelectModule, MatGridListModule, MatCardModule, ReactiveFormsModule, MatExpansionModule, MatDialogModule, MatIconModule, MatExpansionModule, MatSortModule, MatPaginatorModule, MatCheckboxModule, MatTableModule, MatPaginatorModule, MatTooltipModule],
-  templateUrl: './food-day.component.html',
-  styleUrl: './food-day.component.scss'
+  templateUrl: './food-menu-item.component.html',
+  styleUrl: './food-menu-item.component.scss'
 })
-export class FoodDayComponent implements OnInit {
-  addCanteenDayForm: FormGroup;
-  editCanteenDayForm: FormGroup;
+
+
+export class FoodMenuItemComponent implements OnInit {
+   addCanteenMenuItemForm: FormGroup;
+   editCanteenMenuItemForm: FormGroup;
   currentPage: any = 0;
   pageSize: any = 10;
   daysList: any = [];
 
-  displayedColumns: string[] = ['sno', 'dayname', 'dayno', 'edit', 'delete'];
+   displayedColumns: string[] = ['sno', 'itemname', 'itemurl','itemDescriptin', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
-
-  @Inject(MAT_DIALOG_DATA) public data: any
-  private modalService = inject(NgbModal);
-  constructor(
-    private _formBuilder: FormBuilder,
-    private _authService: AuthService,
-    private _canteenService: CanteenService,
-    private _confirmation: ConfirmationDialogService,
-    public dialog: MatDialog,
-    private cdr: ChangeDetectorRef,
-    private _coreService: CoreService) {
-    this.addCanteenDayForm = _formBuilder.group({
-      daysName: ['', Validators.required],
-      dayNo: ['', Validators.required]
+   @Inject(MAT_DIALOG_DATA) public data: any
+     private modalService = inject(NgbModal);
+     constructor(
+       private _formBuilder: FormBuilder,
+       private _authService: AuthService,
+       private _canteenService: CanteenService,
+       private _confirmation: ConfirmationDialogService,
+       public dialog: MatDialog,
+       private cdr: ChangeDetectorRef,
+       private _coreService: CoreService) {
+        
+   this.addCanteenMenuItemForm = _formBuilder.group({
+      itemName: ['', Validators.required],
+      itemURL: ['', Validators.required],
+      itemDescriptin: ['', Validators.required]
     });
-
-    this.editCanteenDayForm = _formBuilder.group({
-      daysName: ['', Validators.required],
-      dayNo: ['', Validators.required],
-      dayId: ['', Validators.required]
+        
+    this.editCanteenMenuItemForm = _formBuilder.group({
+      itemName: ['', Validators.required],
+      itemURL: ['', Validators.required],
+      itemDescriptin: ['', Validators.required]
     });
-  }
-
-
+     }
 
   ngOnInit(): void {
     debugger
@@ -74,7 +74,7 @@ export class FoodDayComponent implements OnInit {
   }
 
   getGridData() {
-    this._canteenService.getFoodDays().subscribe((response) => {
+    this._canteenService.getFoodMenuItem().subscribe((response) => {
       this.dataSource = response.data;
       this.daysList = response.data;
       debugger
@@ -83,49 +83,52 @@ export class FoodDayComponent implements OnInit {
     });
   }
 
-  addNewCanteenDay() {
-    if (this.addCanteenDayForm.invalid) {
+   
+
+    addNewCanteenMenuItem() {
+    if (this.addCanteenMenuItemForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
     }
-    this.addCanteenDayForm.disable();
+    this.addCanteenMenuItemForm.disable();
 
-    this._canteenService.addFoodDay(this.addCanteenDayForm.value).subscribe((data) => {
+    this._canteenService.addFoodMenuItem(this.addCanteenMenuItemForm.value).subscribe((data) => {
+      debugger
       this._coreService.openSnackBar(data.message, 'Ok');
       this.modalService.dismissAll();
-      this.addCanteenDayForm.enable();
-      this.addCanteenDayForm.reset();
+      this.addCanteenMenuItemForm.enable();
+      this.addCanteenMenuItemForm.reset();
       this.getGridData();
     })
 
   }
 
-  updateDayName() {
-    if (this.editCanteenDayForm.invalid) {
+  updateMenuItemName() {
+    if (this.editCanteenMenuItemForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
     }
-    this.editCanteenDayForm.disable();
+    this.editCanteenMenuItemForm.disable();
 
-    this._canteenService.updateFoodDay(this.editCanteenDayForm.value).subscribe((data) => {
+    this._canteenService.updateFoodMenuItem(this.editCanteenMenuItemForm.value).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');
       this.modalService.dismissAll();
-      this.editCanteenDayForm.enable();
-      this.editCanteenDayForm.reset();
+      this.editCanteenMenuItemForm.enable();
+      this.editCanteenMenuItemForm.reset();
       this.getGridData();
     })
 
   }
 
-  deleteCanteenDay(element: any) {
-    this._confirmation.confirm('Are you sure?', 'Do you really want to delete this food day?')
+   deleteCanteenMenuItem(element: any) {
+    this._confirmation.confirm('Are you sure?', 'Do you really want to delete this food menu item?')
       .then((confirmed) => {
         if (confirmed) {
-          this._canteenService.deleteFoodDay(element.dayId).subscribe((data) => {
+          this._canteenService.deleteFoodMenuItem(element.foodMenuItemId).subscribe((data) => {
             this._coreService.openSnackBar(data.message, 'Ok');
             this.modalService.dismissAll();
-            this.editCanteenDayForm.enable();
-            this.editCanteenDayForm.reset();
+            this.editCanteenMenuItemForm.enable();
+            this.editCanteenMenuItemForm.reset();
             this.getGridData();
           })
         }
@@ -137,25 +140,21 @@ export class FoodDayComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-
-  openAddCanteenDayTemplate(content: TemplateRef<any>) {
+  openAddCanteenMenuItemTemplate(content: TemplateRef<any>) {
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
-
-  openEditCanteenDayTemplate(element: any, content: TemplateRef<any>) {
+ openEditCanteenMenuItemTemplate(element: any, content: TemplateRef<any>) {
     debugger
-    this.editCanteenDayForm = this._formBuilder.group({
-      daysName: [element.daysName, Validators.required],
-      dayNo: [element.dayNo, Validators.required],
-      dayId: [element.dayId, Validators.required],
+    this.editCanteenMenuItemForm = this._formBuilder.group({
+      itemName: [element.itemName, Validators.required],
+      itemURL: [element.itemURL, Validators.required],
+      itemDescriptin: [element.itemDescriptin, Validators.required],
+      foodMenuItemId: [element.foodMenuItemId, Validators.required],
     });
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
 
-  ChangeEvent(event: any) {
-    debugger
-    this._coreService.openSnackBar("You have selected : " + event.value, 'Ok');
-  }
-
-
+  
+    
 }
+  

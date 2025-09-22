@@ -13,6 +13,10 @@ import { NoAccessComponent } from 'src/app/page/error/no-access/no-access.compon
 import { NotFoundComponent } from 'src/app/page//error/not-found/not-found.component';
 import { AboutUsComponent } from 'src/app/page//about-us/about-us.component';
 import { FoodDayComponent } from 'src/app/page//food-day/food-day.component';
+import {FoodMenuItemComponent} from 'src/app/page//food-menu-item/food-menu-item.component'
+import {FoodMenuItemPriceComponent} from 'src/app/page//food-menu-item-price/food-menu-item-price.component'
+
+
 
 const routes: Routes = [
   { 
@@ -37,6 +41,14 @@ const routes: Routes = [
       {
         path: 'canteen/food-day',
         component: FoodDayComponent
+      },
+       {
+        path: 'canteen/food-menu-item',
+        component: FoodMenuItemComponent
+      },
+      {
+        path: 'canteen/food-menu-item-price',
+        component: FoodMenuItemPriceComponent
       },
       { path: '',
        component: HomeComponent
