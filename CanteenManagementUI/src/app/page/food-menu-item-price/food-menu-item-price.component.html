@@ -6,7 +6,7 @@
             </div>
             
             <div class="col-sm-6 d-flex flex-column flex-sm-row justify-content-sm-end">
-                <button type="button" style="margin-left: 10px;" class="btn btn-md btn-primary"
+                <button type="button" style="margin-left: 10px;" class="btn btn-md btn-primary" (click)="openAddCanteenItemPriceTemplate(canteenItemPriceAdd)"
                     >New</button>
             </div>
         </div>
@@ -23,20 +23,21 @@
 
             <ng-container matColumnDef="itemname">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Name </th>
-                 <td mat-cell *matCellDef="let element"> {{element}} </td>
+                 <td mat-cell *matCellDef="let element"> {{element.foodMenuItemId}} </td>
             </ng-container>
+            
 
-            <ng-container matColumnDef="academicSession">
+            <ng-container matColumnDef="academicsession">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Academic Session </th>
-                <td mat-cell *matCellDef="let element"> {{element}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.academicSessionId}} </td>
             </ng-container>
             <ng-container matColumnDef="itemprice">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Price </th>
-                 <td mat-cell *matCellDef="let element"> {{element}} </td>
+                 <td mat-cell *matCellDef="let element"> {{element.itemPrice}} </td>
             </ng-container>
-            <ng-container matColumnDef="itemPriceDescriptin">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Price Descriptin </th>
-                <td mat-cell *matCellDef="let element"> {{element}} </td>
+            <ng-container matColumnDef="itempriceDescription">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Price Description </th>
+                <td mat-cell *matCellDef="let element"> {{element.itemPriceDescriptin}} </td>
             </ng-container>
 
 
@@ -44,7 +45,7 @@
                 <th mat-header-cell *matHeaderCellDef> Edit </th>
                 <td mat-cell *matCellDef="let element">
                     <mat-dialog-actions>
-                        <button class="btn btn-sm" style="color: green;"
+                        <button class="btn btn-sm" style="color: green;" (click)="openEditCanteenItemPriceTemplate(element,aanteenItemPriceEdit)"
                              > <!---->
                             <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit"></mat-icon>
                         </button>
@@ -63,6 +64,8 @@
             </ng-container>
 
 
+
+
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;">
             </tr>
@@ -71,3 +74,83 @@
     </div>
      
 </div>
+
+
+<!-- ---------------------------------- Angular Template for adding a new ------------------------------------ -->
+<ng-template #canteenItemPriceAdd let-modal>
+    <form [formGroup]="addCanteenItemPriceForm" #signInNgForm="ngForm">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Add Food Day Item Price</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-4">
+                <label>Item Name<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input [formControlName]="'foodMenuItemId'" class="form-control" required>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label>Academic Session<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input [formControlName]="'academicSessionId'" class="form-control" required>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label>Item Price<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input type="number" min="0" [formControlName]="'itemPrice'" class="form-control" required>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label>Item Price Description<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input [formControlName]="'itemPriceDescriptin'" class="form-control" required>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-md btn-primary" (click)="addNewCanteenItemPrice()">Save</button>
+        </div>
+    </form>
+</ng-template>
+
+<!-- ---------------------------------- Angular Template for updating a existing ------------------------------------ -->
+<ng-template #aanteenItemPriceEdit let-modal>
+    <form [formGroup]="editCanteenItemPriceForm" #signInNgForm="ngForm">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Edit Food Day Item Price</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-4">
+                <label>Item Name<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input [formControlName]="'foodMenuItemId'" class="form-control" required>
+                    <input type="hidden" [formControlName]="'foodMenuItemPriceId'" class="form-control" required>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label>Academic Session<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input [formControlName]="'academicSessionId'" class="form-control">
+                </div>
+            </div>
+            <div class="mb-4">
+                <label>Item Price<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input [formControlName]="'itemPrice'" class="form-control">
+                </div>
+            </div>
+            <div class="mb-4">
+                <label>Item Price Description<strong style="color: red;">*</strong></label>
+                <div class="input-group">
+                    <input [formControlName]="'itemPriceDescriptin'" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-md btn-primary" (click)="updateItemPriceName()">Update</button>
+        </div>
+    </form>
+</ng-template>

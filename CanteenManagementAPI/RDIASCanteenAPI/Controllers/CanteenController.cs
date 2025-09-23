@@ -186,11 +186,11 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { Success = false, Detail = ex.Message });
+                return BadRequest(new { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return StatusCode(500, new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("UpdateFoodMenuItemPrice")]

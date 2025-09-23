@@ -85,4 +85,20 @@ export class CanteenService {
         );
     }
 
+    addFoodItemPrice(model: any): Observable<any> {
+        debugger
+        return this._httpClient.post(`${environment.apiUrl}/Canteen/SaveFoodMenuItemPrice`, model).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
+    updateItemPrice(model: any): Observable<any> {
+        return this._httpClient.post(`${environment.apiUrl}/Canteen/UpdateFoodMenuItemPrice`, model).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
+
 }

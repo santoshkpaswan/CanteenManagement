@@ -31,11 +31,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
  
 export class FoodMenuItemPriceComponent implements OnInit {
+  addCanteenItemPriceForm : FormGroup;
+  editCanteenItemPriceForm: FormGroup;
   currentPage: any = 0;
   pageSize: any = 10;
-  daysList: any = [];
+  itemNameList: any = [];
 
-  displayedColumns: string[] = ['sno', 'itemname', 'academicSession','itemprice','itemPriceDescriptin', 'edit', 'delete'];
+  displayedColumns: string[] = ['sno', 'itemname', 'academicsession','itemprice','itempriceDescription', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
@@ -53,6 +55,20 @@ export class FoodMenuItemPriceComponent implements OnInit {
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private _coreService: CoreService) {
+      this.addCanteenItemPriceForm = _formBuilder.group({
+      foodMenuItemId: ['', Validators.required],
+      academicSessionId: ['', Validators.required],
+      itemPrice:['',Validators.required],
+      itemPriceDescriptin:['',Validators.required]
+    });
+
+    this.editCanteenItemPriceForm = _formBuilder.group({
+      foodMenuItemId: ['', Validators.required],
+      academicSessionId: ['', Validators.required],
+      itemPrice: ['', Validators.required],
+      itemPriceDescriptin: ['', Validators.required],
+      foodMenuItemPriceId: ['', Validators.required]
+    });
     
  
   }
@@ -64,10 +80,65 @@ export class FoodMenuItemPriceComponent implements OnInit {
   getGridData() {
     this._canteenService.getFoodItemPrice().subscribe((response) => {
       this.dataSource = response.data;
-      this.daysList = response.data;
+      this.itemNameList = response.data;
       debugger
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
+
+  addNewCanteenItemPrice() {
+    debugger
+    if (this.addCanteenItemPriceForm.invalid) {
+      this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
+      return;
+    }
+    this.addCanteenItemPriceForm.disable();
+
+    this._canteenService.addFoodItemPrice(this.addCanteenItemPriceForm.value).subscribe((data) => {
+      this._coreService.openSnackBar(data.message, 'Ok');
+      this.modalService.dismissAll();
+      this.addCanteenItemPriceForm.enable();
+      this.addCanteenItemPriceForm.reset();
+      this.getGridData();
+    })
+
+  }
+
+   updateItemPriceName() {
+    if (this.editCanteenItemPriceForm.invalid) {
+      this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
+      return;
+    }
+    this.editCanteenItemPriceForm.disable();
+
+    this._canteenService.updateItemPrice(this.editCanteenItemPriceForm.value).subscribe((data) => {
+      this._coreService.openSnackBar(data.message, 'Ok');
+      this.modalService.dismissAll();
+      this.editCanteenItemPriceForm.enable();
+      this.editCanteenItemPriceForm.reset();
+      this.getGridData();
+    })
+
+  }
+
+     openAddCanteenItemPriceTemplate(content: TemplateRef<any>) {
+       this.modalService.open(content, { size: 'md', backdrop: 'static' });
+     }
+openEditCanteenItemPriceTemplate(element: any, content: TemplateRef<any>) {
+    debugger
+    this.editCanteenItemPriceForm = this._formBuilder.group({
+      foodMenuItemId: [element.foodMenuItemId, Validators.required],
+      academicSessionId: [element.academicSessionId, Validators.required],
+      itemPrice: [element.itemPrice, Validators.required],
+      itemPriceDescriptin: [element.itemPriceDescriptin, Validators.required],
+      foodMenuItemPriceId: [element.foodMenuItemPriceId, Validators.required],
+    });
+    this.modalService.open(content, { size: 'md', backdrop: 'static' });
+  }
+  ChangeEvent(event: any) {
+    debugger
+    this._coreService.openSnackBar("You have selected : " + event.value, 'Ok');
+  }
+
 }
