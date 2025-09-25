@@ -101,4 +101,12 @@ export class CanteenService {
         );
     }
 
+    deleteItemPrice(id: any): Observable<any> {
+        debugger
+        return this._httpClient.post(`${environment.apiUrl}/Canteen/DeleteFoodMenuItemPrice/${id}`, {}).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
 }

@@ -122,6 +122,20 @@ export class FoodMenuItemPriceComponent implements OnInit {
 
   }
 
+  deleteCanteenItemPrice(element: any) {
+    this._confirmation.confirm('Are you sure?', 'Do you really want to delete this food item menu price?')
+      .then((confirmed) => {
+        if (confirmed) {
+          this._canteenService.deleteItemPrice(element.foodMenuItemPriceId).subscribe((data) => {
+            this._coreService.openSnackBar(data.message, 'Ok');
+            this.modalService.dismissAll();
+            this.editCanteenItemPriceForm.enable();
+            this.editCanteenItemPriceForm.reset();
+            this.getGridData();
+          })
+        }
+      });
+  }
      openAddCanteenItemPriceTemplate(content: TemplateRef<any>) {
        this.modalService.open(content, { size: 'md', backdrop: 'static' });
      }
