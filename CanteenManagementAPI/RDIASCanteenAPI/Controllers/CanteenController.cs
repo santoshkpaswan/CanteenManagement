@@ -29,14 +29,14 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("SaveFoodDay")]
         public async Task<IActionResult> SaveMasterDay([FromBody] FoodDaySaveModelView foodDaySaveModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
             try
             {
                 var result = await _masterDayInterface.SaveMasterDay(foodDaySaveModel);
@@ -44,18 +44,18 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("UpdateFoodDay")]
         public async Task<IActionResult> UpdateMasterDay([FromBody] FoodDayUpdateModelView foodDayUpdateModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
 
             try
             {
@@ -64,11 +64,11 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("DeleteFoodDay/{dayId}")]
@@ -81,7 +81,7 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
 
@@ -99,34 +99,34 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("SaveFoodMenuItem")]
-        public async Task<IActionResult> SaveFoodMenuItem([FromForm] FoodMenuItemModelView menuItemModelView, IFormFile itemImageFile)
+        public async Task<IActionResult> SaveFoodMenuItem([FromForm] FoodMenuItemModelView menuItemModelView)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
 
             try
             {
-                var FoodMenuItemId = await _masterDayInterface.SaveFoodMenuItem(menuItemModelView, itemImageFile);
-                return Ok(new { Success = true, Message = "Saved successfully", FoodMenuItemId = FoodMenuItemId });
+                var FoodMenuItemId = await _masterDayInterface.SaveFoodMenuItem(menuItemModelView);
+                return Ok(new { Success = true, Message = "Saved successfully", FoodMenuItemId = 0 });
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Message = "An error occurred.", Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("UpdateFoodMenuItem")]
         public async Task<IActionResult> UpdateFoodMenuItem([FromForm] FoodMenuItemUpdateModelView menuItemUpdateModelView, IFormFile itemImageFile)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
 
             try
             {
@@ -135,11 +135,11 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("DeleteFoodMenuItem/{FoodMenuItemId}")]
@@ -152,7 +152,7 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
 
@@ -170,14 +170,14 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("SaveFoodMenuItemPrice")]
         public async Task<IActionResult> SaveFoodMenuItemPrice([FromBody] FoodMenuItemPriceSaveModelView menuItemPriceSaveModelView)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
 
             try
             {
@@ -186,18 +186,18 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("UpdateFoodMenuItemPrice")]
         public async Task<IActionResult> UpdateFoodMenuItemPrice([FromBody] FoodMenuItemPriceUpdateModelView menuItemPriceUpdateModelView)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
 
             try
             {
@@ -206,11 +206,11 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok( new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("DeleteFoodMenuItemPrice/{FoodMenuItemPriceId}")]
@@ -223,7 +223,7 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         #endregion
@@ -239,14 +239,14 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("SaveDayWiseFoodMenuItem")]
         public async Task<IActionResult> SaveDayWiseFoodMenuItem([FromBody] DayWiseFoodMenuItemSaveModelView dayWiseFoodMenuItemSaveModelView)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
 
             try
             {
@@ -255,18 +255,18 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("UpdateDayWiseFoodMenuItem")]
         public async Task<IActionResult> UpdateDayWiseFoodMenuItem([FromBody] DayWiseFoodMenuItemUpdateModelView wiseFoodMenuItemUpdateModelView)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
 
             try
             {
@@ -275,11 +275,11 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok( new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("DeleteDayWiseFoodMenuItem/{DayWiseFoodMenuItemId}")]
@@ -292,7 +292,7 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok( new { Success = false, Message = ex.Message });
             }
         }
         #endregion
@@ -308,14 +308,14 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("SaveOrder")]
         public async Task<IActionResult> SaveOrder([FromBody] OrderSaveModelView orderSaveModelView)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
 
             try
             {
@@ -324,11 +324,11 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
 
@@ -336,7 +336,7 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> UpdateOrder([FromBody] OrderUpdateModelView orderUpdateModelView)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
 
             try
             {
@@ -345,11 +345,11 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("DeleteOrder/{OrderNumber}")]
@@ -362,7 +362,7 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         #endregion
@@ -378,14 +378,14 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("SaveOrderItem")]
         public async Task<IActionResult> SaveOrderItem([FromBody] OrderItemSaveModelView itemSaveModelView)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+               return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
 
             try
             {
@@ -394,11 +394,11 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok( new { Success = false, Message = ex.Message });
             }
         }
 
@@ -406,7 +406,7 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> UpdateOrderItem([FromBody] OrderItemUpdateModelView orderItemUpdateModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
 
             try
             {
@@ -415,11 +415,11 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (ArgumentException ex)
             {
-                return BadRequest(new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("DeleteOrderItem/{OrderItemId}")]
@@ -432,7 +432,7 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Success = false, Detail = ex.Message });
+                return Ok( new { Success = false, Message = ex.Message });
             }
         }
         #endregion

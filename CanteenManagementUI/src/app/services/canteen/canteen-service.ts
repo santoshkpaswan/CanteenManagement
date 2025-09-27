@@ -60,7 +60,7 @@ export class CanteenService {
         );
     }
 
-     updateFoodMenuItem(model: any): Observable<any> {
+    updateFoodMenuItem(model: any): Observable<any> {
         return this._httpClient.post(`${environment.apiUrl}/Canteen/UpdateFoodMenuItem`, model).pipe(
             switchMap((response: any) => {
                 return of(response);
@@ -68,7 +68,7 @@ export class CanteenService {
         );
     }
 
-     deleteFoodMenuItem(id: any): Observable<any> {
+    deleteFoodMenuItem(id: any): Observable<any> {
         return this._httpClient.post(`${environment.apiUrl}/Canteen/DeleteFoodMenuItem/${id}`, {}).pipe(
             switchMap((response: any) => {
                 return of(response);
@@ -83,6 +83,16 @@ export class CanteenService {
                 return of(response);
             })
         );
+    }
+
+    getAcademicSession(): Observable<any> {
+        return this._httpClient.get(`${environment.apiLoginUrl}/Account/CurrentSession?APIKey=651cb656-1fde-478d-badf-33f60553f36e`, {}).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+
+
     }
 
     addFoodItemPrice(model: any): Observable<any> {
@@ -104,6 +114,49 @@ export class CanteenService {
     deleteItemPrice(id: any): Observable<any> {
         debugger
         return this._httpClient.post(`${environment.apiUrl}/Canteen/DeleteFoodMenuItemPrice/${id}`, {}).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
+    getDayWiseFoodItem(): Observable<any> {
+        debugger
+        return this._httpClient.get(`${environment.apiUrl}/Canteen/ListDayWiseFoodMenuItem`, {}).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
+
+    addDayWiseFoodItem(model: any): Observable<any> {
+        debugger
+        return this._httpClient.post(`${environment.apiUrl}/Canteen/SaveDayWiseFoodMenuItem`, model).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
+
+    updateDayWiseItem(model: any): Observable<any> {
+        return this._httpClient.post(`${environment.apiUrl}/Canteen/UpdateDayWiseFoodMenuItem`, model).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
+
+    deleteDayWiseItem(id: any): Observable<any> {
+        debugger
+        return this._httpClient.post(`${environment.apiUrl}/Canteen/DeleteDayWiseFoodMenuItem/${id}`, {}).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
+
+    getOrder(): Observable<any> {
+        debugger
+        return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrder`, {}).pipe(
             switchMap((response: any) => {
                 return of(response);
             })

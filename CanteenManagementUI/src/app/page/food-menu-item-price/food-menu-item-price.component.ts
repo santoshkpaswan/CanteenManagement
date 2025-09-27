@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, Inject, Input, OnInit, TemplateRef, ViewChild, inject  } from '@angular/core';
+import { Component, ChangeDetectorRef, Inject, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatButtonModule, MatButton } from '@angular/material/button';
@@ -29,15 +29,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   templateUrl: './food-menu-item-price.component.html',
   styleUrl: './food-menu-item-price.component.scss'
 })
- 
+
 export class FoodMenuItemPriceComponent implements OnInit {
-  addCanteenItemPriceForm : FormGroup;
+  addCanteenItemPriceForm: FormGroup;
   editCanteenItemPriceForm: FormGroup;
   currentPage: any = 0;
   pageSize: any = 10;
   itemNameList: any = [];
+  foodItems: any = [];
+  academicSessionList: any;
 
-  displayedColumns: string[] = ['sno', 'itemname', 'academicsession','itemprice','itempriceDescription', 'edit', 'delete'];
+  displayedColumns: string[] = ['sno', 'itemname', 'academicsession', 'itemprice', 'itempriceDescription', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
@@ -55,26 +57,32 @@ export class FoodMenuItemPriceComponent implements OnInit {
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private _coreService: CoreService) {
-      this.addCanteenItemPriceForm = _formBuilder.group({
-      foodMenuItemId: ['', Validators.required],
-      academicSessionId: ['', Validators.required],
-      itemPrice:['',Validators.required],
-      itemPriceDescriptin:['',Validators.required]
-    });
 
+    this.addCanteenItemPriceForm = this._formBuilder.group({
+      foodMenuItemId: ['', Validators.required],
+      academicSessionID: ['', Validators.required],
+      sessionName: ['', Validators.required],
+      itemPrice: ['', Validators.required],
+      itemPriceDescriptin: ['', Validators.required]
+    });
     this.editCanteenItemPriceForm = _formBuilder.group({
       foodMenuItemId: ['', Validators.required],
-      academicSessionId: ['', Validators.required],
+      academicSessionID: ['', Validators.required],
       itemPrice: ['', Validators.required],
       itemPriceDescriptin: ['', Validators.required],
       foodMenuItemPriceId: ['', Validators.required]
     });
-    
- 
+
+
   }
-   ngOnInit(): void {
+  ngOnInit(): void {
     debugger
     this.getGridData();
+    this.getFoodItemData();
+    this.getAcademicSessionData();
+
+
+    debugger
   }
 
   getGridData() {
@@ -84,6 +92,21 @@ export class FoodMenuItemPriceComponent implements OnInit {
       debugger
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+    });
+  }
+
+  getFoodItemData() {
+    this._canteenService.getFoodMenuItem().subscribe((response) => {
+      this.foodItems = response.data;
+      debugger
+    });
+  }
+
+  getAcademicSessionData() {
+    debugger
+    this._canteenService.getAcademicSession().subscribe((response) => {
+      this.academicSessionList = response;
+      debugger
     });
   }
 
@@ -105,7 +128,7 @@ export class FoodMenuItemPriceComponent implements OnInit {
 
   }
 
-   updateItemPriceName() {
+  updateItemPriceName() {
     if (this.editCanteenItemPriceForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
@@ -126,7 +149,7 @@ export class FoodMenuItemPriceComponent implements OnInit {
     this._confirmation.confirm('Are you sure?', 'Do you really want to delete this food item menu price?')
       .then((confirmed) => {
         if (confirmed) {
-          this._canteenService.deleteItemPrice(element.foodMenuItemPriceId).subscribe((data) => {
+          this._canteenService.deleteItemPrice(element.dayWiseFoodMenuItemId).subscribe((data) => {
             this._coreService.openSnackBar(data.message, 'Ok');
             this.modalService.dismissAll();
             this.editCanteenItemPriceForm.enable();
@@ -136,14 +159,22 @@ export class FoodMenuItemPriceComponent implements OnInit {
         }
       });
   }
-     openAddCanteenItemPriceTemplate(content: TemplateRef<any>) {
-       this.modalService.open(content, { size: 'md', backdrop: 'static' });
-     }
-openEditCanteenItemPriceTemplate(element: any, content: TemplateRef<any>) {
+  openAddCanteenItemPriceTemplate(content: TemplateRef<any>) {
+    this.addCanteenItemPriceForm = this._formBuilder.group({
+      foodMenuItemId: ['', Validators.required],
+      academicSessionID: [this.academicSessionList.AcademicSessionID, Validators.required],
+      sessionName: [this.academicSessionList.SessionName, Validators.required],
+      itemPrice: ['', Validators.required],
+      itemPriceDescriptin: ['', Validators.required]
+    });
+    debugger
+    this.modalService.open(content, { size: 'md', backdrop: 'static' });
+  }
+  openEditCanteenItemPriceTemplate(element: any, content: TemplateRef<any>) {
     debugger
     this.editCanteenItemPriceForm = this._formBuilder.group({
-      foodMenuItemId: [element.foodMenuItemId, Validators.required],
-      academicSessionId: [element.academicSessionId, Validators.required],
+      foodMenuItemId: [element.itemName, Validators.required],
+      academicSessionID: [element.sessionName, Validators.required],
       itemPrice: [element.itemPrice, Validators.required],
       itemPriceDescriptin: [element.itemPriceDescriptin, Validators.required],
       foodMenuItemPriceId: [element.foodMenuItemPriceId, Validators.required],
@@ -153,6 +184,10 @@ openEditCanteenItemPriceTemplate(element: any, content: TemplateRef<any>) {
   ChangeEvent(event: any) {
     debugger
     this._coreService.openSnackBar("You have selected : " + event.value, 'Ok');
+  }
+  pageChanged(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
   }
 
 }

@@ -14,20 +14,20 @@ namespace RDIASCanteenAPI.Interface.CanteenInterface
 
         #region Food Memu Item
         Task<List<FoodMenuItemModel>> GetFoodMenuItem();
-        Task<int> SaveFoodMenuItem(FoodMenuItemModelView menuItemModelView, IFormFile itemImageFile);
+        Task<int> SaveFoodMenuItem(FoodMenuItemModelView menuItemModelView);
         Task<FoodMenuItemUpdateModelView> UpdateFoodMenuItem(FoodMenuItemUpdateModelView menuItemUpdateModelView, IFormFile itemImageFile);
         Task DeleteFoodMenuItem(int FoodMenuItemId);
         #endregion
 
         #region Food Menu Item Price
-        Task<List<FoodMenuItemPriceModel>> GetFoodMenuItemPrice();
+        Task<List<FoodMenuItemGetModelView>> GetFoodMenuItemPrice();
         Task<FoodMenuItemPriceSaveModelView> SaveFoodMenuItemPrice(FoodMenuItemPriceSaveModelView menuItemPriceSaveModelView);
         Task<FoodMenuItemPriceUpdateModelView> UpdateFoodMenuItemPrice(FoodMenuItemPriceUpdateModelView menuItemPriceUpdateModelView);
         Task DeleteFoodMenuItemPrice(int FoodMenuItemPriceId);
         #endregion
 
         #region Day Wise Food Menu Item
-        Task<List<DayWiseFoodMenuItemModel>> GetDayWiseFoodMenuItem();
+        Task<List<FoodDayGetModelView>> GetDayWiseFoodMenuItem();
         Task<DayWiseFoodMenuItemSaveModelView> SaveDayWiseFoodMenuItem(DayWiseFoodMenuItemSaveModelView dayWiseFoodMenuItemSaveModelView);
         Task<DayWiseFoodMenuItemUpdateModelView> UpdateDayWiseFoodMenuItem(DayWiseFoodMenuItemUpdateModelView wiseFoodMenuItemUpdateModelView);
         Task DeleteDayWiseFoodMenuItem(int DayWiseFoodMenuItemId);

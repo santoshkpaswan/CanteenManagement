@@ -19,6 +19,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ConfirmationDialogService } from 'src/app/confirmation-dialog/confirmation-dialog.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-food-menu-item',
@@ -31,45 +32,49 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 export class FoodMenuItemComponent implements OnInit {
-   addCanteenMenuItemForm: FormGroup;
-   editCanteenMenuItemForm: FormGroup;
+  addCanteenMenuItemForm: FormGroup;
+  editCanteenMenuItemForm: FormGroup;
   currentPage: any = 0;
   pageSize: any = 10;
   daysList: any = [];
+  selectedFile: any = [];
+  isInvalidFileType: any = true;
+  borderColorValidationFile: any;
+  imageUrl:any=environment.imageUrl;
 
-   displayedColumns: string[] = ['sno', 'itemname', 'itemurl','itemDescriptin', 'edit', 'delete'];
+  displayedColumns: string[] = ['sno', 'itemname', 'itemurl', 'itemDescriptin', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
-   @Inject(MAT_DIALOG_DATA) public data: any
-     private modalService = inject(NgbModal);
-     constructor(
-       private _formBuilder: FormBuilder,
-       private _authService: AuthService,
-       private _canteenService: CanteenService,
-       private _confirmation: ConfirmationDialogService,
-       public dialog: MatDialog,
-       private cdr: ChangeDetectorRef,
-       private _coreService: CoreService) {
-        
-   this.addCanteenMenuItemForm = _formBuilder.group({
+  @Inject(MAT_DIALOG_DATA) public data: any
+  private modalService = inject(NgbModal);
+  constructor(
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService,
+    private _canteenService: CanteenService,
+    private _confirmation: ConfirmationDialogService,
+    public dialog: MatDialog,
+    private cdr: ChangeDetectorRef,
+    private _coreService: CoreService) {
+
+    this.addCanteenMenuItemForm = _formBuilder.group({
       itemName: ['', Validators.required],
-      itemURL: ['', Validators.required],
+      itemURL: [''],
       itemDescriptin: ['', Validators.required]
     });
-        
+
     this.editCanteenMenuItemForm = _formBuilder.group({
       itemName: ['', Validators.required],
-      itemURL: ['', Validators.required],
+      itemURL: [''],
       itemDescriptin: ['', Validators.required]
     });
-     }
+  }
 
   ngOnInit(): void {
-    debugger
+
     this.getGridData();
   }
 
@@ -77,23 +82,33 @@ export class FoodMenuItemComponent implements OnInit {
     this._canteenService.getFoodMenuItem().subscribe((response) => {
       this.dataSource = response.data;
       this.daysList = response.data;
-      debugger
+
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
 
-   
 
-    addNewCanteenMenuItem() {
+
+  addNewCanteenMenuItem() {
+
     if (this.addCanteenMenuItemForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
     }
+    else if (this.isInvalidFileType==true) {
+      this._coreService.openSnackBar('Please select file.', 'Ok');
+      return;
+    }
     this.addCanteenMenuItemForm.disable();
 
-    this._canteenService.addFoodMenuItem(this.addCanteenMenuItemForm.value).subscribe((data) => {
-      debugger
+    const formData = new FormData();
+    formData.append('itemImageFile', this.selectedFile);
+    formData.append('ItemName', this.addCanteenMenuItemForm.value.itemName);
+    formData.append('ItemDescriptin', this.addCanteenMenuItemForm.value.itemDescriptin);
+
+    this._canteenService.addFoodMenuItem(formData).subscribe((data) => {
+
       this._coreService.openSnackBar(data.message, 'Ok');
       this.modalService.dismissAll();
       this.addCanteenMenuItemForm.enable();
@@ -120,7 +135,7 @@ export class FoodMenuItemComponent implements OnInit {
 
   }
 
-   deleteCanteenMenuItem(element: any) {
+  deleteCanteenMenuItem(element: any) {
     this._confirmation.confirm('Are you sure?', 'Do you really want to delete this food menu item?')
       .then((confirmed) => {
         if (confirmed) {
@@ -141,10 +156,11 @@ export class FoodMenuItemComponent implements OnInit {
   }
 
   openAddCanteenMenuItemTemplate(content: TemplateRef<any>) {
+    this.isInvalidFileType=true;
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
- openEditCanteenMenuItemTemplate(element: any, content: TemplateRef<any>) {
-    debugger
+  openEditCanteenMenuItemTemplate(element: any, content: TemplateRef<any>) {
+
     this.editCanteenMenuItemForm = this._formBuilder.group({
       itemName: [element.itemName, Validators.required],
       itemURL: [element.itemURL, Validators.required],
@@ -154,7 +170,37 @@ export class FoodMenuItemComponent implements OnInit {
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
 
-  
-    
+  handleFileInput(event: any) {
+    if (event.target.files.length == 0) {
+      this.selectedFile = [];
+      return;
+    }
+    this.isInvalidFileType = true;
+    this.borderColorValidationFile = "1px solid #ced4da";
+    const file = event.target.files[0];
+    if (file) {
+      const fileType = file.type;
+      const validImageTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
+
+      if (validImageTypes.includes(fileType)) {
+
+        const fileInput = event.target as HTMLInputElement;
+        this.isInvalidFileType = false;
+
+        if (fileInput.files && fileInput.files.length > 0) {
+          this.selectedFile = fileInput.files[0];
+        } else {
+          this.selectedFile = null; // or handle it gracefully
+        }
+
+      } else {
+        this.selectedFile = [];
+        this.isInvalidFileType = true;
+        this.borderColorValidationFile = "1px solid red";
+      }
+    }
+  }
+
+
+
 }
-  

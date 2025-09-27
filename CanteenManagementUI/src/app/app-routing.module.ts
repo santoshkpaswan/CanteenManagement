@@ -15,7 +15,8 @@ import { AboutUsComponent } from 'src/app/page//about-us/about-us.component';
 import { FoodDayComponent } from 'src/app/page//food-day/food-day.component';
 import {FoodMenuItemComponent} from 'src/app/page//food-menu-item/food-menu-item.component'
 import {FoodMenuItemPriceComponent} from 'src/app/page//food-menu-item-price/food-menu-item-price.component'
-
+import {DayWiseFoodMenuItemComponent} from 'src/app/page//day-wise-food-menu-item/day-wise-food-menu-item.component'
+import {OrderComponent} from 'src/app/page//order/order.component'
 
 
 const routes: Routes = [
@@ -49,6 +50,14 @@ const routes: Routes = [
       {
         path: 'canteen/food-menu-item-price',
         component: FoodMenuItemPriceComponent
+      },
+      {
+        path: 'canteen/day-wise-food-menu-item',
+        component: DayWiseFoodMenuItemComponent
+      },
+      {
+        path: 'canteen/order',
+        component: OrderComponent
       },
       { path: '',
        component: HomeComponent

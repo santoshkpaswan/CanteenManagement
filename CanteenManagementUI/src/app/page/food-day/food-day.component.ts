@@ -92,10 +92,13 @@ export class FoodDayComponent implements OnInit {
 
     this._canteenService.addFoodDay(this.addCanteenDayForm.value).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');
-      this.modalService.dismissAll();
+      if (data.success) {
+        this.modalService.dismissAll();
+        this.addCanteenDayForm.reset();
+        this.getGridData();
+      }
       this.addCanteenDayForm.enable();
-      this.addCanteenDayForm.reset();
-      this.getGridData();
+
     })
 
   }

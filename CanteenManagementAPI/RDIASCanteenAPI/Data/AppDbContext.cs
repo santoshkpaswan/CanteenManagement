@@ -67,6 +67,7 @@ namespace RDIASCanteenAPI.Data
         [Required]
         public int FoodMenuItemId { get; set; }
         public int AcademicSessionId { get; set; }
+        public string AcademicSession{ get; set; }
         public decimal ItemPrice { get; set; }
         public string ItemPriceDescriptin { get; set; } 
         public bool IsActive { get; set; }
@@ -86,7 +87,7 @@ namespace RDIASCanteenAPI.Data
         public int DayWiseFoodMenuItemId { get; set; }
         [Required]
         public int FoodMenuItemId { get; set; }
-        public int DayId { get; set; }
+        public int DayId { get; set; } 
         public int Time { get; set; }
         public bool IsActive { get; set; }
         public int CreatedBy { get; set; }

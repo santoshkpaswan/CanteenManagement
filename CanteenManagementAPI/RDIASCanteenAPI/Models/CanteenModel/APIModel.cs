@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RDIASCanteenAPI.Data;
 
 namespace RDIASCanteenAPI.Models.CanteenModel
 {
@@ -20,13 +21,29 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public int DayNo { get; set; }
 
     }
+
+    public class FoodDayGetModelView :DayWiseFoodMenuItemModel
+    {
+         public string? ItemName { get; set; }
+        public string? DaysName { get; set; }
+         
+
+    }
     #endregion
 
     #region FoodMenuItemModel
+
+    public class FoodMenuItemGetModelView :FoodMenuItemPriceModel
+    {
+         public string? ItemName { get; set; }
+        // public string? AcademicSession { get; set; }
+    }
     public class FoodMenuItemModelView
     {
         public string ItemName { get; set; }
         public string ItemDescriptin { get; set; }
+        public IFormFile? itemImageFile { get; set; }
+        public string? ImageUrl { get; set; }
 
     }
     public class FoodMenuItemUpdateModelView
@@ -43,6 +60,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     {
         public int FoodMenuItemId { get; set; }
         public int AcademicSessionId { get; set; }
+        public string AcademicSession{ get; set; }
         public decimal ItemPrice { get; set; }
         public string ItemPriceDescriptin { get; set; }
 

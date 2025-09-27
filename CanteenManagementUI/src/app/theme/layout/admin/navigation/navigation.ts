@@ -45,7 +45,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'Food Day',
         type: 'item',
         url: '/canteen/food-day',
-        icon: 'feather icon-file-text'
+        icon: 'feather icon-calendar'
       },
       {
         id: 'foodmenuitem',
@@ -60,6 +60,20 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         url: '/canteen/food-menu-item-price',
         icon: 'feather icon-file-text'
+      },
+      {
+        id: 'daywisefoodmenuitem',
+        title: 'day wise food menu item',
+        type: 'item',
+        url: '/canteen/day-wise-food-menu-item',
+        icon: 'feather icon-file-text'
+      },
+      {
+        id: 'order',
+        title: 'order',
+        type: 'item',
+        url: '/canteen/order',
+        icon: 'feather icon-shopping-cart'
       }
     ]
   },
