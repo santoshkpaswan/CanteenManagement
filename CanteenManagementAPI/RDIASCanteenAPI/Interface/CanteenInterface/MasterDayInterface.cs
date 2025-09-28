@@ -15,7 +15,7 @@ namespace RDIASCanteenAPI.Interface.CanteenInterface
         #region Food Memu Item
         Task<List<FoodMenuItemModel>> GetFoodMenuItem();
         Task<int> SaveFoodMenuItem(FoodMenuItemModelView menuItemModelView);
-        Task<FoodMenuItemUpdateModelView> UpdateFoodMenuItem(FoodMenuItemUpdateModelView menuItemUpdateModelView, IFormFile itemImageFile);
+        Task<FoodMenuItemUpdateModelView> UpdateFoodMenuItem(FoodMenuItemUpdateModelView menuItemUpdateModelView);
         Task DeleteFoodMenuItem(int FoodMenuItemId);
         #endregion
 

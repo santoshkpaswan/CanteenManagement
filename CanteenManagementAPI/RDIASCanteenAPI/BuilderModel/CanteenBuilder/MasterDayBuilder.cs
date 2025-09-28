@@ -141,11 +141,11 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             }
             return FoodMenuItemId;
         }
-        public async Task<FoodMenuItemUpdateModelView> UpdateFoodMenuItem(FoodMenuItemUpdateModelView menuItemUpdateModelView, IFormFile itemImageFile)
+        public async Task<FoodMenuItemUpdateModelView> UpdateFoodMenuItem(FoodMenuItemUpdateModelView menuItemUpdateModelView)
         {
             try
             {
-                 
+                 IFormFile itemImageFile = menuItemUpdateModelView.itemImageFile;
                 // Validate Item Name
                 if (string.IsNullOrWhiteSpace(menuItemUpdateModelView.ItemName) || menuItemUpdateModelView.ItemName.Trim().ToLower() == "string" || menuItemUpdateModelView.ItemName.Trim().ToLower() == "null")
                     throw new ArgumentException("Item Name is required.", nameof(menuItemUpdateModelView.ItemName));
@@ -233,6 +233,8 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                          AcademicSessionId = fp.AcademicSessionId,
                          AcademicSession = fp.AcademicSession??"",
                          FoodMenuItemId = fp.FoodMenuItemId,
+                         ItemPrice = fp.ItemPrice,
+                         ItemPriceDescriptin = fp.ItemPriceDescriptin,
                          ItemName = fm.ItemName,   //getting name from foodmenuitem
                         }).ToListAsync();
              return result;
@@ -254,6 +256,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             {
                 FoodMenuItemId = menuItemPriceSaveModelView.FoodMenuItemId,
                 AcademicSessionId = menuItemPriceSaveModelView.AcademicSessionId,
+                AcademicSession = menuItemPriceSaveModelView.SessionName,
                 ItemPrice = menuItemPriceSaveModelView.ItemPrice,
                 ItemPriceDescriptin = menuItemPriceSaveModelView.ItemPriceDescriptin,
                 IsActive = true,
@@ -285,6 +288,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             }
             existing.FoodMenuItemId = menuItemPriceUpdateModelView.FoodMenuItemId;
             existing.AcademicSessionId = menuItemPriceUpdateModelView.AcademicSessionId;
+            existing.AcademicSession = menuItemPriceUpdateModelView.SessionName;
             existing.ItemPrice = menuItemPriceUpdateModelView.ItemPrice;
             existing.ItemPriceDescriptin = menuItemPriceUpdateModelView.ItemPriceDescriptin;
             existing.IsActive = true;

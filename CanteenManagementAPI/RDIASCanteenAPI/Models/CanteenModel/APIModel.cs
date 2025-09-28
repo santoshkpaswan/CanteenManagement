@@ -51,6 +51,8 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public int FoodMenuItemId { get; set; }
         public string ItemName { get; set; }
         public string ItemDescriptin { get; set; }
+        public IFormFile? itemImageFile { get; set; }
+        public string? ImageUrl { get; set; }
 
     }
     #endregion
@@ -60,7 +62,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     {
         public int FoodMenuItemId { get; set; }
         public int AcademicSessionId { get; set; }
-        public string AcademicSession{ get; set; }
+        public string SessionName{ get; set; }
         public decimal ItemPrice { get; set; }
         public string ItemPriceDescriptin { get; set; }
 
@@ -70,6 +72,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public int FoodMenuItemPriceId { get; set; }
         public int FoodMenuItemId { get; set; }
         public int AcademicSessionId { get; set; }
+        public string SessionName{ get; set; }
         public decimal ItemPrice { get; set; }
         public string ItemPriceDescriptin { get; set; }
 

@@ -29,7 +29,7 @@
 
       <ng-container matColumnDef="academicsession">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Academic Session </th>
-        <td mat-cell *matCellDef="let element"> {{element.SessionName}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.academicSession}} </td>
       </ng-container>
       <ng-container matColumnDef="itemprice">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Price </th>
@@ -143,7 +143,7 @@
       <div class="mb-4">
         <label>Item Name<strong style="color: red;">*</strong></label>
         <div class="input-group">
-          <select [formControlName]="'foodMenuItemId'" class="form-control">
+          <select [formControlName]="'foodMenuItemId'" class="form-control" required>
             <option *ngFor="let item of foodItems" [value]="item.foodMenuItemId">
               {{ item.itemName }}
             </option>
@@ -153,7 +153,8 @@
       <div class="mb-4">
         <label>Academic Session<strong style="color: red;">*</strong></label>
         <div class="input-group">
-          <input [formControlName]="'academicSessionId'" class="form-control">
+          <input type="hidden" [formControlName]="'academicSessionID'" class="form-control" required>
+           <input [formControlName]="'sessionName'" class="form-control" required readonly >
         </div>
       </div>
       <div class="mb-4">
@@ -165,7 +166,7 @@
       <div class="mb-4">
         <label>Item Price Description<strong style="color: red;">*</strong></label>
         <div class="input-group">
-          <input [formControlName]="'itemPriceDescriptin'" class="form-control">
+          <textarea  [formControlName]="'itemPriceDescriptin'" class="form-control" rows="3" placeholder="Enter Description"></textarea>
         </div>
       </div>
     </div>

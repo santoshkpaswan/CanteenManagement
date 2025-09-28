@@ -124,11 +124,10 @@
                     <input type="hidden" [formControlName]="'foodMenuItemId'" class="form-control" required>
                 </div>
             </div>
-              <div class="mb-4">
+             <div class="mb-4">
                 <label>Item URL<strong style="color: red;">*</strong></label>
                 <div class="input-group">
-                    <!-- <input [formControlName]="'itemURL'" class="form-control"> -->
-                     <input type="file" [formControlName]="'itemURL'" class="form-control">
+                    <input type="file" [formControlName]="'itemURL'" class="form-control"  (change)="handleFileInput($event)" accept="image/*">
                 </div>
             </div>
             <div class="mb-4">

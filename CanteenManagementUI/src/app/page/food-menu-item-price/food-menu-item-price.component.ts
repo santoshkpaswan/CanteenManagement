@@ -58,7 +58,7 @@ export class FoodMenuItemPriceComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private _coreService: CoreService) {
 
-    this.addCanteenItemPriceForm = this._formBuilder.group({
+    this.addCanteenItemPriceForm = _formBuilder.group({
       foodMenuItemId: ['', Validators.required],
       academicSessionID: ['', Validators.required],
       sessionName: ['', Validators.required],
@@ -68,6 +68,7 @@ export class FoodMenuItemPriceComponent implements OnInit {
     this.editCanteenItemPriceForm = _formBuilder.group({
       foodMenuItemId: ['', Validators.required],
       academicSessionID: ['', Validators.required],
+      sessionName:['',Validators.required],
       itemPrice: ['', Validators.required],
       itemPriceDescriptin: ['', Validators.required],
       foodMenuItemPriceId: ['', Validators.required]
@@ -124,6 +125,7 @@ export class FoodMenuItemPriceComponent implements OnInit {
       this.addCanteenItemPriceForm.enable();
       this.addCanteenItemPriceForm.reset();
       this.getGridData();
+      debugger
     })
 
   }
@@ -149,7 +151,7 @@ export class FoodMenuItemPriceComponent implements OnInit {
     this._confirmation.confirm('Are you sure?', 'Do you really want to delete this food item menu price?')
       .then((confirmed) => {
         if (confirmed) {
-          this._canteenService.deleteItemPrice(element.dayWiseFoodMenuItemId).subscribe((data) => {
+          this._canteenService.deleteItemPrice(element.foodMenuItemPriceId).subscribe((data) => {
             this._coreService.openSnackBar(data.message, 'Ok');
             this.modalService.dismissAll();
             this.editCanteenItemPriceForm.enable();
@@ -160,6 +162,7 @@ export class FoodMenuItemPriceComponent implements OnInit {
       });
   }
   openAddCanteenItemPriceTemplate(content: TemplateRef<any>) {
+    debugger
     this.addCanteenItemPriceForm = this._formBuilder.group({
       foodMenuItemId: ['', Validators.required],
       academicSessionID: [this.academicSessionList.AcademicSessionID, Validators.required],
@@ -173,8 +176,9 @@ export class FoodMenuItemPriceComponent implements OnInit {
   openEditCanteenItemPriceTemplate(element: any, content: TemplateRef<any>) {
     debugger
     this.editCanteenItemPriceForm = this._formBuilder.group({
-      foodMenuItemId: [element.itemName, Validators.required],
-      academicSessionID: [element.sessionName, Validators.required],
+      foodMenuItemId: [element.foodMenuItemId, Validators.required],
+      academicSessionID: [this.academicSessionList.AcademicSessionID, Validators.required],
+      sessionName:[this.academicSessionList.SessionName,Validators.required],
       itemPrice: [element.itemPrice, Validators.required],
       itemPriceDescriptin: [element.itemPriceDescriptin, Validators.required],
       foodMenuItemPriceId: [element.foodMenuItemPriceId, Validators.required],

@@ -123,14 +123,14 @@ namespace RDIASCanteenAPI.Controllers
             }
         }
         [HttpPost("UpdateFoodMenuItem")]
-        public async Task<IActionResult> UpdateFoodMenuItem([FromForm] FoodMenuItemUpdateModelView menuItemUpdateModelView, IFormFile itemImageFile)
+        public async Task<IActionResult> UpdateFoodMenuItem([FromForm] FoodMenuItemUpdateModelView menuItemUpdateModelView)
         {
             if (!ModelState.IsValid)
                 return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
 
             try
             {
-                var result = await _masterDayInterface.UpdateFoodMenuItem(menuItemUpdateModelView, itemImageFile);
+                var result = await _masterDayInterface.UpdateFoodMenuItem(menuItemUpdateModelView);
                 return Ok(new { Success = true, Message = "Updated successfully" });
             }
             catch (ArgumentException ex)

@@ -25,12 +25,29 @@ import { environment } from 'src/environments/environment';
   selector: 'app-food-menu-item',
   standalone: true,
   providers: [],
-  imports: [ReactiveFormsModule, CommonModule, MatTooltipModule, FormsModule, MatSelectModule, MatGridListModule, MatCardModule, ReactiveFormsModule, MatExpansionModule, MatDialogModule, MatIconModule, MatExpansionModule, MatSortModule, MatPaginatorModule, MatCheckboxModule, MatTableModule, MatPaginatorModule, MatTooltipModule],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    MatTooltipModule,
+    FormsModule,
+    MatSelectModule,
+    MatGridListModule,
+    MatCardModule,
+    ReactiveFormsModule,
+    MatExpansionModule,
+    MatDialogModule,
+    MatIconModule,
+    MatExpansionModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatCheckboxModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatTooltipModule
+  ],
   templateUrl: './food-menu-item.component.html',
   styleUrl: './food-menu-item.component.scss'
 })
-
-
 export class FoodMenuItemComponent implements OnInit {
   addCanteenMenuItemForm: FormGroup;
   editCanteenMenuItemForm: FormGroup;
@@ -40,16 +57,16 @@ export class FoodMenuItemComponent implements OnInit {
   selectedFile: any = [];
   isInvalidFileType: any = true;
   borderColorValidationFile: any;
-  imageUrl:any=environment.imageUrl;
+  imageUrl: any = environment.imageUrl;
 
   displayedColumns: string[] = ['sno', 'itemname', 'itemurl', 'itemDescriptin', 'edit', 'delete'];
-  @Input("enableBulkAction") enableBulkAction: boolean = false;
+  @Input('enableBulkAction') enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
-  @Inject(MAT_DIALOG_DATA) public data: any
+  @Inject(MAT_DIALOG_DATA) public data: any;
   private modalService = inject(NgbModal);
   constructor(
     private _formBuilder: FormBuilder,
@@ -58,8 +75,8 @@ export class FoodMenuItemComponent implements OnInit {
     private _confirmation: ConfirmationDialogService,
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
-    private _coreService: CoreService) {
-
+    private _coreService: CoreService
+  ) {
     this.addCanteenMenuItemForm = _formBuilder.group({
       itemName: ['', Validators.required],
       itemURL: [''],
@@ -69,12 +86,12 @@ export class FoodMenuItemComponent implements OnInit {
     this.editCanteenMenuItemForm = _formBuilder.group({
       itemName: ['', Validators.required],
       itemURL: [''],
-      itemDescriptin: ['', Validators.required]
+      itemDescriptin: ['', Validators.required],
+      foodMenuItemId: ['',Validators.required]
     });
   }
 
   ngOnInit(): void {
-
     this.getGridData();
   }
 
@@ -88,15 +105,11 @@ export class FoodMenuItemComponent implements OnInit {
     });
   }
 
-
-
   addNewCanteenMenuItem() {
-
     if (this.addCanteenMenuItemForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
-    }
-    else if (this.isInvalidFileType==true) {
+    } else if (this.isInvalidFileType == true) {
       this._coreService.openSnackBar('Please select file.', 'Ok');
       return;
     }
@@ -108,46 +121,52 @@ export class FoodMenuItemComponent implements OnInit {
     formData.append('ItemDescriptin', this.addCanteenMenuItemForm.value.itemDescriptin);
 
     this._canteenService.addFoodMenuItem(formData).subscribe((data) => {
-
       this._coreService.openSnackBar(data.message, 'Ok');
       this.modalService.dismissAll();
       this.addCanteenMenuItemForm.enable();
       this.addCanteenMenuItemForm.reset();
       this.getGridData();
-    })
-
+    });
   }
 
   updateMenuItemName() {
+    debugger
     if (this.editCanteenMenuItemForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
+     } else if (this.isInvalidFileType == true) {
+       this._coreService.openSnackBar('Please select file.', 'Ok');
+       return;
     }
     this.editCanteenMenuItemForm.disable();
+    const formData = new FormData();
+     formData.append('itemImageFile', this.selectedFile);
+     formData.append('ItemName', this.editCanteenMenuItemForm.value.itemName);
+     formData.append('ItemDescriptin', this.editCanteenMenuItemForm.value.itemDescriptin);
+     formData.append('foodMenuItemId',this.editCanteenMenuItemForm.value.foodMenuItemId);
 
-    this._canteenService.updateFoodMenuItem(this.editCanteenMenuItemForm.value).subscribe((data) => {
+    this._canteenService.updateFoodMenuItem(formData).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');
       this.modalService.dismissAll();
       this.editCanteenMenuItemForm.enable();
       this.editCanteenMenuItemForm.reset();
       this.getGridData();
-    })
-
+      debugger
+    });
   }
 
   deleteCanteenMenuItem(element: any) {
-    this._confirmation.confirm('Are you sure?', 'Do you really want to delete this food menu item?')
-      .then((confirmed) => {
-        if (confirmed) {
-          this._canteenService.deleteFoodMenuItem(element.foodMenuItemId).subscribe((data) => {
-            this._coreService.openSnackBar(data.message, 'Ok');
-            this.modalService.dismissAll();
-            this.editCanteenMenuItemForm.enable();
-            this.editCanteenMenuItemForm.reset();
-            this.getGridData();
-          })
-        }
-      });
+    this._confirmation.confirm('Are you sure?', 'Do you really want to delete this food menu item?').then((confirmed) => {
+      if (confirmed) {
+        this._canteenService.deleteFoodMenuItem(element.foodMenuItemId).subscribe((data) => {
+          this._coreService.openSnackBar(data.message, 'Ok');
+          this.modalService.dismissAll();
+          this.editCanteenMenuItemForm.enable();
+          this.editCanteenMenuItemForm.reset();
+          this.getGridData();
+        });
+      }
+    });
   }
 
   pageChanged(event: PageEvent) {
@@ -156,16 +175,18 @@ export class FoodMenuItemComponent implements OnInit {
   }
 
   openAddCanteenMenuItemTemplate(content: TemplateRef<any>) {
-    this.isInvalidFileType=true;
+    this.isInvalidFileType = true;
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
   openEditCanteenMenuItemTemplate(element: any, content: TemplateRef<any>) {
+    debugger
+    this.isInvalidFileType = true;
 
     this.editCanteenMenuItemForm = this._formBuilder.group({
       itemName: [element.itemName, Validators.required],
       itemURL: [element.itemURL, Validators.required],
       itemDescriptin: [element.itemDescriptin, Validators.required],
-      foodMenuItemId: [element.foodMenuItemId, Validators.required],
+      foodMenuItemId: [element.foodMenuItemId, Validators.required]
     });
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
@@ -176,14 +197,13 @@ export class FoodMenuItemComponent implements OnInit {
       return;
     }
     this.isInvalidFileType = true;
-    this.borderColorValidationFile = "1px solid #ced4da";
+    this.borderColorValidationFile = '1px solid #ced4da';
     const file = event.target.files[0];
     if (file) {
       const fileType = file.type;
       const validImageTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
 
       if (validImageTypes.includes(fileType)) {
-
         const fileInput = event.target as HTMLInputElement;
         this.isInvalidFileType = false;
 
@@ -192,15 +212,11 @@ export class FoodMenuItemComponent implements OnInit {
         } else {
           this.selectedFile = null; // or handle it gracefully
         }
-
       } else {
         this.selectedFile = [];
         this.isInvalidFileType = true;
-        this.borderColorValidationFile = "1px solid red";
+        this.borderColorValidationFile = '1px solid red';
       }
     }
   }
-
-
-
 }
