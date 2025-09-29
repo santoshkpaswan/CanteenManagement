@@ -162,4 +162,30 @@ export class CanteenService {
             })
         );
     }
+     addOrder(model: any): Observable<any> {
+        debugger
+        return this._httpClient.post(`${environment.apiUrl}/Canteen/SaveOrder`, model).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
+
+    updateOrder(model: any): Observable<any> {
+      debugger
+        return this._httpClient.post(`${environment.apiUrl}/Canteen/UpdateOrder`, model).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
+
+    deleteOrder(id: any): Observable<any> {
+        debugger
+        return this._httpClient.post(`${environment.apiUrl}/Canteen/DeleteOrder/${id}`, {}).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
 }

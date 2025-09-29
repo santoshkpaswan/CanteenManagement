@@ -29,14 +29,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   templateUrl: './order.component.html',
   styleUrl: './order.component.scss'
 })
- 
+
 export class OrderComponent implements OnInit {
+  addCanteenOrderForm: FormGroup;
+  editCanteenOrderForm: FormGroup;
   currentPage: any = 0;
   pageSize: any = 10;
   orderList: any = [];
+  dayName: any =[];
 
 
-  displayedColumns: string[] = ['sno', 'ordernumber', 'dayId','username','usertype','totalamount','paymenttype','paymentstatus','remark', 'edit', 'delete'];
+  displayedColumns: string[] = ['sno', 'ordernumber', 'dayId','username','usertype','totalamount','paymenttype','paymentstatus','status','remark', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
@@ -54,13 +57,41 @@ export class OrderComponent implements OnInit {
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private _coreService: CoreService) {
-    
+      this.addCanteenOrderForm = _formBuilder.group({
+      //orderNumber: [''],
+      dayId: ['', Validators.required],
+      rgenId: [''],
+      userName: ['', Validators.required],
+      userId: [''],
+      userType: ['', Validators.required],
+      totalAmount: ['', Validators.required],
+      paymentType: ['', Validators.required],
+      paymentStatus: ['', Validators.required],
+      status: ['', Validators.required],
+      remark: ['', Validators.required]
+    });
+
+    this.editCanteenOrderForm = _formBuilder.group({
+      orderNumber: [''],
+      dayId: ['', Validators.required],
+      rgenId: ['', Validators.required],
+      userName:['',Validators.required],
+      userId: ['', Validators.required],
+      userType: ['', Validators.required],
+      totalAmount:['', Validators.required],
+      paymentType:['', Validators.required],
+      paymentStatus:['', Validators.required],
+      status:['', Validators.required],
+      remark:['', Validators.required],
+      orderId: ['', Validators.required]
+    });
   }
 
 
   ngOnInit(): void {
     debugger
     this.getGridData();
+    this.getDayNameData();
   }
 
    getGridData() {
@@ -71,5 +102,94 @@ export class OrderComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
+  }
+
+  getDayNameData() {
+    debugger
+    this._canteenService.getFoodDays().subscribe((response) => {
+      this.dayName = response.data;
+       debugger
+    });
+  }
+
+  addNewCanteenOrder() {
+    debugger
+    if (this.addCanteenOrderForm.invalid) {
+      this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
+      return;
+    }
+    this.addCanteenOrderForm.disable();
+
+    this._canteenService.addOrder(this.addCanteenOrderForm.value).subscribe((data) => {
+      this._coreService.openSnackBar(data.message, 'Ok');
+      this.modalService.dismissAll();
+      this.addCanteenOrderForm.enable();
+      this.addCanteenOrderForm.reset();
+      this.getGridData();
+      debugger
+    })
+
+  }
+
+  updateOrder() {
+    if (this.editCanteenOrderForm.invalid) {
+      this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
+      return;
+    }
+    this.editCanteenOrderForm.disable();
+
+    this._canteenService.updateOrder(this.editCanteenOrderForm.value).subscribe((data) => {
+      this._coreService.openSnackBar(data.message, 'Ok');
+      this.modalService.dismissAll();
+      this.editCanteenOrderForm.enable();
+      this.editCanteenOrderForm.reset();
+      this.getGridData();
+      debugger
+    })
+
+  }
+
+
+
+  deleteCanteenOrder(element: any) {
+    this._confirmation.confirm('Are you sure?', 'Do you really want to delete this order?')
+      .then((confirmed) => {
+        if (confirmed) {
+          this._canteenService.deleteOrder(element.orderNumber).subscribe((data) => {
+            this._coreService.openSnackBar(data.message, 'Ok');
+            this.modalService.dismissAll();
+            //this.editCanteenItemPriceForm.enable();
+            //this.editCanteenItemPriceForm.reset();
+            this.getGridData();
+          })
+        }
+      });
+  }
+
+  openAddCanteenOrderTemplate(content: TemplateRef<any>) {
+    this.modalService.open(content, { size: 'md', backdrop: 'static' });
+  }
+
+  openEditCanteenOrderTemplate(element: any, content: TemplateRef<any>) {
+    debugger
+    this.editCanteenOrderForm = this._formBuilder.group({
+      orderNumber: [element.orderNumber],
+      dayId: [element.dayId, Validators.required],
+      rgenId:[element.rgenId,Validators.required],
+      userName: [element.userName, Validators.required],
+      userId: [element.userId, Validators.required],
+      userType:[element.userType,Validators.required],
+      totalAmount:[element.totalAmount,Validators.required],
+      paymentType:[element.paymentType,Validators.required],
+      paymentStatus:[element.paymentStatus,Validators.required],
+      status:[element.status,Validators.required],
+      remark:[element.remark,Validators.required],
+      orderId: [element.orderId, Validators.required],
+    });
+    this.modalService.open(content, { size: 'md', backdrop: 'static' });
+  }
+   pageChanged(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
   }
 }

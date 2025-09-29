@@ -396,9 +396,28 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #endregion
 
         #region Order
-        public async Task<List<OrderModel>> GetOrder()
+        public async Task<List<OrderListGetModelView>> GetOrder()
         {
-            return await _context.orderModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
+            //return await _context.orderModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
+           var result = await (from o in _context.orderModels join d in _context.masterDaysModels on o.DayId equals d.DayId
+            where o.IsActive  && d.IsActive orderby o.OrderId descending
+                     select new OrderListGetModelView
+                     {
+                         OrderId = o.OrderId,
+                         OrderNumber = o.OrderNumber,
+                         DayId = o.DayId,
+                         DaysName =d.DaysName,  //getting name from dayname
+                         RgenId = o.RgenId,
+                         UserName = o.UserName,
+                         UserId = o.UserId,
+                         UserType=o.UserType,
+                         TotalAmount=o.TotalAmount,
+                         PaymentType=o.PaymentType,
+                         PaymentStatus=o.PaymentStatus,
+                         Status=o.Status,
+                         Remark=o.Remark,
+                        }).ToListAsync();
+             return result;
         }
         public async Task<OrderSaveModelView> SaveOrder(OrderSaveModelView orderSaveModelView)
         {
@@ -477,6 +496,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             {
                 throw new Exception("Record not found.");
             }
+            existing.OrderNumber = orderUpdateModelView.OrderNumber;
             existing.DayId = orderUpdateModelView.DayId;
             existing.RgenId = orderUpdateModelView.RgenId;
             existing.UserName = orderUpdateModelView.UserName;

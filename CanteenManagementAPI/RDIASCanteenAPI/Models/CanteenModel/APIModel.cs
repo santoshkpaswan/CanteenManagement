@@ -97,9 +97,15 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     #endregion
 
     #region Order
-    public class OrderSaveModelView
+
+    public class OrderListGetModelView :OrderModel
     {
-        //public string OrderNumber { get; set; }
+         public string? DaysName { get; set; }
+         
+    }
+    public class OrderSaveModelView :OrderModel
+    {
+        // public string OrderNumber { get; set; }
         public int DayId { get; set; }
         public int RgenId { get; set; }
         public string UserName { get; set; }
@@ -114,7 +120,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     public class OrderUpdateModelView
     {
         public int OrderId { get; set; }
-        //public string OrderNumber { get; set; }
+        public string OrderNumber { get; set; }
         public int DayId { get; set; }
         public int RgenId { get; set; }
         public string UserName { get; set; }
