@@ -57,19 +57,34 @@ export class OrderComponent implements OnInit {
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private _coreService: CoreService) {
-      this.addCanteenOrderForm = _formBuilder.group({
-      //orderNumber: [''],
-      dayId: ['', Validators.required],
-      rgenId: [''],
-      userName: ['', Validators.required],
-      userId: [''],
-      userType: ['', Validators.required],
-      totalAmount: ['', Validators.required],
-      paymentType: ['', Validators.required],
-      paymentStatus: ['', Validators.required],
-      status: ['', Validators.required],
-      remark: ['', Validators.required]
-    });
+    //   this.addCanteenOrderForm = _formBuilder.group({
+    //   //orderNumber: [''],
+    //   dayId: ['', Validators.required],
+    //   rgenId: [0],
+    //   userName: ['', Validators.required],
+    //   userId: [''],
+    //   userType: ['', Validators.required],
+    //   totalAmount: ['', Validators.required],
+    //   paymentType: ['', Validators.required],
+    //   paymentStatus: ['', Validators.required],
+    //   status: ['', Validators.required],
+    //   remark: ['', Validators.required]
+    // });
+
+    this.addCanteenOrderForm = this._formBuilder.group({
+  // orderNumber: [''],  // optional
+  dayId: [0, Validators.required],          // number
+  rgenId: [0],                              // number, default 0
+  userName: ['', Validators.required],      // string
+  userId: [''],                             // string (if not used, keep empty)
+  userType: ['', Validators.required],      // string (or number if backend expects int)
+  totalAmount: [0, Validators.required],    // number
+  paymentType: [0, Validators.required],    // number
+  paymentStatus: [0, Validators.required],  // number
+  status: [0, Validators.required],         // number
+  remark: ['', Validators.required]         // string
+});
+
 
     this.editCanteenOrderForm = _formBuilder.group({
       orderNumber: [''],
@@ -112,24 +127,57 @@ export class OrderComponent implements OnInit {
     });
   }
 
+  // addNewCanteenOrder() {
+  //   debugger
+  //   if (this.addCanteenOrderForm.invalid) {
+  //     this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
+  //     return;
+  //   }
+  //   this.addCanteenOrderForm.disable();
+
+  //   this._canteenService.addOrder(this.addCanteenOrderForm.value).subscribe((data) => {
+  //     this._coreService.openSnackBar(data.message, 'Ok');
+  //     this.modalService.dismissAll();
+  //     this.addCanteenOrderForm.enable();
+  //     this.addCanteenOrderForm.reset();
+  //     this.getGridData();
+  //     debugger
+  //   })
+
+  // }
+
   addNewCanteenOrder() {
-    debugger
-    if (this.addCanteenOrderForm.invalid) {
-      this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
-      return;
-    }
-    this.addCanteenOrderForm.disable();
-
-    this._canteenService.addOrder(this.addCanteenOrderForm.value).subscribe((data) => {
-      this._coreService.openSnackBar(data.message, 'Ok');
-      this.modalService.dismissAll();
-      this.addCanteenOrderForm.enable();
-      this.addCanteenOrderForm.reset();
-      this.getGridData();
-      debugger
-    })
-
+  debugger;
+  if (this.addCanteenOrderForm.invalid) {
+    this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
+    return;
   }
+
+  this.addCanteenOrderForm.disable();
+
+  // wrap the form data as API expects
+  const payload = {
+
+      ...this.addCanteenOrderForm.value,
+      rgenId: this.addCanteenOrderForm.value.rgenId || 0, // fix int issue
+      dayId: Number(this.addCanteenOrderForm.value.dayId),
+      paymentType: Number(this.addCanteenOrderForm.value.paymentType),
+      paymentStatus: Number(this.addCanteenOrderForm.value.paymentStatus),
+      status: Number(this.addCanteenOrderForm.value.status),
+      totalAmount: Number(this.addCanteenOrderForm.value.totalAmount)
+
+  };
+
+  this._canteenService.addOrder(payload).subscribe((data) => {
+    this._coreService.openSnackBar(data.message, 'Ok');
+    this.modalService.dismissAll();
+    this.addCanteenOrderForm.enable();
+    this.addCanteenOrderForm.reset();
+    this.getGridData();
+    debugger;
+  });
+}
+
 
   updateOrder() {
     if (this.editCanteenOrderForm.invalid) {

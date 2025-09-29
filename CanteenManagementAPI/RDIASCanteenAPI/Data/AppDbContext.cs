@@ -104,8 +104,7 @@ namespace RDIASCanteenAPI.Data
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderId { get; set; }
-        //[Required]
-        public string OrderNumber { get; set; }
+        public string? OrderNumber { get; set; }
         public int DayId { get; set; }
         public int RgenId { get; set; }
         public string UserName { get; set; }

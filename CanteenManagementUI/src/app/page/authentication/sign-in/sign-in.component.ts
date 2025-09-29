@@ -31,7 +31,7 @@ export class SignInComponent implements OnInit {
     private _coreService: CoreService,
 
   ) {
-   
+
   }
 
   ngOnInit(): void {
