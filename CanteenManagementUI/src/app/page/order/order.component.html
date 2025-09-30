@@ -137,7 +137,7 @@
         <div class="col-md-6 mb-2">
           <label>User Type<strong style="color: red;">*</strong></label>
           <input type="hidden" [formControlName]="'userId'" class="form-control">
-          <input [formControlName]="'userType'" class="form-control" required>
+          <input [formControlName]="'userType'" class="form-control" required readonly>
         </div>
 
         <!-- Total Amount -->
@@ -149,19 +149,19 @@
         <!-- Payment Type -->
         <div class="col-md-6 mb-2">
           <label>Payment Type<strong style="color: red;">*</strong></label>
-          <input [formControlName]="'paymentType'" class="form-control" required>
+          <input type="number" min="0" [formControlName]="'paymentType'" class="form-control" required>
         </div>
 
         <!-- Payment Status -->
         <div class="col-md-6 mb-2">
           <label>Payment Status<strong style="color: red;">*</strong></label>
-          <input [formControlName]="'paymentStatus'" class="form-control" required>
+          <input type="number" min="0" [formControlName]="'paymentStatus'" class="form-control" required>
         </div>
 
         <!-- Status -->
         <div class="col-md-6 mb-2">
           <label>Status<strong style="color: red;">*</strong></label>
-          <input [formControlName]="'status'" class="form-control" required>
+          <input type="number" min="0"  [formControlName]="'status'" class="form-control" required>
         </div>
 
         <!-- Remark -->
@@ -208,38 +208,38 @@
         <div class="col-md-6 mb-2">
           <label>User Name<strong style="color: red;">*</strong></label>
          <input type="hidden" [formControlName]="'rgenId'" class="form-control">
-          <input [formControlName]="'userName'" class="form-control" required>
+          <input [formControlName]="'userName'" class="form-control" required >
         </div>
 
         <!-- User Type -->
         <div class="col-md-6 mb-2">
           <label>User Type<strong style="color: red;">*</strong></label>
            <input type="hidden" [formControlName]="'userId'" class="form-control">
-          <input [formControlName]="'userType'" class="form-control" required>
+          <input [formControlName]="'userType'" class="form-control" required readonly>
         </div>
 
         <!-- Total Amount -->
         <div class="col-md-6 mb-2">
           <label>Total Amount<strong style="color: red;">*</strong></label>
-          <input [formControlName]="'totalAmount'" class="form-control" required>
+          <input type="number" min="0" [formControlName]="'totalAmount'" class="form-control" required>
         </div>
 
         <!-- Payment Type -->
         <div class="col-md-6 mb-2">
           <label>Payment Type<strong style="color: red;">*</strong></label>
-          <input [formControlName]="'paymentType'" class="form-control" required>
+          <input type="number" min="0" [formControlName]="'paymentType'" class="form-control" required>
         </div>
 
         <!-- Payment Status -->
         <div class="col-md-6 mb-2">
           <label>Payment Status<strong style="color: red;">*</strong></label>
-          <input [formControlName]="'paymentStatus'" class="form-control" required>
+          <input type="number" min="0" [formControlName]="'paymentStatus'" class="form-control" required>
         </div>
 
         <!-- Status -->
         <div class="col-md-6 mb-2">
           <label>Status<strong style="color: red;">*</strong></label>
-          <input [formControlName]="'status'" class="form-control" required>
+          <input type="number" min="0" [formControlName]="'status'" class="form-control" required>
         </div>
 
         <!-- Remark -->

@@ -52,7 +52,7 @@ export class SignInComponent implements OnInit {
       user_name: this.signInForm.value.username,
       password: this.signInForm.value.password
     };
-     this._router.navigate(['/user/home']);
+    // this._router.navigate(['/user/home']);
   //   this._authService.signIn(this.sendObj)
   //     .subscribe(
   //       (response: any) => {
@@ -63,5 +63,24 @@ export class SignInComponent implements OnInit {
   //         this.signInForm.enable();
   //         this._coreService.openSnackBar(error.message, 'Ok');
   //       });
+
+
+  this._authService.signIn(this.sendObj).subscribe({next: (response: any) => {
+    debugger
+    this.signInForm.enable();
+
+    if (response.response_id == 1) {
+      this._coreService.openSnackBar('Login successful!', 'Ok');
+      this._router.navigate(['/user/home']);
+    } else {
+      this._coreService.openSnackBar(response.response || 'Login failed', 'Ok');
+    }
+  },
+  error: (error) => {
+    this.signInForm.enable();
+    this._coreService.openSnackBar(error.message || 'Login failed', 'Ok');
+  }
+});
+
   }
 }
