@@ -12,7 +12,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     {
         public string DaysName { get; set; }
         public int DayNo { get; set; }
-        public  bool? IsActive { get; set; }
+        public bool? IsActive { get; set; }
     }
     public class FoodDayUpdateModelView
     {
@@ -22,20 +22,20 @@ namespace RDIASCanteenAPI.Models.CanteenModel
 
     }
 
-    public class FoodDayGetModelView :DayWiseFoodMenuItemModel
+    public class FoodDayGetModelView : DayWiseFoodMenuItemModel
     {
-         public string? ItemName { get; set; }
+        public string? ItemName { get; set; }
         public string? DaysName { get; set; }
-         
+
 
     }
     #endregion
 
     #region FoodMenuItemModel
 
-    public class FoodMenuItemGetModelView :FoodMenuItemPriceModel
+    public class FoodMenuItemGetModelView : FoodMenuItemPriceModel
     {
-         public string? ItemName { get; set; }
+        public string? ItemName { get; set; }
         // public string? AcademicSession { get; set; }
     }
     public class FoodMenuItemModelView
@@ -62,7 +62,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     {
         public int FoodMenuItemId { get; set; }
         public int AcademicSessionId { get; set; }
-        public string SessionName{ get; set; }
+        public string SessionName { get; set; }
         public decimal ItemPrice { get; set; }
         public string ItemPriceDescriptin { get; set; }
 
@@ -72,7 +72,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public int FoodMenuItemPriceId { get; set; }
         public int FoodMenuItemId { get; set; }
         public int AcademicSessionId { get; set; }
-        public string SessionName{ get; set; }
+        public string SessionName { get; set; }
         public decimal ItemPrice { get; set; }
         public string ItemPriceDescriptin { get; set; }
 
@@ -98,12 +98,12 @@ namespace RDIASCanteenAPI.Models.CanteenModel
 
     #region Order
 
-    public class OrderListGetModelView :OrderModel
+    public class OrderListGetModelView : OrderModel
     {
-         public string? DaysName { get; set; }
-         
+        public string? DaysName { get; set; }
+
     }
-    public class OrderSaveModelView :OrderModel
+    public class OrderSaveModelView : OrderModel
     {
         // public string OrderNumber { get; set; }
         public int DayId { get; set; }
@@ -112,8 +112,10 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string UserId { get; set; }
         public string UserType { get; set; }
         public decimal TotalAmount { get; set; }
-        public int PaymentType { get; set; }
-        public int PaymentStatus { get; set; }
+        public  int PaymentType { get; set; }
+        //public  PaymentType paymentType { get; set; }
+        public  int PaymentStatus { get; set; }
+        //public  PaymentStatus paymentStatus { get; set; }
         public int Status { get; set; }
         public string Remark { get; set; }
     }
@@ -127,11 +129,25 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string UserId { get; set; }
         public string UserType { get; set; }
         public decimal TotalAmount { get; set; }
-        public int PaymentType { get; set; }
-        public int PaymentStatus { get; set; }
+        public int PaymentType{ get; set; }
+        //public  PaymentType paymentType  { get; set; }
+        public int PaymentStatus   { get; set; }
+        //public  PaymentStatus paymentStatus { get; set; }
         public int Status { get; set; }
         public string Remark { get; set; }
     }
+    //public enum PaymentType
+    //{
+     //   Cash = 1,
+    //    Card = 2,
+    //    UPI = 3
+    //}
+    //public enum PaymentStatus
+    //{
+     //   Pending = 0,
+     //   Paid = 1,
+     //   Failed = 2
+    //}
 
     #endregion
 

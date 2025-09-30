@@ -111,8 +111,8 @@ namespace RDIASCanteenAPI.Data
         public string UserId {  get; set; }
         public string UserType {  get; set; }   
         public decimal TotalAmount { get; set; }
-        public int PaymentType {  get; set; }    
-        public int PaymentStatus {  get; set; }
+        public int PaymentType  {  get; set; }    
+        public int PaymentStatus  {  get; set; }
         public string Remark { get; set; }
         public int Status { get; set; }
         public bool IsActive { get; set; }
