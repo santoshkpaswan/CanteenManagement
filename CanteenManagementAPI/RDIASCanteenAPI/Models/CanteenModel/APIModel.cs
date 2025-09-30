@@ -103,7 +103,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string? DaysName { get; set; }
 
     }
-    public class OrderSaveModelView : OrderModel
+    public class OrderSaveModelView //: OrderModel
     {
         // public string OrderNumber { get; set; }
         public int DayId { get; set; }
@@ -138,20 +138,26 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     }
     //public enum PaymentType
     //{
-     //   Cash = 1,
+    //   Cash = 1,
     //    Card = 2,
     //    UPI = 3
     //}
     //public enum PaymentStatus
     //{
-     //   Pending = 0,
-     //   Paid = 1,
-     //   Failed = 2
+    //   Pending = 0,
+    //   Paid = 1,
+    //   Failed = 2
     //}
 
     #endregion
 
     #region Order Item
+    
+     public class OrderItemListGetModelView : OrderItemModel
+    {
+        public string? ItemName { get; set; }
+
+    }
     public class OrderItemSaveModelView
     {
         public int ItemNo { get; set; }

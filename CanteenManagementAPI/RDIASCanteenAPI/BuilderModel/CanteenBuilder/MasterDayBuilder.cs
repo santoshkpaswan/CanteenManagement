@@ -528,9 +528,20 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #endregion
 
         #region Order Item
-        public async Task<List<OrderItemModel>> GetOrderItem()
+        public async Task<List<OrderItemListGetModelView>> GetOrderItem()
         {
-            return await _context.orderItemModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
+            //return await _context.orderItemModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
+            var result = await (from om in _context.orderItemModels join fm in _context.foodMenuItemModels on om.FoodMenuItemId equals fm.FoodMenuItemId
+            where om.IsActive  && fm.IsActive orderby om.OrderItemId descending
+                     select new OrderItemListGetModelView
+                     {
+                         OrderItemId = om.OrderItemId,
+                         FoodMenuItemId = om.FoodMenuItemId,
+                         //ItemNo = om.itemNo,
+                         ItemName = fm.ItemName,   //getting name from foodmenuitem
+                         TotalAmount = om.TotalAmount
+                        }).ToListAsync();
+             return result;
         }
         public async Task<OrderItemSaveModelView> SaveOrderItem(OrderItemSaveModelView itemSaveModelView)
         {

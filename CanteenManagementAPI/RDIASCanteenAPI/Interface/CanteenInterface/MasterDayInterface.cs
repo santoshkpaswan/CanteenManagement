@@ -41,7 +41,7 @@ namespace RDIASCanteenAPI.Interface.CanteenInterface
         #endregion
 
         #region order Item
-        Task<List<OrderItemModel>> GetOrderItem();
+        Task<List<OrderItemListGetModelView>> GetOrderItem();
         Task<OrderItemSaveModelView> SaveOrderItem(OrderItemSaveModelView itemSaveModelView);
         Task<OrderItemUpdateModelView> UpdateOrderItem(OrderItemUpdateModelView orderItemUpdateModel);
         Task DeleteOrderItem(int OrderItemId);

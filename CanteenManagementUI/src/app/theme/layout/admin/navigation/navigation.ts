@@ -74,10 +74,17 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         url: '/canteen/order',
         icon: 'feather icon-shopping-cart'
+      },
+      {
+        id: 'orderitem',
+        title: 'order item',
+        type: 'item',
+        url: '/canteen/order-item',
+        icon: 'feather icon-shopping-cart'
       }
     ]
   },
-  
+
   // {
   //   id: 'request-status',
   //   title: 'Action Request',
@@ -106,5 +113,5 @@ export const NavigationItems: NavigationItem[] = [
   //       icon: 'feather icon-sidebar'
   //     }
   //   ]
-  // }  
+  // }
 ];

@@ -17,16 +17,17 @@ import {FoodMenuItemComponent} from 'src/app/page//food-menu-item/food-menu-item
 import {FoodMenuItemPriceComponent} from 'src/app/page//food-menu-item-price/food-menu-item-price.component'
 import {DayWiseFoodMenuItemComponent} from 'src/app/page//day-wise-food-menu-item/day-wise-food-menu-item.component'
 import {OrderComponent} from 'src/app/page//order/order.component'
+import { OrderItemComponent } from './page/order-item/order-item.component';
 
 
 const routes: Routes = [
-  { 
-    path: '', 
-    pathMatch: 'full', 
+  {
+    path: '',
+    pathMatch: 'full',
     component : SignInComponent
 },
-{ 
-  path: 'signin',  
+{
+  path: 'signin',
   component : SignInComponent
 },
   {
@@ -38,7 +39,7 @@ const routes: Routes = [
       {
         path: 'user/home',
         component: HomeComponent
-      },      
+      },
       {
         path: 'canteen/food-day',
         component: FoodDayComponent
@@ -59,12 +60,16 @@ const routes: Routes = [
         path: 'canteen/order',
         component: OrderComponent
       },
+      {
+        path: 'canteen/order-item',
+        component: OrderItemComponent
+      },
       { path: '',
        component: HomeComponent
       },
     ]
   },
- 
+
 ];
 
 @NgModule({

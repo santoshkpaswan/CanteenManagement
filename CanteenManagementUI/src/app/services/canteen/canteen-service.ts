@@ -188,4 +188,13 @@ export class CanteenService {
             })
         );
     }
+
+    getOrderItem(): Observable<any> {
+        debugger
+        return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrderItem`, {}).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
 }
