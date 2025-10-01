@@ -20,6 +20,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ConfirmationDialogService } from 'src/app/confirmation-dialog/confirmation-dialog.service';
 import * as XLSX from 'xlsx';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-order-item',
@@ -33,9 +34,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export class OrderItemComponent implements OnInit {
   currentPage: any = 0;
   pageSize: any = 10;
-  daysList: any = [];
+  itemList: any = [];
+  imageUrl: any = environment.imageUrl;
 
-  displayedColumns: string[] = ['sno', 'itemNo', 'foodMenuItem','totalAmount', 'edit', 'delete'];
+
+  displayedColumns: string[] = ['sno', 'itemno','imageurl', 'itemname','itemprice','itempricedescriptin'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
@@ -65,10 +68,10 @@ export class OrderItemComponent implements OnInit {
   getGridData() {
     this._canteenService.getOrderItem().subscribe((response) => {
       this.dataSource = response.data;
-      this.daysList = response.data;
+      this.itemList = response.data;
       debugger
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      //this.dataSource.paginator = this.paginator;
+      //this.dataSource.sort = this.sort;
     });
   }
 
@@ -79,5 +82,24 @@ export class OrderItemComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
+  // addItem(item: any) {
+  //   item.count++;
+  // }
+
+  // removeItem(item: any) {
+  //   if (item.count > 0) {
+  //     item.count--;
+  //   }
+  // }
+
+  addItem(item: any) {
+    item.count++;
+  }
+
+  removeItem(item: any) {
+    if (item.count > 0) {
+      item.count--;
+    }
+  }
 
 }

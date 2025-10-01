@@ -1,0 +1,16 @@
+.card {
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+.card-body h6 {
+  font-size: 16px;
+}
+.card-body p {
+  font-size: 13px;
+}
+.btn-sm {
+  padding: 4px 12px;
+}

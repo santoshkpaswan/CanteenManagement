@@ -112,9 +112,9 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string UserId { get; set; }
         public string UserType { get; set; }
         public decimal TotalAmount { get; set; }
-        public  int PaymentType { get; set; }
+        public int PaymentType { get; set; }
         //public  PaymentType paymentType { get; set; }
-        public  int PaymentStatus { get; set; }
+        public int PaymentStatus { get; set; }
         //public  PaymentStatus paymentStatus { get; set; }
         public int Status { get; set; }
         public string Remark { get; set; }
@@ -129,9 +129,9 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string UserId { get; set; }
         public string UserType { get; set; }
         public decimal TotalAmount { get; set; }
-        public int PaymentType{ get; set; }
+        public int PaymentType { get; set; }
         //public  PaymentType paymentType  { get; set; }
-        public int PaymentStatus   { get; set; }
+        public int PaymentStatus { get; set; }
         //public  PaymentStatus paymentStatus { get; set; }
         public int Status { get; set; }
         public string Remark { get; set; }
@@ -152,10 +152,15 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     #endregion
 
     #region Order Item
-    
-     public class OrderItemListGetModelView : OrderItemModel
+
+    public class OrderItemListGetModelView : OrderItemModel
     {
+        public int FoodMenuItemId { get; set; }
         public string? ItemName { get; set; }
+        public string? ImageUrl { get; set; }
+        
+        public decimal ItemPrice { get; set; }
+        public string ItemPriceDescriptin { get; set; }
 
     }
     public class OrderItemSaveModelView

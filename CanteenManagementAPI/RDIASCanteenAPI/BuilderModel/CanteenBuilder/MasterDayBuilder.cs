@@ -531,15 +531,15 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         public async Task<List<OrderItemListGetModelView>> GetOrderItem()
         {
             //return await _context.orderItemModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
-            var result = await (from om in _context.orderItemModels join fm in _context.foodMenuItemModels on om.FoodMenuItemId equals fm.FoodMenuItemId
-            where om.IsActive  && fm.IsActive orderby om.OrderItemId descending
+            var result = await (from  fm in _context.foodMenuItemModels join fp in _context.foodMenuItemPriceModels on fm.FoodMenuItemId equals fp.FoodMenuItemId
+            where fm.IsActive  && fp.IsActive orderby fp.FoodMenuItemPriceId descending
                      select new OrderItemListGetModelView
                      {
-                         OrderItemId = om.OrderItemId,
-                         FoodMenuItemId = om.FoodMenuItemId,
-                         //ItemNo = om.itemNo,
+                         FoodMenuItemId = fm.FoodMenuItemId,
+                         ImageUrl = fm.ItemURL,
+                         ItemPrice = fp.ItemPrice,
                          ItemName = fm.ItemName,   //getting name from foodmenuitem
-                         TotalAmount = om.TotalAmount
+                         ItemPriceDescriptin = fp.ItemPriceDescriptin,
                         }).ToListAsync();
              return result;
         }

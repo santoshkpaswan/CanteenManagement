@@ -25,26 +25,8 @@ import { environment } from 'src/environments/environment';
   selector: 'app-food-menu-item',
   standalone: true,
   providers: [],
-  imports: [
-    ReactiveFormsModule,
-    CommonModule,
-    MatTooltipModule,
-    FormsModule,
-    MatSelectModule,
-    MatGridListModule,
-    MatCardModule,
-    ReactiveFormsModule,
-    MatExpansionModule,
-    MatDialogModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatCheckboxModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatTooltipModule
-  ],
+  imports: [ReactiveFormsModule,CommonModule,MatTooltipModule,FormsModule,MatSelectModule, MatGridListModule, MatCardModule, ReactiveFormsModule, MatExpansionModule, MatDialogModule,
+            MatIconModule,MatExpansionModule,MatSortModule,MatPaginatorModule,MatCheckboxModule,MatTableModule, MatPaginatorModule,  MatTooltipModule],
   templateUrl: './food-menu-item.component.html',
   styleUrl: './food-menu-item.component.scss'
 })
