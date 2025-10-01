@@ -156,6 +156,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     public class OrderItemListGetModelView : OrderItemModel
     {
         public int FoodMenuItemId { get; set; }
+        public int DayId { get; set; }
         public string? ItemName { get; set; }
         public string? ImageUrl { get; set; }
         

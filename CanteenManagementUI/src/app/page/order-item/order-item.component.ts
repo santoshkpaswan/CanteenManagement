@@ -22,6 +22,15 @@ import * as XLSX from 'xlsx';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { environment } from 'src/environments/environment';
 
+
+export interface OrderItem {
+  itemName: string;
+  itemPrice: number;
+  count: number;
+  imageUrl?: string;
+  itemPriceDescriptin?: string;
+}
+
 @Component({
   selector: 'app-order-item',
   standalone: true,
@@ -31,10 +40,13 @@ import { environment } from 'src/environments/environment';
   styleUrl: './order-item.component.scss'
 })
 
+
 export class OrderItemComponent implements OnInit {
-  currentPage: any = 0;
-  pageSize: any = 10;
-  itemList: any = [];
+  currentPage: number= 0;
+  pageSize: number  = 10;
+ itemList: OrderItem[] = [];
+  grandTotal: number = 0;
+
   imageUrl: any = environment.imageUrl;
 
 
@@ -82,28 +94,23 @@ export class OrderItemComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-  // addItem(item: any) {
-  //   item.count++;
-  // }
-
-  // removeItem(item: any) {
-  //   if (item.count > 0) {
-  //     item.count--;
-  //   }
-  // }
-
-  addItem(item: any) {
-    item.count++;
+ addItem(item: OrderItem) {
+    item.count = (item.count || 0) + 1;
+    this.calculateGrandTotal();
   }
 
-  removeItem(item: any) {
+   removeItem(item: OrderItem) {
     if (item.count > 0) {
       item.count--;
+      this.calculateGrandTotal();
     }
   }
 
-  //getGrandTotal() {
-  //return this.itemList.reduce((total, item) => total + (item.itemPrice * item.count), 0);
-//}
-
+ calculateGrandTotal() {
+    this.grandTotal = this.filteredItems.reduce((sum, x) => sum + x.count * x.itemPrice, 0);
+  }
+// Getter to avoid parser errors in template
+  get filteredItems(): OrderItem[] {
+    return this.itemList.filter(x => x.count > 0);
+  }
 }
