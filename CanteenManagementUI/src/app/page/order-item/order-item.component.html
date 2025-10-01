@@ -34,3 +34,35 @@
     </div>
   </div>
 </div>
+
+
+
+<!-- *** Billing Summary **** -->
+<div class="card text-center mt-4">
+  <div class="card-header">
+    <h6 class="fw-bold">Billing Summary</h6>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Item Name</th>
+          <th>Quantity</th>
+          <th>Price (₹)</th>
+          <th>Total (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of itemList; let i = index" [hidden]="item.count === 0">
+          <td>{{ i + 1 }}</td>
+          <td>{{ item.itemName }}</td>
+          <td>{{ item.count }}</td>
+          <td>{{ item.itemPrice }}</td>
+          <td>{{ item.itemPrice * 2 }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <h5 class="text-end fw-bold">Grand Total: ₹ 567</h5>
+  </div>
+</div>

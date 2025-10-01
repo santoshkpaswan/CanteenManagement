@@ -102,4 +102,8 @@ export class OrderItemComponent implements OnInit {
     }
   }
 
+  //getGrandTotal() {
+  //return this.itemList.reduce((total, item) => total + (item.itemPrice * item.count), 0);
+//}
+
 }
