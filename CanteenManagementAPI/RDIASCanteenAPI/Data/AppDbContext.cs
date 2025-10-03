@@ -111,10 +111,10 @@ namespace RDIASCanteenAPI.Data
         public string UserId {  get; set; }
         public string UserType {  get; set; }   
         public decimal TotalAmount { get; set; }
-        public int PaymentType  {  get; set; }    
-        public int PaymentStatus  {  get; set; }
+        public OrderPaymentType PaymentType  {  get; set; }    
+        public OrderPaymentStatus PaymentStatus  {  get; set; }
         public string Remark { get; set; }
-        public int Status { get; set; }
+        public OrderStatus Status { get; set; }
         public bool IsActive { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;

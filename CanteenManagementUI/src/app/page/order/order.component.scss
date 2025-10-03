@@ -1,0 +1,39 @@
+.status-green {
+  background-color: #28a745; /* Green */
+  color: #ffffff;           /* White text */
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-yellow {
+  background-color: #ffc107; /* Yellow/Orange */
+  color: #ffffff;            /* White text */
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-red {
+  background-color: #dc3545; /* Red */
+  color: #ffffff;            /* White text */
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-gray {
+  background-color: #6c757d; /* Gray */
+  color: #ffffff;            /* White text */
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}

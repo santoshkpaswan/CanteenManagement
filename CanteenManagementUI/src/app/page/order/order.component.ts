@@ -20,6 +20,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ConfirmationDialogService } from 'src/app/confirmation-dialog/confirmation-dialog.service';
 import * as XLSX from 'xlsx';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { OrderPaymentType, OrderPaymentStatus, OrderStatus } from 'src/app/shared/enums/enums.ts';
+
 
 @Component({
   selector: 'app-order',
@@ -36,10 +38,15 @@ export class OrderComponent implements OnInit {
   currentPage: any = 0;
   pageSize: any = 10;
   orderList: any = [];
-  dayName: any =[];
+  dayName: any = [];
 
 
-  displayedColumns: string[] = ['sno', 'ordernumber', 'dayId','username','usertype','totalamount','paymenttype','paymentstatus','status','remark', 'edit', 'delete'];
+  displayedColumns: string[] = ['sno', 'ordernumber', 'dayId', 'username', 'usertype', 'totalamount', 'paymenttype', 'paymentstatus', 'status', 'remark', 'edit', 'delete'];
+  // expose enums for HTML template
+  paymentType = OrderPaymentType;
+  paymentStatus = OrderPaymentStatus;
+  orderStatus = OrderStatus;
+
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
@@ -47,7 +54,7 @@ export class OrderComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
 
-@Inject(MAT_DIALOG_DATA) public data: any
+  @Inject(MAT_DIALOG_DATA) public data: any
   private modalService = inject(NgbModal);
   constructor(
     private _formBuilder: FormBuilder,
@@ -57,37 +64,37 @@ export class OrderComponent implements OnInit {
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private _coreService: CoreService) {
-      // Get user info from localStorage
-     const currentUser = this._authService.getUser();
-     const rgenId = currentUser.account_id;   // always a number
-     const userId = currentUser.user_name;  // always a string
-     const userType = currentUser.usertype;  // always a string
-     this.addCanteenOrderForm = _formBuilder.group({
-    //   //orderNumber: [''],
-       dayId: [0, Validators.required],
-       rgenId: [rgenId , Validators.required] ,
-       userName: ['', Validators.required],
-       userId: [userId , Validators.required],
-       userType: [userType, Validators.required],
-       totalAmount: [0, Validators.required],
-       paymentType: [0, Validators.required],
-       paymentStatus: [0, Validators.required],
-       status: [0, Validators.required],
-       remark: ['', Validators.required]
-      });
+    // Get user info from localStorage
+    const currentUser = this._authService.getUser();
+    const rgenId = currentUser.account_id;   // always a number
+    const userId = currentUser.user_name;  // always a string
+    const userType = currentUser.usertype;  // always a string
+    this.addCanteenOrderForm = _formBuilder.group({
+      //   //orderNumber: [''],
+      dayId: [0, Validators.required],
+      rgenId: [rgenId, Validators.required],
+      userName: ['', Validators.required],
+      userId: [userId, Validators.required],
+      userType: [userType, Validators.required],
+      totalAmount: [0, Validators.required],
+      paymentType: [0, Validators.required],
+      paymentStatus: [0, Validators.required],
+      status: [0, Validators.required],
+      remark: ['', Validators.required]
+    });
 
     this.editCanteenOrderForm = _formBuilder.group({
       orderNumber: [''],
       dayId: ['', Validators.required],
       rgenId: [rgenId, Validators.required],
-      userName:['',Validators.required],
+      userName: ['', Validators.required],
       userId: [userId, Validators.required],
       userType: [userType, Validators.required],
-      totalAmount:['', Validators.required],
-      paymentType:['', Validators.required],
-      paymentStatus:['', Validators.required],
-      status:['', Validators.required],
-      remark:['', Validators.required],
+      totalAmount: ['', Validators.required],
+      paymentType: ['', Validators.required],
+      paymentStatus: ['', Validators.required],
+      status: ['', Validators.required],
+      remark: ['', Validators.required],
       orderId: ['', Validators.required]
     });
   }
@@ -98,7 +105,7 @@ export class OrderComponent implements OnInit {
     this.getDayNameData();
   }
 
-   getGridData() {
+  getGridData() {
     this._canteenService.getOrder().subscribe((response) => {
       this.dataSource = response.data;
       this.orderList = response.data;
@@ -112,7 +119,7 @@ export class OrderComponent implements OnInit {
     debugger
     this._canteenService.getFoodDays().subscribe((response) => {
       this.dayName = response.data;
-       debugger
+      debugger
     });
   }
 
@@ -122,18 +129,32 @@ export class OrderComponent implements OnInit {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
     }
-     // Ensure user info is latest from localStorage
-      const currentUser = this._authService.getUser();
-      if (currentUser) {
-       this.addCanteenOrderForm.patchValue({
-       rgenId: currentUser.account_id,
-       userId: currentUser.user_name,
-       userType: currentUser.usertype,
-      });
-  }
-    this.addCanteenOrderForm.disable();
+    // Ensure user info is latest from localStorage
+    const currentUser = this._authService.getUser();
+    // if (currentUser) {
+    //   this.addCanteenOrderForm.patchValue({
+    //     rgenId: currentUser.account_id,
+    //     userId: currentUser.user_name,
+    //     userType: currentUser.usertype,
+    //   });
 
-    this._canteenService.addOrder(this.addCanteenOrderForm.value).subscribe((data) => {
+    // }
+
+    const addpayload: any = {
+      dayId: Number(this.addCanteenOrderForm.value.dayId),
+      rgenId: currentUser ? currentUser.account_id : this.addCanteenOrderForm.value.rgenId,
+      userId: currentUser ? currentUser.user_name : this.addCanteenOrderForm.value.userId,
+      userType: currentUser ? currentUser.usertype : this.addCanteenOrderForm.value.userType,
+      userName: this.addCanteenOrderForm.value.userName,
+      totalAmount: this.addCanteenOrderForm.value.totalAmount,
+      paymentType: Number(this.addCanteenOrderForm.value.paymentType),
+      paymentStatus: Number(this.addCanteenOrderForm.value.paymentStatus),
+      status: Number(this.addCanteenOrderForm.value.status),
+      remark: this.addCanteenOrderForm.value.remark
+    }
+    this.addCanteenOrderForm.disable();
+    //this._canteenService.addOrder(this.addCanteenOrderForm.value).subscribe((data) => {
+    this._canteenService.addOrder(addpayload).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');
       this.modalService.dismissAll();
       this.addCanteenOrderForm.enable();
@@ -148,9 +169,28 @@ export class OrderComponent implements OnInit {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
     }
+    const currentUser = this._authService.getUser();
+
+    // Prepare payload explicitly with numeric fields
+    const updatepayload: any = {
+      orderId: this.editCanteenOrderForm.value.orderId,
+      orderNumber: this.editCanteenOrderForm.value.orderNumber,
+      dayId: Number(this.editCanteenOrderForm.value.dayId),
+      rgenId: currentUser ? currentUser.account_id : this.editCanteenOrderForm.value.rgenId,
+      userId: currentUser ? currentUser.user_name : this.editCanteenOrderForm.value.userId,
+      userType: currentUser ? currentUser.usertype : this.editCanteenOrderForm.value.userType,
+      userName: this.editCanteenOrderForm.value.userName,
+      totalAmount: Number(this.editCanteenOrderForm.value.totalAmount),
+      paymentType: Number(this.editCanteenOrderForm.value.paymentType),
+      paymentStatus: Number(this.editCanteenOrderForm.value.paymentStatus),
+      status: Number(this.editCanteenOrderForm.value.status),
+      remark: this.editCanteenOrderForm.value.remark
+    };
+
     this.editCanteenOrderForm.disable();
 
-    this._canteenService.updateOrder(this.editCanteenOrderForm.value).subscribe((data) => {
+    ///this._canteenService.updateOrder(this.editCanteenOrderForm.value).subscribe((data) => {
+    this._canteenService.updateOrder(updatepayload).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');
       this.modalService.dismissAll();
       this.editCanteenOrderForm.enable();
@@ -187,21 +227,63 @@ export class OrderComponent implements OnInit {
     this.editCanteenOrderForm = this._formBuilder.group({
       orderNumber: [element.orderNumber],
       dayId: [element.dayId, Validators.required],
-      rgenId:[element.rgenId,Validators.required],
+      rgenId: [element.rgenId, Validators.required],
       userName: [element.userName, Validators.required],
       userId: [element.userId, Validators.required],
-      userType:[element.userType,Validators.required],
-      totalAmount:[element.totalAmount,Validators.required],
-      paymentType:[element.paymentType,Validators.required],
-      paymentStatus:[element.paymentStatus,Validators.required],
-      status:[element.status,Validators.required],
-      remark:[element.remark,Validators.required],
+      userType: [element.userType, Validators.required],
+      totalAmount: [element.totalAmount, Validators.required],
+      paymentType: [element.paymentType, Validators.required],
+      paymentStatus: [element.paymentStatus, Validators.required],
+      status: [element.status, Validators.required],
+      remark: [element.remark, Validators.required],
       orderId: [element.orderId, Validators.required],
     });
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
-   pageChanged(event: PageEvent) {
+  pageChanged(event: PageEvent) {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
   }
+
+
+  // Keep only the string keys (Cash, Card, UPI)
+  paymentTypesArray = Object.keys(OrderPaymentType).filter(key => isNaN(Number(key))).map(key => ({ paymenttypelabel: key, value: OrderPaymentType[key as keyof typeof OrderPaymentType] }));
+
+  paymentStatusArray = Object.keys(OrderPaymentStatus).filter(key => isNaN(Number(key))).map(key => ({ paymentstatuslabel: key, value: OrderPaymentStatus[key as keyof typeof OrderPaymentStatus] }));
+
+  statusArray = Object.keys(OrderStatus).filter(key => isNaN(Number(key))).map(key => ({ statuslabel: key, value: OrderStatus[key as keyof typeof OrderStatus] }));
+
+  // Helper functions for table display
+   getPaymentTypeLabel(value: number): string {
+
+     return this.paymentTypesArray.find(x => x.value === value)?.paymenttypelabel || '';
+  }
+  getPaymentStatusLabel(value: number): { label: string, cssClass: string } {
+    const label = this.paymentStatusArray.find(x => x.value === value)?.paymentstatuslabel || '';
+    const lower = label.toLowerCase();
+
+    let cssClass = '';
+    if (['paid', 'successful', 'completed'].includes(lower)) {
+      cssClass = 'status-green';
+    } else if (['pending', 'in progress'].includes(lower)) {
+      cssClass = 'status-yellow';
+    } else if (['failed', 'denied', 'unpaid'].includes(lower)) {
+      cssClass = 'status-red';
+    } else if (['refunded', 'canceled', 'voided'].includes(lower)) {
+      cssClass = 'status-gray';
+    }
+
+    return { label, cssClass };
+  }
+
+
+
+  // getPaymentStatusLabel(value: number): string {
+  //   return this.paymentStatusArray.find(x => x.value === value)?.paymentstatuslabel || '';
+  // }
+
+  getOrderStatusLabel(value: number): string {
+    return this.statusArray.find(x => x.value === value)?.statuslabel || '';
+  }
+
 }
