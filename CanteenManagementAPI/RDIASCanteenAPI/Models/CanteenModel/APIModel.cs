@@ -112,11 +112,11 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string UserId { get; set; }
         public string UserType { get; set; }
         public decimal TotalAmount { get; set; }
-        public int PaymentType { get; set; }
+        public OrderPaymentType PaymentType { get; set; }
         //public  PaymentType paymentType { get; set; }
-        public int PaymentStatus { get; set; }
+        public OrderPaymentStatus PaymentStatus { get; set; }
         //public  PaymentStatus paymentStatus { get; set; }
-        public int Status { get; set; }
+        public OrderStatus Status { get; set; }
         public string Remark { get; set; }
     }
     public class OrderUpdateModelView
@@ -129,25 +129,34 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string UserId { get; set; }
         public string UserType { get; set; }
         public decimal TotalAmount { get; set; }
-        public int PaymentType { get; set; }
-        //public  PaymentType paymentType  { get; set; }
-        public int PaymentStatus { get; set; }
-        //public  PaymentStatus paymentStatus { get; set; }
-        public int Status { get; set; }
+        //public int PaymentType { get; set; }
+        public OrderPaymentType PaymentType { get; set; }
+        //public int PaymentStatus { get; set; }
+        public OrderPaymentStatus PaymentStatus { get; set; }
+        public OrderStatus Status { get; set; }
         public string Remark { get; set; }
     }
-    //public enum PaymentType
-    //{
-    //   Cash = 1,
-    //    Card = 2,
-    //    UPI = 3
-    //}
-    //public enum PaymentStatus
-    //{
-    //   Pending = 0,
-    //   Paid = 1,
-    //   Failed = 2
-    //}
+    public enum OrderPaymentType
+    {
+        Cash = 1,
+        Card = 2,
+        UPI = 3
+    }
+    public enum OrderPaymentStatus
+    {
+        Pending = 0,         /// Pending / In Progress (Yellow / Orange)
+        Paid = 1,           /// Paid / Successful / Completed  (Green)
+        Failed = 2,        /// Failed / Denied / Unpaid  (Red)
+        Refunded = 3      /// Refunded / Canceled / Voided  (Gray)
+    }
+
+    public enum OrderStatus
+    {
+        Created = 0,
+        InProgress = 1,
+        Completed = 2,
+        Cancelled = 3
+    }
 
     #endregion
 
@@ -159,7 +168,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public int DayId { get; set; }
         public string? ItemName { get; set; }
         public string? ImageUrl { get; set; }
-        
+
         public decimal ItemPrice { get; set; }
         public string ItemPriceDescriptin { get; set; }
 

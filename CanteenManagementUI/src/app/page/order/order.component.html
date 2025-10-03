@@ -1,102 +1,109 @@
 <div class="card text-center" style="margin-top: 10px;">
-    <div class="card-header">
-        <div class="row justify-content-between align-items-center">
-            <div class="col-sm-6 d-flex">
-                <h5 class="card-title fw-bold">Order List</h5>
-            </div>
+  <div class="card-header">
+    <div class="row justify-content-between align-items-center">
+      <div class="col-sm-6 d-flex">
+        <h5 class="card-title fw-bold">Order List</h5>
+      </div>
 
-            <div class="col-sm-6 d-flex flex-column flex-sm-row justify-content-sm-end">
-                <button type="button" style="margin-left: 10px;" class="btn btn-md btn-primary" (click)="openAddCanteenOrderTemplate(canteenOrderAdd)">
-                    New</button>
-            </div>
-        </div>
+      <div class="col-sm-6 d-flex flex-column flex-sm-row justify-content-sm-end">
+        <button type="button" style="margin-left: 10px;" class="btn btn-md btn-primary"
+          (click)="openAddCanteenOrderTemplate(canteenOrderAdd)">
+          New</button>
+      </div>
     </div>
-    <div class="card-body" style="overflow-x: scroll;">
+  </div>
+  <div class="card-body" style="overflow-x: scroll;">
 
-<table mat-table [dataSource]="dataSource" matSort>
-            <ng-container matColumnDef="sno">
-                <th mat-header-cell *matHeaderCellDef>#</th>
-                <td mat-cell class="sno" *matCellDef="let lookup; let i = index" style="text-align: left;">{{
-                    (currentPage * pageSize) + i + 1 }}
-                </td>
-            </ng-container>
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="sno">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell class="sno" *matCellDef="let lookup; let i = index" style="text-align: left;">{{
+          (currentPage * pageSize) + i + 1 }}
+        </td>
+      </ng-container>
 
-            <ng-container matColumnDef="ordernumber">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Order Number </th>
-                <td mat-cell *matCellDef="let element"> {{element.orderNumber}} </td>
-            </ng-container>
+      <ng-container matColumnDef="ordernumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Order Number </th>
+        <td mat-cell *matCellDef="let element"> {{element.orderNumber}} </td>
+      </ng-container>
 
-            <ng-container matColumnDef="dayId">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Day Name </th>
-                <td mat-cell *matCellDef="let element"> {{element.daysName}} </td>
-            </ng-container>
-            <ng-container matColumnDef="username">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> User Name </th>
-                <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
-            </ng-container>
+      <ng-container matColumnDef="dayId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Day Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.daysName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> User Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
+      </ng-container>
 
-            <ng-container matColumnDef="usertype">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> User Type </th>
-                <td mat-cell *matCellDef="let element"> {{element.userType}} </td>
-            </ng-container>
+      <ng-container matColumnDef="usertype">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> User Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.userType}} </td>
+      </ng-container>
 
-            <ng-container matColumnDef="totalamount">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Amount </th>
-                <td mat-cell *matCellDef="let element"> {{element.totalAmount}} </td>
-            </ng-container>
+      <ng-container matColumnDef="totalamount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Amount </th>
+        <td mat-cell *matCellDef="let element"> {{element.totalAmount}} </td>
+      </ng-container>
 
-            <ng-container matColumnDef="paymenttype">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Type </th>
-                <td mat-cell *matCellDef="let element"> {{element.paymentType}} </td>
-            </ng-container>
+      <ng-container matColumnDef="paymenttype">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Type </th>
+        <td mat-cell *matCellDef="let element"> {{getPaymentTypeLabel(element.paymentType)}}</td>
+      </ng-container>
 
-            <ng-container matColumnDef="paymentstatus">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Status </th>
-                <td mat-cell *matCellDef="let element"> {{element.paymentStatus}} </td>
-            </ng-container>
-            <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-            </ng-container>
-            <ng-container matColumnDef="remark">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Remarks </th>
-                <td mat-cell *matCellDef="let element"> {{element.remark}} </td>
-            </ng-container>
-
-
-            <ng-container matColumnDef="edit">
-                <th mat-header-cell *matHeaderCellDef> Edit </th>
-                <td mat-cell *matCellDef="let element">
-                    <mat-dialog-actions>
-                        <button class="btn btn-sm" style="color: green;" (click)="openEditCanteenOrderTemplate(element,aanteenOrderEdit)">
-                            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit"></mat-icon>
-                        </button>
-                    </mat-dialog-actions>
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="delete">
-                <th mat-header-cell *matHeaderCellDef> Delete </th>
-                <td mat-cell *matCellDef="let element">
-                    <mat-dialog-actions>
-                        <button class="btn btn-sm" style="color: red;" (click)="deleteCanteenOrder(element)" >
-                            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
-                        </button>
-                    </mat-dialog-actions>
-                </td>
-            </ng-container>
+      <ng-container matColumnDef="paymentstatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Status </th>
+        <td mat-cell *matCellDef="let element">
+          <!-- {{getPaymentStatusLabel(element.paymentStatus)}} -->
+          <span [ngClass]="getPaymentStatusLabel(element.paymentStatus).cssClass">
+            {{ getPaymentStatusLabel(element.paymentStatus).label }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let element"> {{getOrderStatusLabel(element.status)}} </td>
+      </ng-container>
+      <ng-container matColumnDef="remark">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Remarks </th>
+        <td mat-cell *matCellDef="let element"> {{element.remark}} </td>
+      </ng-container>
 
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-            </tr>
-        </table>
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef> Edit </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-dialog-actions>
+            <button class="btn btn-sm" style="color: green;"
+              (click)="openEditCanteenOrderTemplate(element,aanteenOrderEdit)">
+              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit"></mat-icon>
+            </button>
+          </mat-dialog-actions>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-dialog-actions>
+            <button class="btn btn-sm" style="color: red;" (click)="deleteCanteenOrder(element)">
+              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
+            </button>
+          </mat-dialog-actions>
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+  </div>
+  <div class="card-footer text-muted">
+    <div class="row justify-content-between align-items-center">
+      <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 200,500]" (page)="pageChanged($event)"
+        showFirstLastButtons></mat-paginator>
     </div>
-    <div class="card-footer text-muted">
-        <div class="row justify-content-between align-items-center">
-            <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 200,500]" (page)="pageChanged($event)"
-                showFirstLastButtons></mat-paginator>
-        </div>
-    </div>
+  </div>
 </div>
 
 
@@ -147,21 +154,44 @@
         </div>
 
         <!-- Payment Type -->
-        <div class="col-md-6 mb-2">
+        <!-- <div class="col-md-6 mb-2">
           <label>Payment Type<strong style="color: red;">*</strong></label>
           <input type="number" min="0" [formControlName]="'paymentType'" class="form-control" required>
+        </div> -->
+
+        <div class="col-md-6 mb-2">
+          <label>Payment Type *</label>
+          <select [formControlName]="'paymentType'" class="form-control">
+            <option *ngFor="let pytype of paymentTypesArray" [value]="pytype.value">{{ pytype.paymenttypelabel }}
+            </option>
+          </select>
         </div>
 
         <!-- Payment Status -->
-        <div class="col-md-6 mb-2">
+        <!-- <div class="col-md-6 mb-2">
           <label>Payment Status<strong style="color: red;">*</strong></label>
           <input type="number" min="0" [formControlName]="'paymentStatus'" class="form-control" required>
+        </div> -->
+
+        <div class="col-md-6 mb-2">
+          <label>Payment Status *</label>
+          <select [formControlName]="'paymentStatus'" class="form-control">
+            <option *ngFor="let pystatus of paymentStatusArray " [value]="pystatus.value">
+              {{pystatus.paymentstatuslabel}}</option>
+          </select>
         </div>
 
         <!-- Status -->
-        <div class="col-md-6 mb-2">
+        <!-- <div class="col-md-6 mb-2">
           <label>Status<strong style="color: red;">*</strong></label>
           <input type="number" min="0"  [formControlName]="'status'" class="form-control" required>
+        </div> -->
+
+        <div class="col-md-6 mb-2">
+          <label>Status *</label>
+          <select [formControlName]="'status'" class="form-control">
+            <option *ngFor="let status of statusArray" [value]="status.value">{{ status.statuslabel }}</option>
+          </select>
         </div>
 
         <!-- Remark -->
@@ -191,7 +221,7 @@
         <div class="col-md-6 mb-2">
           <label>Order Number<strong style="color: red;">*</strong></label>
           <input type="hidden" [formControlName]="'orderId'" class="form-control" required>
-           <input [formControlName]="'orderNumber'" class="form-control" readonly>
+          <input [formControlName]="'orderNumber'" class="form-control" readonly>
         </div>
 
         <!-- Day Name -->
@@ -207,14 +237,14 @@
         <!-- User Name -->
         <div class="col-md-6 mb-2">
           <label>User Name<strong style="color: red;">*</strong></label>
-         <input type="hidden" [formControlName]="'rgenId'" class="form-control">
-          <input [formControlName]="'userName'" class="form-control" required >
+          <input type="hidden" [formControlName]="'rgenId'" class="form-control">
+          <input [formControlName]="'userName'" class="form-control" required>
         </div>
 
         <!-- User Type -->
         <div class="col-md-6 mb-2">
           <label>User Type<strong style="color: red;">*</strong></label>
-           <input type="hidden" [formControlName]="'userId'" class="form-control">
+          <input type="hidden" [formControlName]="'userId'" class="form-control">
           <input [formControlName]="'userType'" class="form-control" required readonly>
         </div>
 
@@ -225,23 +255,43 @@
         </div>
 
         <!-- Payment Type -->
-        <div class="col-md-6 mb-2">
+        <!-- <div class="col-md-6 mb-2">
           <label>Payment Type<strong style="color: red;">*</strong></label>
           <input type="number" min="0" [formControlName]="'paymentType'" class="form-control" required>
+        </div> -->
+
+        <div class="col-md-6 mb-2">
+          <label>Payment Type *</label>
+          <select class="form-control" formControlName="paymentType">
+            <option *ngFor="let pytype of paymentTypesArray" [value]="pytype.value">{{ pytype.paymenttypelabel }}
+            </option>
+          </select>
         </div>
 
         <!-- Payment Status -->
-        <div class="col-md-6 mb-2">
+        <!-- <div class="col-md-6 mb-2">
           <label>Payment Status<strong style="color: red;">*</strong></label>
           <input type="number" min="0" [formControlName]="'paymentStatus'" class="form-control" required>
-        </div>
-
-        <!-- Status -->
+        </div> -->
         <div class="col-md-6 mb-2">
+          <label>Payment Status *</label>
+          <select class="form-control" formControlName="paymentStatus">
+            <option *ngFor="let pystatus of paymentStatusArray" [value]="pystatus.value">{{ pystatus.paymentstatuslabel
+              }}
+            </option>
+          </select>
+        </div>
+        <!-- Status -->
+        <!-- <div class="col-md-6 mb-2">
           <label>Status<strong style="color: red;">*</strong></label>
           <input type="number" min="0" [formControlName]="'status'" class="form-control" required>
+        </div> -->
+        <div class="col-md-6 mb-2">
+          <label>Status *</label>
+          <select class="form-control" formControlName="status">
+            <option *ngFor="let status of statusArray" [value]="status.value">{{ status.statuslabel }}</option>
+          </select>
         </div>
-
         <!-- Remark -->
         <div class="col-md-6 mb-2">
           <label>Remark<strong style="color: red;">*</strong></label>
@@ -255,5 +305,3 @@
     </div>
   </form>
 </ng-template>
-
-
