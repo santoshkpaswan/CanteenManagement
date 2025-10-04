@@ -37,6 +37,7 @@
     <div class="card text-center">
       <div class="card-header">
         <h6 class="fw-bold">Billing Summary</h6>
+        <p class="text-muted mb-0">Order No: <strong>{{ orderNumber }}</strong></p>
       </div>
       <div class="card-body">
         <table class="table table-bordered table-sm">
@@ -60,6 +61,7 @@
           </tbody>
         </table>
         <h5 class="text-end fw-bold">Grand Total: ₹ {{ grandTotal }}</h5>
+        <button class="btn btn-success mt-2" (click)="payNow()">Pay Now</button>
       </div>
     </div>
   </div>

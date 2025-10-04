@@ -42,15 +42,16 @@ export interface OrderItem {
 
 
 export class OrderItemComponent implements OnInit {
-  currentPage: number= 0;
-  pageSize: number  = 10;
- itemList: OrderItem[] = [];
+  currentPage: number = 0;
+  pageSize: number = 10;
+  itemList: OrderItem[] = [];
   grandTotal: number = 0;
+  orderNumber: string = '';
 
   imageUrl: any = environment.imageUrl;
 
 
-  displayedColumns: string[] = ['sno', 'itemno','imageurl', 'itemname','itemprice','itempricedescriptin'];
+  displayedColumns: string[] = ['sno', 'itemno', 'imageurl', 'itemname', 'itemprice', 'itempricedescriptin'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
@@ -75,6 +76,8 @@ export class OrderItemComponent implements OnInit {
   ngOnInit(): void {
     debugger
     this.getGridData();
+    // Generate order number
+    this.orderNumber = this.generateOrderNumber();
   }
 
   getGridData() {
@@ -94,23 +97,52 @@ export class OrderItemComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
- addItem(item: OrderItem) {
+  addItem(item: OrderItem) {
     item.count = (item.count || 0) + 1;
     this.calculateGrandTotal();
   }
 
-   removeItem(item: OrderItem) {
+  removeItem(item: OrderItem) {
     if (item.count > 0) {
       item.count--;
       this.calculateGrandTotal();
     }
   }
 
- calculateGrandTotal() {
+  calculateGrandTotal() {
     this.grandTotal = this.filteredItems.reduce((sum, x) => sum + x.count * x.itemPrice, 0);
   }
-// Getter to avoid parser errors in template
+  // Getter to avoid parser errors in template
   get filteredItems(): OrderItem[] {
     return this.itemList.filter(x => x.count > 0);
+  }
+  generateOrderNumber(): string {
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0]; // "YYYY-MM-DD"
+
+    // Get order counts from localStorage
+    const orderCounts = JSON.parse(localStorage.getItem('orderCounts') || '{}');
+
+    // Get today's count or 0 if new day
+    let todayCount = orderCounts[todayStr] || 0;
+
+    // Increment for new order
+    todayCount += 1;
+
+    // Save updated count
+    orderCounts[todayStr] = todayCount;
+    localStorage.setItem('orderCounts', JSON.stringify(orderCounts));
+
+    // Format: RDIAS00001 (5-digit sequence)
+    return `RDIAS${todayCount.toString().padStart(5, '0')}`;
+  }
+
+
+  // Mock payment process
+  payNow() {
+    if (this.filteredItems.length === 0) {
+      alert('Add items to cart before payment.');
+      return;
+    }
   }
 }

@@ -2,14 +2,14 @@
   <div class="card-header">
     <div class="row justify-content-between align-items-center">
       <div class="col-sm-6 d-flex">
-        <h5 class="card-title fw-bold">Order List</h5>
+        <h5 class="card-title fw-bold">Manage Users</h5>
       </div>
 
-      <!-- <div class="col-sm-6 d-flex flex-column flex-sm-row justify-content-sm-end" >
+      <div class="col-sm-6 d-flex flex-column flex-sm-row justify-content-sm-end">
         <button type="button" style="margin-left: 10px;" class="btn btn-md btn-primary"
           (click)="openAddCanteenOrderTemplate(canteenOrderAdd)">
           New</button>
-      </div> -->
+      </div>
     </div>
   </div>
   <div class="card-body" style="overflow-x: scroll;">
@@ -54,7 +54,6 @@
       <ng-container matColumnDef="paymentstatus">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Status </th>
         <td mat-cell *matCellDef="let element">
-          <!-- {{getPaymentStatusLabel(element.paymentStatus)}} -->
           <span [ngClass]="getPaymentStatusLabel(element.paymentStatus).cssClass">
             {{ getPaymentStatusLabel(element.paymentStatus).label }}
           </span>
@@ -152,13 +151,7 @@
           <label>Total Amount<strong style="color: red;">*</strong></label>
           <input type="number" min="0" [formControlName]="'totalAmount'" class="form-control" required>
         </div>
-
-        <!-- Payment Type -->
-        <!-- <div class="col-md-6 mb-2">
-          <label>Payment Type<strong style="color: red;">*</strong></label>
-          <input type="number" min="0" [formControlName]="'paymentType'" class="form-control" required>
-        </div> -->
-
+        <!-- PaymentType -->
         <div class="col-md-6 mb-2">
           <label>Payment Type *</label>
           <select [formControlName]="'paymentType'" class="form-control">
@@ -166,13 +159,7 @@
             </option>
           </select>
         </div>
-
-        <!-- Payment Status -->
-        <!-- <div class="col-md-6 mb-2">
-          <label>Payment Status<strong style="color: red;">*</strong></label>
-          <input type="number" min="0" [formControlName]="'paymentStatus'" class="form-control" required>
-        </div> -->
-
+        <!-- PaymentStatus -->
         <div class="col-md-6 mb-2">
           <label>Payment Status *</label>
           <select [formControlName]="'paymentStatus'" class="form-control">
@@ -182,11 +169,6 @@
         </div>
 
         <!-- Status -->
-        <!-- <div class="col-md-6 mb-2">
-          <label>Status<strong style="color: red;">*</strong></label>
-          <input type="number" min="0"  [formControlName]="'status'" class="form-control" required>
-        </div> -->
-
         <div class="col-md-6 mb-2">
           <label>Status *</label>
           <select [formControlName]="'status'" class="form-control">
@@ -255,11 +237,6 @@
         </div>
 
         <!-- Payment Type -->
-        <!-- <div class="col-md-6 mb-2">
-          <label>Payment Type<strong style="color: red;">*</strong></label>
-          <input type="number" min="0" [formControlName]="'paymentType'" class="form-control" required>
-        </div> -->
-
         <div class="col-md-6 mb-2">
           <label>Payment Type *</label>
           <select class="form-control" formControlName="paymentType">
@@ -269,10 +246,6 @@
         </div>
 
         <!-- Payment Status -->
-        <!-- <div class="col-md-6 mb-2">
-          <label>Payment Status<strong style="color: red;">*</strong></label>
-          <input type="number" min="0" [formControlName]="'paymentStatus'" class="form-control" required>
-        </div> -->
         <div class="col-md-6 mb-2">
           <label>Payment Status *</label>
           <select class="form-control" formControlName="paymentStatus">
@@ -282,10 +255,6 @@
           </select>
         </div>
         <!-- Status -->
-        <!-- <div class="col-md-6 mb-2">
-          <label>Status<strong style="color: red;">*</strong></label>
-          <input type="number" min="0" [formControlName]="'status'" class="form-control" required>
-        </div> -->
         <div class="col-md-6 mb-2">
           <label>Status *</label>
           <select class="form-control" formControlName="status">

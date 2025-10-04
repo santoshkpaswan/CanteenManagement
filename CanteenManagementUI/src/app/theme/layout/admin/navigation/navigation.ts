@@ -81,6 +81,13 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         url: '/canteen/order-item',
         icon: 'feather icon-shopping-cart'
+      },
+      {
+        id: 'manageusers',
+        title: 'manage users',
+        type: 'item',
+        url: '/canteen/manage-users',
+       icon: 'feather icon-file-text'
       }
     ]
   },
