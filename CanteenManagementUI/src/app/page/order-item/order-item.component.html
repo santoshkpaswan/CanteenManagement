@@ -23,7 +23,7 @@
 
             <div class="card-footer d-flex justify-content-between">
               <button class="btn btn-sm btn-danger" (click)="removeItem(element)" [disabled]="element.count === 0">-</button>
-              <span class="fw-bold">{{ element.count || 0 }}</span>
+              <span class="fw-bold">Qty:{{ element.count || 0 }}</span>
               <button class="btn btn-sm btn-primary" (click)="addItem(element)">+</button>
             </div>
           </div>
