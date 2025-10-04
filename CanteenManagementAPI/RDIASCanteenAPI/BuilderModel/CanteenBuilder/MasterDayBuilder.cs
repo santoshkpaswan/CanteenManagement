@@ -14,34 +14,34 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             _context = context;
         }
         #region master food day
-        public List<MasterDaysModel> GetAllMasterDays()
+        public List<tblMasterDays> GetAllMasterDays()
         {
             return _context.masterDaysModels.Where(x => x.IsActive == true).OrderByDescending(x => x.DayId).ToList();
         }
-        public async Task <FoodDaySaveModelView> SaveMasterDay(FoodDaySaveModelView foodDaySaveModel)
+        public async Task<FoodDaySaveModelView> SaveMasterDay(FoodDaySaveModelView foodDaySaveModel)
         {
-                if (string.IsNullOrWhiteSpace(foodDaySaveModel.DaysName) || foodDaySaveModel.DaysName.Trim().ToLower() == "string" || foodDaySaveModel.DaysName.Trim().ToLower() == "null")
-                {
-                    throw new ArgumentException("Day Name is required.", nameof(foodDaySaveModel.DaysName));
-                }
-                // check for Duplicate record
-                bool exists = await _context.masterDaysModels.AnyAsync(x => x.DaysName.ToLower() == foodDaySaveModel.DaysName.ToLower() && x.IsActive == true);
-                if (exists)
-                {
-                    throw new Exception("record already exists.");
-                }
+            if (string.IsNullOrWhiteSpace(foodDaySaveModel.DaysName) || foodDaySaveModel.DaysName.Trim().ToLower() == "string" || foodDaySaveModel.DaysName.Trim().ToLower() == "null")
+            {
+                throw new ArgumentException("Day Name is required.", nameof(foodDaySaveModel.DaysName));
+            }
+            // check for Duplicate record
+            bool exists = await _context.masterDaysModels.AnyAsync(x => x.DaysName.ToLower() == foodDaySaveModel.DaysName.ToLower() && x.IsActive == true);
+            if (exists)
+            {
+                throw new Exception("record already exists.");
+            }
 
-                MasterDaysModel obj = new MasterDaysModel
-                {
-                    DaysName = foodDaySaveModel.DaysName,
-                    DayNo = foodDaySaveModel.DayNo,
-                    IsActive = true,
-                    CreatedBy = 0,
-                    CreatedDate = DateTime.Now,
-                };
-                _context.masterDaysModels.Add(obj);
-                await _context.SaveChangesAsync();
-                return foodDaySaveModel;
+            tblMasterDays obj = new tblMasterDays
+            {
+                DaysName = foodDaySaveModel.DaysName,
+                DayNo = foodDaySaveModel.DayNo,
+                IsActive = true,
+                CreatedBy = 0,
+                CreatedDate = DateTime.Now,
+            };
+            _context.masterDaysModels.Add(obj);
+            await _context.SaveChangesAsync();
+            return foodDaySaveModel;
 
         }
         public async Task<FoodDayUpdateModelView> UpdateMasterDay(FoodDayUpdateModelView foodDayUpdateModel)
@@ -68,7 +68,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             existing.ModifiedDate = DateTime.Now;  // optional
             existing.ModifiedBy = 1; // optional if you track users
             await _context.SaveChangesAsync();
-           return foodDayUpdateModel;     
+            return foodDayUpdateModel;
         }
         public async Task DeleteMasterDay(int dayId)
         {
@@ -81,12 +81,12 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             existing.IsActive = false;
             existing.ModifiedBy = 0;
             existing.ModifiedDate = DateTime.Now;
-           await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
         #endregion
 
         #region Food Menu Item
-        public async Task<List<FoodMenuItemModel>> GetFoodMenuItem()
+        public async Task<List<tblFoodMenuItem>> GetFoodMenuItem()
         {
             return await _context.foodMenuItemModels.Where(x => x.IsActive == true).OrderByDescending(x => x.FoodMenuItemId).ToListAsync();
         }
@@ -123,7 +123,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 }
 
                 //model.CreatedDate = DateTime.Now;
-                FoodMenuItemModel obj = new FoodMenuItemModel();
+                tblFoodMenuItem obj = new tblFoodMenuItem();
                 obj.ItemName = menuItemModelView.ItemName;
                 obj.ItemURL = FilePath;
                 obj.ItemDescriptin = menuItemModelView.ItemDescriptin;
@@ -145,7 +145,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         {
             try
             {
-                 IFormFile itemImageFile = menuItemUpdateModelView.itemImageFile;
+                IFormFile itemImageFile = menuItemUpdateModelView.itemImageFile;
                 // Validate Item Name
                 if (string.IsNullOrWhiteSpace(menuItemUpdateModelView.ItemName) || menuItemUpdateModelView.ItemName.Trim().ToLower() == "string" || menuItemUpdateModelView.ItemName.Trim().ToLower() == "null")
                     throw new ArgumentException("Item Name is required.", nameof(menuItemUpdateModelView.ItemName));
@@ -208,12 +208,12 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         public async Task DeleteFoodMenuItem(int FoodMenuItemId)
         {
             var existingObj = await _context.foodMenuItemModels.FirstOrDefaultAsync(x => x.FoodMenuItemId == FoodMenuItemId && x.IsActive == true);
-            if(existingObj == null)
+            if (existingObj == null)
             {
                 throw new Exception("Record not found.");
             }
             existingObj.IsActive = false;
-            existingObj.ModifiedBy = 0 ;
+            existingObj.ModifiedBy = 0;
             existingObj.ModifiedDate = DateTime.Now;
             await _context.SaveChangesAsync();
 
@@ -225,19 +225,21 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         public async Task<List<FoodMenuItemGetModelView>> GetFoodMenuItemPrice()
         {
             //return await _context.foodMenuItemPriceModels.Where(x => x.IsActive == true).OrderByDescending(x =>x.FoodMenuItemPriceId).ToListAsync();
-            var result = await (from fp in _context.foodMenuItemPriceModels join fm in _context.foodMenuItemModels on fp.FoodMenuItemId equals fm.FoodMenuItemId
-            where fp.IsActive  && fm.IsActive orderby fp.FoodMenuItemPriceId descending
-                     select new FoodMenuItemGetModelView
-                     {
-                         FoodMenuItemPriceId = fp.FoodMenuItemPriceId,
-                         AcademicSessionId = fp.AcademicSessionId,
-                         AcademicSession = fp.AcademicSession??"",
-                         FoodMenuItemId = fp.FoodMenuItemId,
-                         ItemPrice = fp.ItemPrice,
-                         ItemPriceDescriptin = fp.ItemPriceDescriptin,
-                         ItemName = fm.ItemName,   //getting name from foodmenuitem
-                        }).ToListAsync();
-             return result;
+            var result = await (from fp in _context.foodMenuItemPriceModels
+                                join fm in _context.foodMenuItemModels on fp.FoodMenuItemId equals fm.FoodMenuItemId
+                                where fp.IsActive && fm.IsActive
+                                orderby fp.FoodMenuItemPriceId descending
+                                select new FoodMenuItemGetModelView
+                                {
+                                    FoodMenuItemPriceId = fp.FoodMenuItemPriceId,
+                                    AcademicSessionId = fp.AcademicSessionId,
+                                    AcademicSession = fp.AcademicSession ?? "",
+                                    FoodMenuItemId = fp.FoodMenuItemId,
+                                    ItemPrice = fp.ItemPrice,
+                                    ItemPriceDescriptin = fp.ItemPriceDescriptin,
+                                    ItemName = fm.ItemName,   //getting name from foodmenuitem
+                                }).ToListAsync();
+            return result;
         }
         public async Task<FoodMenuItemPriceSaveModelView> SaveFoodMenuItemPrice(FoodMenuItemPriceSaveModelView menuItemPriceSaveModelView)
         {
@@ -252,7 +254,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 throw new Exception("Food Menu Item already exists.");
             }
 
-            FoodMenuItemPriceModel obj = new FoodMenuItemPriceModel
+            tblFoodMenuItemPrice obj = new tblFoodMenuItemPrice
             {
                 FoodMenuItemId = menuItemPriceSaveModelView.FoodMenuItemId,
                 AcademicSessionId = menuItemPriceSaveModelView.AcademicSessionId,
@@ -270,7 +272,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         }
         public async Task<FoodMenuItemPriceUpdateModelView> UpdateFoodMenuItemPrice(FoodMenuItemPriceUpdateModelView menuItemPriceUpdateModelView)
         {
-            if (menuItemPriceUpdateModelView.FoodMenuItemId <=0)
+            if (menuItemPriceUpdateModelView.FoodMenuItemId <= 0)
             {
                 throw new ArgumentException("Food Menu Item is required.", nameof(menuItemPriceUpdateModelView.FoodMenuItemId));
             }
@@ -278,7 +280,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             //bool exists = await _context.foodMenuItemPriceModels.AnyAsync(x => x.FoodMenuItemId == model.FoodMenuItemId && x.IsActive == true);
             //if (exists)
             //{
-                //throw new Exception("Food Menu Item already exists.");
+            //throw new Exception("Food Menu Item already exists.");
             //}
             // UPDATE only
             var existing = await _context.foodMenuItemPriceModels.FirstOrDefaultAsync(x => x.FoodMenuItemPriceId == menuItemPriceUpdateModelView.FoodMenuItemPriceId && x.IsActive == true);
@@ -316,23 +318,26 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         public async Task<List<FoodDayGetModelView>> GetDayWiseFoodMenuItem()
         {
             //return await _context.dayWiseFoodMenuItemModels.Where(x => x.IsActive == true).OrderByDescending(x => x.DayWiseFoodMenuItemId).ToListAsync();
-         
-           var result = await (from d in _context.dayWiseFoodMenuItemModels join f in _context.masterDaysModels on d.DayId equals f.DayId join fm in _context.foodMenuItemModels on d.FoodMenuItemId equals fm.FoodMenuItemId
-            where f.IsActive && d.IsActive  && fm.IsActive orderby d.DayWiseFoodMenuItemId descending
-                     select new FoodDayGetModelView
-                     {
-                         DayWiseFoodMenuItemId = d.DayWiseFoodMenuItemId,
-                         FoodMenuItemId = d.FoodMenuItemId,
-                         ItemName = fm.ItemName,   //getting name from foodmenuitem
-                         DayId = f.DayId,
-                         DaysName = f.DaysName,    // getting name from masterDaysModels
-                         Time = d.Time
-                        }).ToListAsync();
-             return result;
-            
+
+            var result = await (from d in _context.dayWiseFoodMenuItemModels
+                                join f in _context.masterDaysModels on d.DayId equals f.DayId
+                                join fm in _context.foodMenuItemModels on d.FoodMenuItemId equals fm.FoodMenuItemId
+                                where f.IsActive && d.IsActive && fm.IsActive
+                                orderby d.DayWiseFoodMenuItemId descending
+                                select new FoodDayGetModelView
+                                {
+                                    DayWiseFoodMenuItemId = d.DayWiseFoodMenuItemId,
+                                    FoodMenuItemId = d.FoodMenuItemId,
+                                    ItemName = fm.ItemName,   //getting name from foodmenuitem
+                                    DayId = f.DayId,
+                                    DaysName = f.DaysName,    // getting name from masterDaysModels
+                                    Time = d.Time
+                                }).ToListAsync();
+            return result;
+
         }
 
-         
+
         public async Task<DayWiseFoodMenuItemSaveModelView> SaveDayWiseFoodMenuItem(DayWiseFoodMenuItemSaveModelView dayWiseFoodMenuItemSaveModelView)
         {
             if (dayWiseFoodMenuItemSaveModelView.FoodMenuItemId <= 0)
@@ -346,7 +351,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 throw new Exception("Food Menu Item And Food Day already exists.");
             }
 
-            DayWiseFoodMenuItemModel obj = new DayWiseFoodMenuItemModel
+            tblDayWiseFoodMenuItem obj = new tblDayWiseFoodMenuItem
             {
                 FoodMenuItemId = dayWiseFoodMenuItemSaveModelView.FoodMenuItemId,
                 DayId = dayWiseFoodMenuItemSaveModelView.DayId,
@@ -399,25 +404,46 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         public async Task<List<OrderListGetModelView>> GetOrder()
         {
             //return await _context.orderModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
-           var result = await (from o in _context.orderModels join d in _context.masterDaysModels on o.DayId equals d.DayId
-            where o.IsActive  && d.IsActive orderby o.OrderId descending
-                     select new OrderListGetModelView
-                     {
-                         OrderId = o.OrderId,
-                         OrderNumber = o.OrderNumber,
-                         DayId = o.DayId,
-                         DaysName =d.DaysName,  //getting name from dayname
-                         RgenId = o.RgenId,
-                         UserName = o.UserName,
-                         UserId = o.UserId,
-                         UserType=o.UserType,
-                         TotalAmount=o.TotalAmount,
-                         PaymentType=o.PaymentType,
-                         PaymentStatus=o.PaymentStatus,
-                         Status=o.Status,
-                         Remark=o.Remark,
-                        }).ToListAsync();
-             return result;
+            var data = await (from o in _context.orderModels
+                              join d in _context.masterDaysModels on o.DayId equals d.DayId
+                              where o.IsActive==true && d.IsActive==true
+                              orderby o.OrderId descending
+                              select new
+                              {
+                                  o.OrderId,
+                                  o.OrderNumber,
+                                  o.DayId,
+                                  d.DaysName,
+                                  o.RgenId,
+                                  o.UserName,
+                                  o.UserId,
+                                  o.UserType,
+                                  o.TotalAmount,
+                                  o.PaymentType,
+                                  o.PaymentStatus,
+                                  o.Status,
+                                   o.CreatedDate,
+                              }).ToListAsync();
+
+            // Convert date format here (in-memory)
+            var result = data.Select(o => new OrderListGetModelView
+            {
+                OrderId = o.OrderId,
+                OrderNumber = o.OrderNumber,
+                DayId = o.DayId,
+                DaysName = o.DaysName,
+                RgenId = o.RgenId,
+                UserName = o.UserName,
+                UserId = o.UserId,
+                UserType = o.UserType,
+                TotalAmount = o.TotalAmount,
+                PaymentType = o.PaymentType,
+                PaymentStatus = o.PaymentStatus,
+                Status = o.Status,
+                // Convert DateTime → formatted string
+                OrderDate = o.CreatedDate?.ToString("dd/MM/yyyy")
+            }).ToList();
+            return result;
         }
         public async Task<OrderSaveModelView> SaveOrder(OrderSaveModelView orderSaveModelView)
         {
@@ -445,9 +471,9 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             //    throw new Exception("Order Number already exists.");
             //}
 
-            OrderModel obj = new OrderModel
+            tblOrder obj = new tblOrder
             {
-                //OrderNumber = orderSaveModelView.OrderNumber,
+                OrderNumber = orderSaveModelView.OrderNumber,
                 DayId = orderSaveModelView.DayId,
                 RgenId = orderSaveModelView.RgenId,
                 UserName = orderSaveModelView.UserName,
@@ -459,25 +485,35 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 Status = orderSaveModelView.Status,
                 Remark = orderSaveModelView.Remark,
                 IsActive = true,
-                CreatedBy = 0,
+                CreatedBy = orderSaveModelView.RgenId,
                 CreatedDate = DateTime.Now,
+                OrderItems = orderSaveModelView.OrderItems.Select(s => new tblOrderItem()
+                {
+                    ItemNo = s.ItemNo,
+                    FoodMenuItemId = s.FoodMenuItemId,
+                    TotalAmount = s.TotalAmount,
+                    IsActive = true,
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = orderSaveModelView.RgenId??0
+                }).ToList()
             };
             _context.orderModels.Add(obj);
+            _context.Entry(obj).State = EntityState.Added;
             await _context.SaveChangesAsync();
 
-            // after saving to get OrderId
-             var today = DateTime.Now.Date;
-             // count existing orders for today
-             int todayCount = await _context.orderModels.CountAsync(o => o.CreatedDate.Date == today);
-            // +1 for new order
-             int sequence = todayCount;
-            // Order number format: RDIAS0001, RDIAS0002, ...
-             obj.OrderNumber = $"RDIAS{sequence:D4}";
-            //obj.OrderNumber = $"ORD-{DateTime.Now:yyyyMMdd}-{obj.OrderId:D4}";
-            // update and save again
-            await _context.SaveChangesAsync();
+            //// after saving to get OrderId
+            //var today = DateTime.Now.Date;
+            //// count existing orders for today
+            //int todayCount = await _context.orderModels.CountAsync(o => o.CreatedDate.Date == today);
+            //// +1 for new order
+            //int sequence = todayCount;
+            //// Order number format: RDIAS0001, RDIAS0002, ...
+            //obj.OrderNumber = $"RDIAS{sequence:D4}";
+            ////obj.OrderNumber = $"ORD-{DateTime.Now:yyyyMMdd}-{obj.OrderId:D4}";
+            //// update and save again
+            //await _context.SaveChangesAsync();
 
-            //orderSaveModelView.OrderNumber = obj.OrderNumber;
+            ////orderSaveModelView.OrderNumber = obj.OrderNumber;
 
             return orderSaveModelView;
 
@@ -486,7 +522,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         }
         public async Task<OrderUpdateModelView> UpdateOrder(OrderUpdateModelView orderUpdateModelView)
         {
-            if (orderUpdateModelView.DayId <= 0 )
+            if (orderUpdateModelView.DayId <= 0)
             {
                 throw new ArgumentException("Food Day is required.");
             }
@@ -531,19 +567,21 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         public async Task<List<OrderItemListGetModelView>> GetOrderItem()
         {
             //return await _context.orderItemModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
-            var result = await (from  fm in _context.foodMenuItemModels join fp in _context.foodMenuItemPriceModels on fm.FoodMenuItemId equals fp.FoodMenuItemId
-            join dm in _context.dayWiseFoodMenuItemModels on fm.FoodMenuItemId equals dm.FoodMenuItemId
-            where fm.IsActive && fp.IsActive && dm.IsActive orderby fp.FoodMenuItemPriceId descending
-                     select new OrderItemListGetModelView
-                     {
-                         FoodMenuItemId = fm.FoodMenuItemId,
-                         DayId = dm.DayId,
-                         ImageUrl = fm.ItemURL,
-                         ItemPrice = fp.ItemPrice,
-                         ItemName = fm.ItemName,   //getting name from foodmenuitem
-                         ItemPriceDescriptin = fp.ItemPriceDescriptin,
-                        }).ToListAsync();
-             return result;
+            var result = await (from fm in _context.foodMenuItemModels
+                                join fp in _context.foodMenuItemPriceModels on fm.FoodMenuItemId equals fp.FoodMenuItemId
+                                join dm in _context.dayWiseFoodMenuItemModels on fm.FoodMenuItemId equals dm.FoodMenuItemId
+                                where fm.IsActive && fp.IsActive && dm.IsActive
+                                orderby fp.FoodMenuItemPriceId descending
+                                select new OrderItemListGetModelView
+                                {
+                                    FoodMenuItemId = fm.FoodMenuItemId,
+                                    DayId = dm.DayId,
+                                    ImageUrl = fm.ItemURL,
+                                    ItemPrice = fp.ItemPrice,
+                                    ItemName = fm.ItemName,   //getting name from foodmenuitem
+                                    ItemPriceDescriptin = fp.ItemPriceDescriptin,
+                                }).ToListAsync();
+            return result;
         }
         public async Task<OrderItemSaveModelView> SaveOrderItem(OrderItemSaveModelView itemSaveModelView)
         {
@@ -555,12 +593,12 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             {
                 throw new ArgumentException("Order is required.", nameof(itemSaveModelView.OrderId));
             }
-            if (itemSaveModelView.TotalAmount <=0)
+            if (itemSaveModelView.TotalAmount <= 0)
             {
                 throw new ArgumentException("Total Amount is required.", nameof(itemSaveModelView.TotalAmount));
             }
-            
-            OrderItemModel obj = new OrderItemModel
+
+            tblOrderItem obj = new tblOrderItem
             {
                 ItemNo = itemSaveModelView.ItemNo,
                 FoodMenuItemId = itemSaveModelView.FoodMenuItemId,
@@ -574,17 +612,17 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             await _context.SaveChangesAsync();
             return itemSaveModelView;
         }
-        public async Task<OrderItemUpdateModelView> UpdateOrderItem(OrderItemUpdateModelView orderItemUpdateModel)
+        public async Task<OrderItemSaveModelView> UpdateOrderItem(OrderItemSaveModelView orderItemUpdateModel)
         {
             if (orderItemUpdateModel.FoodMenuItemId <= 0)
             {
                 throw new ArgumentException("Food Item is required.", nameof(orderItemUpdateModel.FoodMenuItemId));
             }
-            if(orderItemUpdateModel.OrderId <=0)
+            if (orderItemUpdateModel.OrderId <= 0)
             {
                 throw new ArgumentException("Order is required.", nameof(orderItemUpdateModel.OrderId));
             }
-            if(orderItemUpdateModel.TotalAmount <=0)
+            if (orderItemUpdateModel.TotalAmount <= 0)
             {
                 throw new ArgumentException("Total Amount is required.", nameof(orderItemUpdateModel.TotalAmount));
             }

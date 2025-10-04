@@ -6,14 +6,14 @@ namespace RDIASCanteenAPI.Interface.CanteenInterface
     public interface MasterDayInterface
     {
         #region Master Day
-        List<MasterDaysModel> GetAllMasterDays();
+        List<tblMasterDays> GetAllMasterDays();
         Task<FoodDaySaveModelView> SaveMasterDay(FoodDaySaveModelView foodDaySaveModel);
         Task<FoodDayUpdateModelView> UpdateMasterDay(FoodDayUpdateModelView foodDayUpdateModel);
         Task DeleteMasterDay(int dayId);
         #endregion
 
         #region Food Memu Item
-        Task<List<FoodMenuItemModel>> GetFoodMenuItem();
+        Task<List<tblFoodMenuItem>> GetFoodMenuItem();
         Task<int> SaveFoodMenuItem(FoodMenuItemModelView menuItemModelView);
         Task<FoodMenuItemUpdateModelView> UpdateFoodMenuItem(FoodMenuItemUpdateModelView menuItemUpdateModelView);
         Task DeleteFoodMenuItem(int FoodMenuItemId);
@@ -43,7 +43,7 @@ namespace RDIASCanteenAPI.Interface.CanteenInterface
         #region order Item
         Task<List<OrderItemListGetModelView>> GetOrderItem();
         Task<OrderItemSaveModelView> SaveOrderItem(OrderItemSaveModelView itemSaveModelView);
-        Task<OrderItemUpdateModelView> UpdateOrderItem(OrderItemUpdateModelView orderItemUpdateModel);
+        Task<OrderItemSaveModelView> UpdateOrderItem(OrderItemSaveModelView orderItemUpdateModel);
         Task DeleteOrderItem(int OrderItemId);
         #endregion
     }

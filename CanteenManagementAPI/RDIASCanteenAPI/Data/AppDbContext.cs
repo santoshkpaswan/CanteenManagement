@@ -9,18 +9,26 @@ namespace RDIASCanteenAPI.Data
     {
         public AppDbContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<MasterDaysModel> masterDaysModels { get; set; }
-        public DbSet<FoodMenuItemModel> foodMenuItemModels { get; set; }
-        public DbSet<FoodMenuItemPriceModel> foodMenuItemPriceModels { get; set; }
-        public DbSet<DayWiseFoodMenuItemModel> dayWiseFoodMenuItemModels { get; set; }
-        public DbSet<OrderModel> orderModels { get; set; }
-        public DbSet<OrderItemModel> orderItemModels { get; set; }
+        public DbSet<tblMasterDays> masterDaysModels { get; set; }
+        public DbSet<tblFoodMenuItem> foodMenuItemModels { get; set; }
+        public DbSet<tblFoodMenuItemPrice> foodMenuItemPriceModels { get; set; }
+        public DbSet<tblDayWiseFoodMenuItem> dayWiseFoodMenuItemModels { get; set; }
+        public DbSet<tblOrder> orderModels { get; set; }
+        public DbSet<tblOrderItem> orderItemModels { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<tblOrderItem>()
+                .HasOne(b => b.Order) // A Book has one Author
+                .WithMany(a => a.OrderItems) // An Author has many Books
+                .HasForeignKey(b => b.OrderId); // The foreign key in Book is AuthorId
+        }
     }
 
     #region tblMasterDays
 
     [Table("tblMasterDays")] // Maps to your SQL table
-    public class MasterDaysModel
+    public class tblMasterDays
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -40,7 +48,7 @@ namespace RDIASCanteenAPI.Data
 
     #region tblFoodMenuItems
     [Table("tblFoodMenuItem")] // Maps to your SQL table
-    public class FoodMenuItemModel
+    public class tblFoodMenuItem
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -59,7 +67,7 @@ namespace RDIASCanteenAPI.Data
 
     #region tblFoodMenuItemsPrice
     [Table("tblFoodMenuItemPrice")] // Maps to your SQL table
-    public class FoodMenuItemPriceModel
+    public class tblFoodMenuItemPrice
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -67,9 +75,9 @@ namespace RDIASCanteenAPI.Data
         [Required]
         public int FoodMenuItemId { get; set; }
         public int AcademicSessionId { get; set; }
-        public string AcademicSession{ get; set; }
+        public string AcademicSession { get; set; }
         public decimal ItemPrice { get; set; }
-        public string ItemPriceDescriptin { get; set; } 
+        public string ItemPriceDescriptin { get; set; }
         public bool IsActive { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
@@ -80,14 +88,14 @@ namespace RDIASCanteenAPI.Data
 
     #region tblDayWiseFoodMenuItem
     [Table("tblDayWiseFoodMenuItem")] // Maps to your SQL table
-    public class DayWiseFoodMenuItemModel
+    public class tblDayWiseFoodMenuItem
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DayWiseFoodMenuItemId { get; set; }
         [Required]
         public int FoodMenuItemId { get; set; }
-        public int DayId { get; set; } 
+        public int DayId { get; set; }
         public int Time { get; set; }
         public bool IsActive { get; set; }
         public int CreatedBy { get; set; }
@@ -99,25 +107,30 @@ namespace RDIASCanteenAPI.Data
 
     #region tblOrder
     [Table("tblOrder")] // Maps to your SQL table
-    public class OrderModel
+    public class tblOrder
     {
+        public tblOrder()
+        {
+            this.OrderItems = new List<tblOrderItem>();
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int OrderId { get; set; }
+        public int? OrderId { get; set; }
         public string? OrderNumber { get; set; }
-        public int DayId { get; set; }
-        public int RgenId { get; set; }
-        public string UserName { get; set; }
-        public string UserId {  get; set; }
-        public string UserType {  get; set; }   
-        public decimal TotalAmount { get; set; }
-        public OrderPaymentType PaymentType  {  get; set; }    
-        public OrderPaymentStatus PaymentStatus  {  get; set; }
-        public string Remark { get; set; }
-        public OrderStatus Status { get; set; }
-        public bool IsActive { get; set; }
-        public int CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public int? DayId { get; set; }
+        public int? RgenId { get; set; }
+        public string? UserName { get; set; }
+        public string? UserId { get; set; }
+        public string? UserType { get; set; }
+        public decimal? TotalAmount { get; set; }
+        public OrderPaymentType? PaymentType { get; set; }
+        public OrderPaymentStatus? PaymentStatus { get; set; }
+        public string? Remark { get; set; }
+        public OrderStatus? Status { get; set; }
+        public List<tblOrderItem>? OrderItems { get; set; }
+        public bool? IsActive { get; set; }
+        public int? CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; } = DateTime.Now;
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
     }
@@ -125,14 +138,16 @@ namespace RDIASCanteenAPI.Data
 
     #region Order Item
     [Table("tblOrderItem")] // Maps to your SQL table
-    public class OrderItemModel
+    public class tblOrderItem
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderItemId { get; set; }
         public int ItemNo { get; set; }
         public int FoodMenuItemId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderId { get; set; }
+        public tblOrder Order { get; set; }
         public decimal TotalAmount { get; set; }
         public bool IsActive { get; set; }
         public int CreatedBy { get; set; }

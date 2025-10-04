@@ -21,16 +21,18 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="dayname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Day Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.daysName}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="itemname">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Name </th>
         <td mat-cell *matCellDef="let element"> {{element.itemName}} </td>
       </ng-container>
 
 
-      <ng-container matColumnDef="dayname">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Day Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.daysName}} </td>
-      </ng-container>
+
       <ng-container matColumnDef="time">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Time </th>
         <td mat-cell *matCellDef="let element"> {{element.time}} </td>
@@ -81,33 +83,36 @@
     </div>
     <div class="modal-body">
       <div class="row">
-      <div class="col-md-6 mb-2">
-        <label>Item Name<strong style="color: red;">*</strong></label>
-        <div class="input-group">
-          <select [formControlName]="'foodMenuItemId'" class="form-control">
-            <option *ngFor="let item of foodItems" [value]="item.foodMenuItemId">
-              {{ item.itemName }}
-            </option>
-          </select>
+        <div class="col-md-6 mb-2">
+          <label>Day Name<strong style="color: red;">*</strong></label>
+          <div class="input-group">
+            <select [formControlName]="'dayId'" class="form-control">
+              <option *ngFor="let days of dayName" [value]="days.dayId">
+                {{ days.daysName }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-2">
+          <label>Item Name<strong style="color: red;">*</strong></label>
+          <div class="input-group">
+            <select [formControlName]="'foodMenuItemId'" class="form-control">
+              <option *ngFor="let item of foodItems" [value]="item.foodMenuItemId">
+                {{ item.itemName }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-2">
+          <label>Time<strong style="color: red;">*</strong></label>
+          <div class="input-group">
+            <input type="number" min="0" [formControlName]="'time'" class="form-control" required
+              placeholder="Enter Time">
+          </div>
         </div>
       </div>
-      <div class="col-md-6 mb-2">
-        <label>Day Name<strong style="color: red;">*</strong></label>
-        <div class="input-group">
-          <select [formControlName]="'dayId'" class="form-control">
-            <option *ngFor="let days of dayName" [value]="days.dayId">
-              {{ days.daysName }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div class="col-md-6 mb-2">
-        <label>Time<strong style="color: red;">*</strong></label>
-        <div class="input-group">
-          <input type="number" min="0" [formControlName]="'time'" class="form-control" required placeholder="Enter Time">
-        </div>
-      </div>
-    </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-md btn-primary" (click)="addNewCanteenDayWiseItem()">Save</button>
@@ -126,16 +131,6 @@
     </div>
     <div class="modal-body">
       <div class="row">
-        <div class="col-md-6 mb-2">
-          <label>Item Name<strong style="color: red;">*</strong></label>
-          <div class="input-group">
-            <select [formControlName]="'foodMenuItemId'" class="form-control">
-              <option *ngFor="let item of foodItems" [value]="item.foodMenuItemId">
-                {{ item.itemName }}
-              </option>
-            </select>
-          </div>
-        </div>
 
         <div class="col-md-6 mb-2">
           <label>Day Name<strong style="color: red;">*</strong></label>
@@ -148,9 +143,22 @@
           </div>
         </div>
         <div class="col-md-6 mb-2">
+          <label>Item Name<strong style="color: red;">*</strong></label>
+          <div class="input-group">
+            <select [formControlName]="'foodMenuItemId'" class="form-control">
+              <option *ngFor="let item of foodItems" [value]="item.foodMenuItemId">
+                {{ item.itemName }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+
+        <div class="col-md-6 mb-2">
           <label>Time<strong style="color: red;">*</strong></label>
           <div class="input-group">
-            <input type="number" min="0" [formControlName]="'time'" class="form-control" required placeholder="Enter Time">
+            <input type="number" min="0" [formControlName]="'time'" class="form-control" required
+              placeholder="Enter Time">
           </div>
         </div>
       </div>

@@ -24,15 +24,14 @@ import { OrderPaymentType, OrderPaymentStatus, OrderStatus } from 'src/app/share
 
 
 @Component({
-  selector: 'app-order',
+  selector: 'app-admin-order',
   standalone: true,
   providers: [],
   imports: [ReactiveFormsModule, CommonModule, MatTooltipModule, FormsModule, MatSelectModule, MatGridListModule, MatCardModule, ReactiveFormsModule, MatExpansionModule, MatDialogModule, MatIconModule, MatExpansionModule, MatSortModule, MatPaginatorModule, MatCheckboxModule, MatTableModule, MatPaginatorModule, MatTooltipModule],
-  templateUrl: './order.component.html',
-  styleUrl: './order.component.scss'
+  templateUrl: './admin-order.component.html',
+  styleUrl: './admin-order.component.scss'
 })
-
-export class OrderComponent implements OnInit {
+export class AdminOrderComponent {
   addCanteenOrderForm: FormGroup;
   editCanteenOrderForm: FormGroup;
   currentPage: any = 0;
@@ -41,7 +40,7 @@ export class OrderComponent implements OnInit {
   dayName: any = [];
 
 
-  displayedColumns: string[] = ['sno', 'ordernumber', 'dayId', 'username', 'usertype', 'totalamount', 'paymenttype', 'paymentstatus', 'status', 'remark', 'edit', 'delete'];
+  displayedColumns: string[] = ['checkbox','sno', 'ordernumber', 'username', 'usertype', 'totalamount', 'paymenttype', 'paymentstatus', 'status', 'orderdate'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;
@@ -84,15 +83,15 @@ export class OrderComponent implements OnInit {
     });
 
     this.editCanteenOrderForm = _formBuilder.group({
-      orderNumber: [''],
+      //orderNumber: [''],
       dayId: ['', Validators.required],
       rgenId: [rgenId, Validators.required],
-      userName: ['', Validators.required],
-      userId: [userId, Validators.required],
-      userType: [userType, Validators.required],
-      totalAmount: ['', Validators.required],
-      paymentType: ['', Validators.required],
-      paymentStatus: ['', Validators.required],
+      //userName: ['', Validators.required],
+      //userId: [userId, Validators.required],
+      ///userType: [userType, Validators.required],
+      //totalAmount: ['', Validators.required],
+      //paymentType: ['', Validators.required],
+      //paymentStatus: ['', Validators.required],
       status: ['', Validators.required],
       remark: ['', Validators.required],
       orderId: ['', Validators.required]
@@ -131,15 +130,6 @@ export class OrderComponent implements OnInit {
     }
     // Ensure user info is latest from localStorage
     const currentUser = this._authService.getUser();
-    // if (currentUser) {
-    //   this.addCanteenOrderForm.patchValue({
-    //     rgenId: currentUser.account_id,
-    //     userId: currentUser.user_name,
-    //     userType: currentUser.usertype,
-    //   });
-
-    // }
-
     const addpayload: any = {
       dayId: Number(this.addCanteenOrderForm.value.dayId),
       rgenId: currentUser ? currentUser.account_id : this.addCanteenOrderForm.value.rgenId,
@@ -153,7 +143,6 @@ export class OrderComponent implements OnInit {
       remark: this.addCanteenOrderForm.value.remark
     }
     this.addCanteenOrderForm.disable();
-    //this._canteenService.addOrder(this.addCanteenOrderForm.value).subscribe((data) => {
     this._canteenService.addOrder(addpayload).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');
       this.modalService.dismissAll();
@@ -174,22 +163,20 @@ export class OrderComponent implements OnInit {
     // Prepare payload explicitly with numeric fields
     const updatepayload: any = {
       orderId: this.editCanteenOrderForm.value.orderId,
-      orderNumber: this.editCanteenOrderForm.value.orderNumber,
+      //orderNumber: this.editCanteenOrderForm.value.orderNumber,
       dayId: Number(this.editCanteenOrderForm.value.dayId),
       rgenId: currentUser ? currentUser.account_id : this.editCanteenOrderForm.value.rgenId,
       userId: currentUser ? currentUser.user_name : this.editCanteenOrderForm.value.userId,
-      userType: currentUser ? currentUser.usertype : this.editCanteenOrderForm.value.userType,
-      userName: this.editCanteenOrderForm.value.userName,
-      totalAmount: Number(this.editCanteenOrderForm.value.totalAmount),
-      paymentType: Number(this.editCanteenOrderForm.value.paymentType),
-      paymentStatus: Number(this.editCanteenOrderForm.value.paymentStatus),
+      //userType: currentUser ? currentUser.usertype : this.editCanteenOrderForm.value.userType,
+      //userName: this.editCanteenOrderForm.value.userName,
+      //totalAmount: Number(this.editCanteenOrderForm.value.totalAmount),
+      //paymentType: Number(this.editCanteenOrderForm.value.paymentType),
+      //paymentStatus: Number(this.editCanteenOrderForm.value.paymentStatus),
       status: Number(this.editCanteenOrderForm.value.status),
       remark: this.editCanteenOrderForm.value.remark
     };
 
     this.editCanteenOrderForm.disable();
-
-    ///this._canteenService.updateOrder(this.editCanteenOrderForm.value).subscribe((data) => {
     this._canteenService.updateOrder(updatepayload).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');
       this.modalService.dismissAll();
@@ -225,15 +212,15 @@ export class OrderComponent implements OnInit {
   openEditCanteenOrderTemplate(element: any, content: TemplateRef<any>) {
     debugger
     this.editCanteenOrderForm = this._formBuilder.group({
-      orderNumber: [element.orderNumber],
+      //orderNumber: [element.orderNumber],
       dayId: [element.dayId, Validators.required],
       rgenId: [element.rgenId, Validators.required],
-      userName: [element.userName, Validators.required],
+      //userName: [element.userName, Validators.required],
       userId: [element.userId, Validators.required],
-      userType: [element.userType, Validators.required],
-      totalAmount: [element.totalAmount, Validators.required],
-      paymentType: [element.paymentType, Validators.required],
-      paymentStatus: [element.paymentStatus, Validators.required],
+      //userType: [element.userType, Validators.required],
+      //totalAmount: [element.totalAmount, Validators.required],
+      //paymentType: [element.paymentType, Validators.required],
+      //paymentStatus: [element.paymentStatus, Validators.required],
       status: [element.status, Validators.required],
       remark: [element.remark, Validators.required],
       orderId: [element.orderId, Validators.required],
@@ -275,13 +262,6 @@ export class OrderComponent implements OnInit {
 
     return { label, cssClass };
   }
-
-
-
-  // getPaymentStatusLabel(value: number): string {
-  //   return this.paymentStatusArray.find(x => x.value === value)?.paymentstatuslabel || '';
-  // }
-
   getOrderStatusLabel(value: number): string {
     return this.statusArray.find(x => x.value === value)?.statuslabel || '';
   }

@@ -16,9 +16,10 @@ import { FoodDayComponent } from 'src/app/page//food-day/food-day.component';
 import {FoodMenuItemComponent} from 'src/app/page//food-menu-item/food-menu-item.component'
 import {FoodMenuItemPriceComponent} from 'src/app/page//food-menu-item-price/food-menu-item-price.component'
 import {DayWiseFoodMenuItemComponent} from 'src/app/page//day-wise-food-menu-item/day-wise-food-menu-item.component'
-import {OrderComponent} from 'src/app/page//order/order.component'
+import {OrderHistoryComponent} from 'src/app/page/order-history/order-histroy.component'
 import { OrderItemComponent } from 'src/app/page/order-item/order-item.component';
-import {ManageUsersComponent} from 'src/app/page/manage-users/manage-users.component'
+import {AdminOrderComponent} from 'src/app/page/admin-order/admin-order.component'
+
 
 
 const routes: Routes = [
@@ -58,16 +59,16 @@ const routes: Routes = [
         component: DayWiseFoodMenuItemComponent
       },
       {
-        path: 'canteen/order',
-        component: OrderComponent
+        path: 'canteen/order-history',
+        component: OrderHistoryComponent
       },
       {
         path: 'canteen/order-item',
         component: OrderItemComponent
       },
       {
-        path: 'canteen/manage-users',
-        component: ManageUsersComponent
+        path: 'canteen/admin-order',
+        component: AdminOrderComponent
       },
       { path: '',
        component: HomeComponent

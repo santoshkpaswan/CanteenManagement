@@ -37,7 +37,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   foodItems : any = [];
   dayName : any = [];
 
-  displayedColumns: string[] = ['sno', 'itemname', 'dayname','time', 'edit', 'delete'];
+  displayedColumns: string[] = ['sno', 'dayname','itemname', 'time', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
@@ -154,11 +154,11 @@ openEditCanteenDayWiseItemTemplate(element: any, content: TemplateRef<any>) {
       dayId: [element.dayId, Validators.required],
       time: [element.time, Validators.required],
       dayWiseFoodMenuItemId: [element.dayWiseFoodMenuItemId, Validators.required]
-       
+
     });
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
-    
+
    openAddCanteenDayWiseItemTemplate(content: TemplateRef<any>) {
        this.modalService.open(content, { size: 'md', backdrop: 'static' });
      }

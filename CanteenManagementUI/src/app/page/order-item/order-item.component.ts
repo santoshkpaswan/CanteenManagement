@@ -29,6 +29,7 @@ export interface OrderItem {
   count: number;
   imageUrl?: string;
   itemPriceDescriptin?: string;
+  foodMenuItemId?: number;
 }
 
 @Component({
@@ -42,11 +43,14 @@ export interface OrderItem {
 
 
 export class OrderItemComponent implements OnInit {
+  addpayNow: FormGroup;
   currentPage: number = 0;
   pageSize: number = 10;
   itemList: OrderItem[] = [];
   grandTotal: number = 0;
   orderNumber: string = '';
+  filteredItems: any[] = [];
+
 
   imageUrl: any = environment.imageUrl;
 
@@ -69,6 +73,27 @@ export class OrderItemComponent implements OnInit {
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private _coreService: CoreService) {
+
+    // Get user info from localStorage
+    const currentUser = this._authService.getUser();
+    const rgenId = currentUser.account_id;   // always a number
+    const userId = currentUser.user_name;  // always a string
+    const userType = currentUser.usertype;  // always a string
+    this.addpayNow = _formBuilder.group({
+      orderNumber: [''],
+      dayId: [0,],
+      rgenId: [rgenId],
+      userName: [''],
+      userId: [userId],
+      userType: [userType],
+      totalAmount: [0],
+      paymentType: [0],
+      paymentStatus: [0],
+      status: [0]
+
+    });
+
+
   }
 
 
@@ -78,6 +103,7 @@ export class OrderItemComponent implements OnInit {
     this.getGridData();
     // Generate order number
     this.orderNumber = this.generateOrderNumber();
+
   }
 
   getGridData() {
@@ -98,7 +124,16 @@ export class OrderItemComponent implements OnInit {
   }
 
   addItem(item: OrderItem) {
+    debugger
     item.count = (item.count || 0) + 1;
+    debugger
+    // const index = this.filteredItems.indexOf(item);
+    // if (index > -1) {
+    //   this.filteredItems.splice(index, 1);
+    // }
+    if (!this.filteredItems.some(x => x.foodMenuItemId === item.foodMenuItemId)) {
+      this.filteredItems.push(item);
+    }
     this.calculateGrandTotal();
   }
 
@@ -110,12 +145,13 @@ export class OrderItemComponent implements OnInit {
   }
 
   calculateGrandTotal() {
-    this.grandTotal = this.filteredItems.reduce((sum, x) => sum + x.count * x.itemPrice, 0);
+    this.grandTotal = this.filteredItems.reduce((sum: any, x: any) => sum + x.count * x.itemPrice, 0);
   }
   // Getter to avoid parser errors in template
-  get filteredItems(): OrderItem[] {
-    return this.itemList.filter(x => x.count > 0);
-  }
+  // get filteredItems(): OrderItem[] {
+  //   debugger
+  //   return this.itemList.filter(x => x.count > 0);
+  // }
   generateOrderNumber(): string {
     const today = new Date();
     const todayStr = today.toISOString().split('T')[0]; // "YYYY-MM-DD"
@@ -139,10 +175,62 @@ export class OrderItemComponent implements OnInit {
 
 
   // Mock payment process
+  // payNow() {
+  //   if (this.filteredItems.length === 0) {
+  //     alert('Add items to cart before payment.');
+  //     return;
+  //   }
+  // }
+
   payNow() {
-    if (this.filteredItems.length === 0) {
-      alert('Add items to cart before payment.');
+    // Check if the form is valid
+    if (this.addpayNow.invalid) {
+      debugger
+      this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
     }
+
+    // Get current user info
+    const currentUser = this._authService.getUser();
+
+    // Prepare the payload
+    const orderData: any = {
+      orderNumber: this.addpayNow.value.orderNumber || this.orderNumber, // auto/given
+      //dayId: Number(this.addpayNow.value.dayId),
+      rgenId: currentUser?.account_id || this.addpayNow.value.rgenId,
+      userId: currentUser?.user_name || this.addpayNow.value.userId,
+      userType: currentUser?.usertype || this.addpayNow.value.userType,
+      userName: this.addpayNow.value.userName,
+      totalAmount: this.grandTotal,//Number(this.addpayNow.value.totalAmount),
+      paymentType: Number(this.addpayNow.value.paymentType),
+      paymentStatus: Number(this.addpayNow.value.paymentStatus),
+      status: Number(this.addpayNow.value.status),
+      createdDate: new Date(),
+      orderItems: this.filteredItems.map(item => ({
+        itemNo: item.count,
+        itemName: item.itemName,
+        foodMenuItemId: item.foodMenuItemId,
+        totalAmount: item.count * item.itemPrice
+      }))
+    };
+    debugger
+    // Disable the form to prevent double submit
+    this.addpayNow.disable();
+
+    // Call API
+    this._canteenService.addOrder(orderData).subscribe({
+      next: (res: any) => {
+        this._coreService.openSnackBar(res.message || 'Order placed successfully!', 'Ok');
+        this.modalService.dismissAll();
+        this.addpayNow.enable();
+        this.addpayNow.reset();
+        this.getGridData();
+      },
+      error: (err) => {
+        console.error(err);
+        this._coreService.openSnackBar('Something went wrong. Please try again!', 'Ok');
+        this.addpayNow.enable();
+      }
+    });
   }
 }

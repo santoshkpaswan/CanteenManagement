@@ -24,14 +24,15 @@ import { OrderPaymentType, OrderPaymentStatus, OrderStatus } from 'src/app/share
 
 
 @Component({
-  selector: 'app-manage-users',
+  selector: 'app-order',
   standalone: true,
   providers: [],
   imports: [ReactiveFormsModule, CommonModule, MatTooltipModule, FormsModule, MatSelectModule, MatGridListModule, MatCardModule, ReactiveFormsModule, MatExpansionModule, MatDialogModule, MatIconModule, MatExpansionModule, MatSortModule, MatPaginatorModule, MatCheckboxModule, MatTableModule, MatPaginatorModule, MatTooltipModule],
-  templateUrl: './manage-users.component.html',
-  styleUrl: './manage-users.component.scss'
+  templateUrl: './order-history.component.html',
+  styleUrl: './order-history.component.scss'
 })
-export class ManageUsersComponent {
+
+export class OrderHistoryComponent implements OnInit {
   addCanteenOrderForm: FormGroup;
   editCanteenOrderForm: FormGroup;
   currentPage: any = 0;
@@ -40,7 +41,7 @@ export class ManageUsersComponent {
   dayName: any = [];
 
 
-  displayedColumns: string[] = ['sno', 'ordernumber', 'dayId', 'username', 'usertype', 'totalamount', 'paymenttype', 'paymentstatus', 'status', 'remark', 'edit', 'delete'];
+  displayedColumns: string[] = ['sno', 'ordernumber','totalamount', 'paymenttype', 'paymentstatus', 'status', 'oderDate', 'delete'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;
@@ -130,6 +131,15 @@ export class ManageUsersComponent {
     }
     // Ensure user info is latest from localStorage
     const currentUser = this._authService.getUser();
+    // if (currentUser) {
+    //   this.addCanteenOrderForm.patchValue({
+    //     rgenId: currentUser.account_id,
+    //     userId: currentUser.user_name,
+    //     userType: currentUser.usertype,
+    //   });
+
+    // }
+
     const addpayload: any = {
       dayId: Number(this.addCanteenOrderForm.value.dayId),
       rgenId: currentUser ? currentUser.account_id : this.addCanteenOrderForm.value.rgenId,
@@ -143,6 +153,7 @@ export class ManageUsersComponent {
       remark: this.addCanteenOrderForm.value.remark
     }
     this.addCanteenOrderForm.disable();
+    //this._canteenService.addOrder(this.addCanteenOrderForm.value).subscribe((data) => {
     this._canteenService.addOrder(addpayload).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');
       this.modalService.dismissAll();
@@ -159,8 +170,6 @@ export class ManageUsersComponent {
       return;
     }
     const currentUser = this._authService.getUser();
-
-    // Prepare payload explicitly with numeric fields
     const updatepayload: any = {
       orderId: this.editCanteenOrderForm.value.orderId,
       orderNumber: this.editCanteenOrderForm.value.orderNumber,
@@ -177,6 +186,8 @@ export class ManageUsersComponent {
     };
 
     this.editCanteenOrderForm.disable();
+
+    ///this._canteenService.updateOrder(this.editCanteenOrderForm.value).subscribe((data) => {
     this._canteenService.updateOrder(updatepayload).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');
       this.modalService.dismissAll();
@@ -262,6 +273,13 @@ export class ManageUsersComponent {
 
     return { label, cssClass };
   }
+
+
+
+  // getPaymentStatusLabel(value: number): string {
+  //   return this.paymentStatusArray.find(x => x.value === value)?.paymentstatuslabel || '';
+  // }
+
   getOrderStatusLabel(value: number): string {
     return this.statusArray.find(x => x.value === value)?.statuslabel || '';
   }

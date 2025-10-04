@@ -403,7 +403,7 @@ namespace RDIASCanteenAPI.Controllers
         }
 
         [HttpPost("UpdateOrderItem")]
-        public async Task<IActionResult> UpdateOrderItem([FromBody] OrderItemUpdateModelView orderItemUpdateModel)
+        public async Task<IActionResult> UpdateOrderItem([FromBody] OrderItemSaveModelView orderItemUpdateModel)
         {
             if (!ModelState.IsValid)
                 return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});

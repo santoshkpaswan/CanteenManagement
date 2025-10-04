@@ -69,10 +69,10 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-file-text'
       },
       {
-        id: 'order',
-        title: 'order',
+        id: 'orderhistory',
+        title: 'order history',
         type: 'item',
-        url: '/canteen/order',
+        url: '/canteen/order-history',
         icon: 'feather icon-shopping-cart'
       },
       {
@@ -83,10 +83,10 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'feather icon-shopping-cart'
       },
       {
-        id: 'manageusers',
-        title: 'manage users',
+        id: 'adminorder',
+        title: 'admin order',
         type: 'item',
-        url: '/canteen/manage-users',
+        url: '/canteen/admin-order',
        icon: 'feather icon-file-text'
       }
     ]
