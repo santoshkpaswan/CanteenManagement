@@ -34,6 +34,7 @@ import { OrderPaymentType, OrderPaymentStatus, OrderStatus } from 'src/app/share
 export class AdminOrderComponent {
   addCanteenOrderForm: FormGroup;
   editCanteenOrderForm: FormGroup;
+  editCanteenOrderStatusForm: FormGroup;
   currentPage: any = 0;
   pageSize: any = 10;
   orderList: any = [];
@@ -92,6 +93,14 @@ export class AdminOrderComponent {
       //totalAmount: ['', Validators.required],
       //paymentType: ['', Validators.required],
       //paymentStatus: ['', Validators.required],
+      status: ['', Validators.required],
+      remark: ['', Validators.required],
+      orderId: ['', Validators.required]
+    });
+
+    this.editCanteenOrderStatusForm = _formBuilder.group({
+      paymentType: ['', Validators.required],
+      paymentStatus: ['', Validators.required],
       status: ['', Validators.required],
       remark: ['', Validators.required],
       orderId: ['', Validators.required]
@@ -188,6 +197,33 @@ export class AdminOrderComponent {
 
   }
 
+  updateOrderStatus() {
+    if (this.editCanteenOrderStatusForm.invalid) {
+      this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
+      return;
+    }
+    const currentUser = this._authService.getUser();
+
+    // Prepare payload explicitly with numeric fields
+    const updatepayload: any = {
+      orderId: this.editCanteenOrderStatusForm.value.orderId,
+      paymentType: Number(this.editCanteenOrderStatusForm.value.paymentType),
+      paymentStatus: Number(this.editCanteenOrderStatusForm.value.paymentStatus),
+      status: Number(this.editCanteenOrderStatusForm.value.status),
+      remark: this.editCanteenOrderStatusForm.value.remark
+    };
+    this.editCanteenOrderStatusForm.disable();
+    this._canteenService.updateOrder(updatepayload).subscribe((data) => {
+      this._coreService.openSnackBar(data.message, 'Ok');
+      this.modalService.dismissAll();
+      this.editCanteenOrderStatusForm.enable();
+      this.editCanteenOrderStatusForm.reset();
+      this.getGridData();
+      debugger
+    })
+
+  }
+
 
 
   deleteCanteenOrder(element: any) {
@@ -221,6 +257,19 @@ export class AdminOrderComponent {
       //totalAmount: [element.totalAmount, Validators.required],
       //paymentType: [element.paymentType, Validators.required],
       //paymentStatus: [element.paymentStatus, Validators.required],
+      status: [element.status, Validators.required],
+      remark: [element.remark, Validators.required],
+      orderId: [element.orderId, Validators.required],
+    });
+    this.modalService.open(content, { size: 'md', backdrop: 'static' });
+  }
+
+
+  openEditCanteenOrderStatusTemplate(element: any, content: TemplateRef<any>) {
+    debugger
+    this.editCanteenOrderStatusForm = this._formBuilder.group({
+      paymentType: [element.paymentType, Validators.required],
+      paymentStatus: [element.paymentStatus, Validators.required],
       status: [element.status, Validators.required],
       remark: [element.remark, Validators.required],
       orderId: [element.orderId, Validators.required],

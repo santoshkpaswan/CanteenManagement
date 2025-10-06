@@ -12,7 +12,8 @@
 
 
         <button type="button" style="margin-left: 10px;" class="btn btn-md btn-info"
-          (click)="openAddCanteenOrderTemplate(canteenOrderAdd)">
+          >
+            <!-- (click)="openEditCanteenOrderStatusTemplate(aanteenOrderStatusEdit)" -->
           Order Status</button>
 
         <button type="button" style="margin-left: 10px;" class="btn btn-md btn-danger"
@@ -297,6 +298,56 @@
 
     <div class="modal-footer">
       <button type="button" class="btn btn-md btn-primary" (click)="updateOrder()">Update</button>
+    </div>
+  </form>
+</ng-template>
+
+<!-- Angular Template for Update Order Details For Admin User  -->
+
+<ng-template #aanteenOrderStatusEdit let-modal>
+  <form [formGroup]="editCanteenOrderStatusForm" #signInNgForm="ngForm">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Update Order Status</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <!-- Payment Type -->
+        <div class="col-md-6 mb-2">
+          <label>Payment Type <strong style="color: red;">*</strong></label>
+          <select class="form-control" formControlName="paymentType">
+            <option *ngFor="let pytype of paymentTypesArray" [value]="pytype.value">{{ pytype.paymenttypelabel }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Payment Status -->
+        <div class="col-md-6 mb-2">
+          <label>Payment Status<strong style="color: red;">*</strong> </label>
+          <select class="form-control" formControlName="paymentStatus">
+            <option *ngFor="let pystatus of paymentStatusArray" [value]="pystatus.value">{{ pystatus.paymentstatuslabel
+              }}
+            </option>
+          </select>
+        </div>
+        <!-- Status -->
+        <div class="col-md-6 mb-2">
+          <label>Status <strong style="color: red;">*</strong></label>
+          <select class="form-control" formControlName="status">
+            <option *ngFor="let status of statusArray" [value]="status.value">{{ status.statuslabel }}</option>
+          </select>
+        </div>
+        <!-- Remark -->
+        <div class="col-md-6 mb-2">
+          <label>Remark<strong style="color: red;">*</strong></label>
+          <textarea [formControlName]="'remark'" class="form-control" required></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+       <!-- <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button> -->
+      <button type="button" class="btn btn-md btn-primary" (click)="updateOrderStatus()">Update</button>
     </div>
   </form>
 </ng-template>
