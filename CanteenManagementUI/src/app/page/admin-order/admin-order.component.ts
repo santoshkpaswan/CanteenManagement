@@ -40,7 +40,7 @@ export class AdminOrderComponent {
   dayName: any = [];
 
 
-  displayedColumns: string[] = ['checkbox','sno', 'ordernumber', 'username', 'usertype', 'totalamount', 'paymenttype', 'paymentstatus', 'status', 'orderdate'];
+  displayedColumns: string[] = ['checkbox','sno', 'ordernumber', 'username', 'usertype', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;

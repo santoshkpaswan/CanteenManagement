@@ -197,4 +197,13 @@ export class CanteenService {
             })
         );
     }
+
+    getLoginUserName(rgenId:number): Observable<any> {
+        debugger
+        return this._httpClient.get(`${environment.apiLoginUrl}/Student?APIKey=651cb656-1fde-478d-badf-33f60553f36e&studentId=${rgenId}`, {}).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
 }

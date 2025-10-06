@@ -139,9 +139,9 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     }
     public enum OrderPaymentType
     {
-        Cash = 1,
-        Card = 2,
-        UPI = 3
+        Cash = 0,
+        Card = 1,
+        UPI = 2
     }
     public enum OrderPaymentStatus
     {

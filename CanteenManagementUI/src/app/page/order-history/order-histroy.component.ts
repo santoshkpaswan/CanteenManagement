@@ -41,7 +41,7 @@ export class OrderHistoryComponent implements OnInit {
   dayName: any = [];
 
 
-  displayedColumns: string[] = ['sno', 'ordernumber','totalamount', 'paymenttype', 'paymentstatus', 'status', 'oderDate', 'delete'];
+  displayedColumns: string[] = ['sno', 'ordernumber','oderDate','totalamount','status', 'paymenttype', 'paymentstatus','delete'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;

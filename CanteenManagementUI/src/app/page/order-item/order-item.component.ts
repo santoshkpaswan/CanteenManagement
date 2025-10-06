@@ -30,6 +30,7 @@ export interface OrderItem {
   imageUrl?: string;
   itemPriceDescriptin?: string;
   foodMenuItemId?: number;
+  dayId?:number;
 }
 
 @Component({
@@ -47,6 +48,7 @@ export class OrderItemComponent implements OnInit {
   currentPage: number = 0;
   pageSize: number = 10;
   itemList: OrderItem[] = [];
+  response:  any;
   grandTotal: number = 0;
   orderNumber: string = '';
   filteredItems: any[] = [];
@@ -101,12 +103,14 @@ export class OrderItemComponent implements OnInit {
   ngOnInit(): void {
     debugger
     this.getGridData();
+    this.getLoginUserNameGridData();
     // Generate order number
     this.orderNumber = this.generateOrderNumber();
 
   }
 
   getGridData() {
+    debugger
     this._canteenService.getOrderItem().subscribe((response) => {
       this.dataSource = response.data;
       this.itemList = response.data;
@@ -115,6 +119,17 @@ export class OrderItemComponent implements OnInit {
       //this.dataSource.sort = this.sort;
     });
   }
+
+  getLoginUserNameGridData() {
+    debugger
+    const currentUser = this._authService.getUser();
+    const rgenId = currentUser.account_id;
+    this._canteenService.getLoginUserName(rgenId).subscribe((response) => {
+      this.response = response;
+      debugger
+    });
+  }
+
 
 
 
@@ -183,6 +198,7 @@ export class OrderItemComponent implements OnInit {
   // }
 
   payNow() {
+    debugger
     // Check if the form is valid
     if (this.addpayNow.invalid) {
       debugger
@@ -192,15 +208,19 @@ export class OrderItemComponent implements OnInit {
 
     // Get current user info
     const currentUser = this._authService.getUser();
+    const dayId = this.itemList?.length ? this.itemList[0].dayId : null;
+    const userName = this.response.Name;
 
     // Prepare the payload
     const orderData: any = {
       orderNumber: this.addpayNow.value.orderNumber || this.orderNumber, // auto/given
-      //dayId: Number(this.addpayNow.value.dayId),
+      dayId: dayId,
+
       rgenId: currentUser?.account_id || this.addpayNow.value.rgenId,
       userId: currentUser?.user_name || this.addpayNow.value.userId,
       userType: currentUser?.usertype || this.addpayNow.value.userType,
-      userName: this.addpayNow.value.userName,
+      //userName: this.addpayNow.value.userName,
+      userName: userName,
       totalAmount: this.grandTotal,//Number(this.addpayNow.value.totalAmount),
       paymentType: Number(this.addpayNow.value.paymentType),
       paymentStatus: Number(this.addpayNow.value.paymentStatus),
