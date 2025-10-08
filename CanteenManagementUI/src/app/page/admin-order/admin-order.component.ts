@@ -40,6 +40,10 @@ export class AdminOrderComponent {
   orderList: any = [];
   dayName: any = [];
   selectedOrder: any;
+  statusFilter: string = '';
+  orderDateFilter: string = '';
+
+
 
 
 
@@ -117,11 +121,33 @@ export class AdminOrderComponent {
 
   getGridData() {
     this._canteenService.getOrder().subscribe((response) => {
-      this.dataSource = response.data;
-      this.orderList = response.data;
       debugger
+      //this.dataSource = response.data;
+      this.orderList = response.data;
+      this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+
+      // Set filter predicate once
+      //this.dataSource.filterPredicate = (data: any, filter: string) =>
+      /// data.orderNumber?.toString().toLowerCase().includes(filter);
+
+
+      this.dataSource.filterPredicate = (data: any, filter: string) => {
+        debugger
+        const filters = JSON.parse(filter);
+        //const statusMatch = filters.status ? this.getOrderStatusLabel(data.status).toLowerCase().includes(filters.status) : true;
+        const statusMatch = filters.status ? data.status === +filters.status : true;
+        const dateMatch = filters.orderDate ? new Date(data.orderDate).toDateString() === new Date(filters.orderDate).toDateString() : true;
+        //const dateMatch = filters.orderDate   ? new Date(data.orderDate).toISOString().split('T')[0] === filters.orderDate  : true;
+        //const dbDate = data.orderDate.split(' ')[0];         // "2025-10-08"
+        //const filterDate = filters.orderDate.split('T')[0]; // "2025-10-08"
+        //const dateMatch = filters.orderDate ? dbDate === filterDate : true;
+
+        return statusMatch && dateMatch;
+      };
+
+
     });
   }
 
@@ -278,7 +304,8 @@ export class AdminOrderComponent {
   /** Handle Checkbox Selection */
   onCheckboxChange(element: any, event: any) {
     debugger
-    if (event.target.checked) {this.selectedOrder = element;
+    if (event.target.checked) {
+      this.selectedOrder = element;
       // uncheck all others
       this.dataSource.data.forEach((row: any) => {
         if (row.orderId !== element.orderId) row.checked = false;
@@ -330,7 +357,7 @@ export class AdminOrderComponent {
 
     this._canteenService.updateOrderStatus(updateStatusPayload).subscribe({
       next: (data) => {
-        this._coreService.openSnackBar(data.message , 'Ok');
+        this._coreService.openSnackBar(data.message, 'Ok');
         this.modalService.dismissAll();
         this.editCanteenOrderStatusForm.enable();
         this.getGridData();
@@ -341,6 +368,55 @@ export class AdminOrderComponent {
       }
     });
   }
+
+
+  deleteSelectedOrder() {
+    debugger
+    if (!this.selectedOrder) {
+      this._coreService.openSnackBar('Please select an order to cancel.', 'Ok');
+      return;
+    }
+
+    this._confirmation.confirm('Are you sure?', `Do you really want to delete order ${this.selectedOrder.orderNumber}?`
+    ).then((confirmed) => {
+      if (confirmed) {
+        this._canteenService.deleteOrder(this.selectedOrder.orderNumber).subscribe({
+          next: (data: any) => {
+            this._coreService.openSnackBar(data.message, 'Ok');
+            this.selectedOrder = null;        // Clear selection
+            this.getGridData();               // Refresh table
+          },
+          error: (err) => {
+            console.error('Delete order error:', err);
+            this._coreService.openSnackBar('Error deleting order.', 'Ok');
+          }
+        });
+      }
+    });
+  }
+  orderSearchFilter() {
+    debugger
+    const filterObj = {
+      status: this.statusFilter.trim().toLowerCase(),
+      orderDate: this.orderDateFilter
+    };
+
+    this.dataSource.filter = JSON.stringify(filterObj);
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  resetOrderSearchFilter() {
+    this.statusFilter = '';
+    this.orderDateFilter = '';
+    this.dataSource.filter = '';
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+
 
 
 }

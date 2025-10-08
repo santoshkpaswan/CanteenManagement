@@ -379,7 +379,7 @@ namespace RDIASCanteenAPI.Controllers
             try
             {
                 await _masterDayInterface.DeleteOrder(OrderNumber);
-                return Ok(new { Success = true, Message = "Delete successfully" });
+                return Ok(new { Success = true, Message = "Order deleted successfully" });
             }
             catch (Exception ex)
             {
