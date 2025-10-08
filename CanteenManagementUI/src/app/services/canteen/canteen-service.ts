@@ -206,4 +206,13 @@ export class CanteenService {
             })
         );
     }
+
+    updateOrderStatus(model: any): Observable<any> {
+      debugger
+        return this._httpClient.post(`${environment.apiUrl}/Canteen/UpdateOrderStatus`, model).pipe(
+            switchMap((response: any) => {
+                return of(response);
+            })
+        );
+    }
 }

@@ -352,6 +352,27 @@ namespace RDIASCanteenAPI.Controllers
                 return Ok(new { Success = false, Message = ex.Message });
             }
         }
+
+        [HttpPost("UpdateOrderStatus")]
+        public async Task<IActionResult> UpdateOrderStatus([FromBody] OrderStatusUpdateModelView orderStatusUpdateModelView)
+        {
+            if (!ModelState.IsValid)
+                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+
+            try
+            {
+                var result = await _masterDayInterface.UpdateOrderStatus(orderStatusUpdateModelView);
+                return Ok(new { Success = true, Message = "Order Status Updated successfully" });
+            }
+            catch (ArgumentException ex)
+            {
+                return Ok(new { Success = false, Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { Success = false, Message = ex.Message });
+            }
+        }
         [HttpPost("DeleteOrder/{OrderNumber}")]
         public async Task<IActionResult> DeleteOrder(string OrderNumber)
         {

@@ -39,9 +39,11 @@ export class AdminOrderComponent {
   pageSize: any = 10;
   orderList: any = [];
   dayName: any = [];
+  selectedOrder: any;
 
 
-  displayedColumns: string[] = ['checkbox','sno', 'ordernumber', 'username', 'usertype', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus'];
+
+  displayedColumns: string[] = ['checkbox', 'sno', 'ordernumber', 'username', 'usertype', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;
@@ -196,36 +198,6 @@ export class AdminOrderComponent {
     })
 
   }
-
-  updateOrderStatus() {
-    if (this.editCanteenOrderStatusForm.invalid) {
-      this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
-      return;
-    }
-    const currentUser = this._authService.getUser();
-
-    // Prepare payload explicitly with numeric fields
-    const updatepayload: any = {
-      orderId: this.editCanteenOrderStatusForm.value.orderId,
-      paymentType: Number(this.editCanteenOrderStatusForm.value.paymentType),
-      paymentStatus: Number(this.editCanteenOrderStatusForm.value.paymentStatus),
-      status: Number(this.editCanteenOrderStatusForm.value.status),
-      remark: this.editCanteenOrderStatusForm.value.remark
-    };
-    this.editCanteenOrderStatusForm.disable();
-    this._canteenService.updateOrder(updatepayload).subscribe((data) => {
-      this._coreService.openSnackBar(data.message, 'Ok');
-      this.modalService.dismissAll();
-      this.editCanteenOrderStatusForm.enable();
-      this.editCanteenOrderStatusForm.reset();
-      this.getGridData();
-      debugger
-    })
-
-  }
-
-
-
   deleteCanteenOrder(element: any) {
     this._confirmation.confirm('Are you sure?', 'Do you really want to delete this order?')
       .then((confirmed) => {
@@ -263,19 +235,6 @@ export class AdminOrderComponent {
     });
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
-
-
-  openEditCanteenOrderStatusTemplate(element: any, content: TemplateRef<any>) {
-    debugger
-    this.editCanteenOrderStatusForm = this._formBuilder.group({
-      paymentType: [element.paymentType, Validators.required],
-      paymentStatus: [element.paymentStatus, Validators.required],
-      status: [element.status, Validators.required],
-      remark: [element.remark, Validators.required],
-      orderId: [element.orderId, Validators.required],
-    });
-    this.modalService.open(content, { size: 'md', backdrop: 'static' });
-  }
   pageChanged(event: PageEvent) {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
@@ -290,9 +249,9 @@ export class AdminOrderComponent {
   statusArray = Object.keys(OrderStatus).filter(key => isNaN(Number(key))).map(key => ({ statuslabel: key, value: OrderStatus[key as keyof typeof OrderStatus] }));
 
   // Helper functions for table display
-   getPaymentTypeLabel(value: number): string {
+  getPaymentTypeLabel(value: number): string {
 
-     return this.paymentTypesArray.find(x => x.value === value)?.paymenttypelabel || '';
+    return this.paymentTypesArray.find(x => x.value === value)?.paymenttypelabel || '';
   }
   getPaymentStatusLabel(value: number): { label: string, cssClass: string } {
     const label = this.paymentStatusArray.find(x => x.value === value)?.paymentstatuslabel || '';
@@ -314,5 +273,74 @@ export class AdminOrderComponent {
   getOrderStatusLabel(value: number): string {
     return this.statusArray.find(x => x.value === value)?.statuslabel || '';
   }
+
+
+  /** Handle Checkbox Selection */
+  onCheckboxChange(element: any, event: any) {
+    debugger
+    if (event.target.checked) {this.selectedOrder = element;
+      // uncheck all others
+      this.dataSource.data.forEach((row: any) => {
+        if (row.orderId !== element.orderId) row.checked = false;
+      });
+    } else {
+      this.selectedOrder = null;
+    }
+  }
+
+  /** Open Order Status Modal */
+  openEditCanteenOrderStatusTemplate(element: any, content: TemplateRef<any>) {
+    debugger
+    if (!element) {
+      this._coreService.openSnackBar('Please select an order first.', 'Ok');
+      return;
+    }
+
+    this.editCanteenOrderStatusForm = this._formBuilder.group({
+      paymentType: [element.paymentType, Validators.required],
+      paymentStatus: [element.paymentStatus, Validators.required],
+      status: [element.status, Validators.required],
+      remark: [element.remark, Validators.required],
+      orderId: [element.orderId, Validators.required],
+    });
+
+    this.modalService.open(content, { size: 'md', backdrop: 'static' });
+  }
+
+  /** Update Order Status*/
+  updateOrderStatus() {
+    debugger
+    if (this.editCanteenOrderStatusForm.invalid) {
+      this._coreService.openSnackBar('Please fill all required fields.', 'Ok');
+      return;
+    }
+    const currentUser = this._authService.getUser();
+    const { orderId, paymentType, paymentStatus, status, remark } = this.editCanteenOrderStatusForm.value;
+
+    const updateStatusPayload = {
+      orderId,
+      rgenId: Number(currentUser?.account_id || 0),
+      paymentType: Number(paymentType),
+      paymentStatus: Number(paymentStatus),
+      status: Number(status),
+      remark
+    };
+
+    this.editCanteenOrderStatusForm.disable();
+
+    this._canteenService.updateOrderStatus(updateStatusPayload).subscribe({
+      next: (data) => {
+        this._coreService.openSnackBar(data.message , 'Ok');
+        this.modalService.dismissAll();
+        this.editCanteenOrderStatusForm.enable();
+        this.getGridData();
+      },
+      error: () => {
+        this._coreService.openSnackBar('Error updating order.', 'Ok');
+        this.editCanteenOrderStatusForm.enable();
+      }
+    });
+  }
+
 
 }

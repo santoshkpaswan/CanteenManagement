@@ -549,6 +549,29 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             await _context.SaveChangesAsync();
             return orderUpdateModelView;
         }
+
+        public async Task<OrderStatusUpdateModelView> UpdateOrderStatus(OrderStatusUpdateModelView orderStatusUpdateModelView)
+        {
+            if (orderStatusUpdateModelView.OrderId <= 0)
+            {
+                throw new ArgumentException("Order Id is required.");
+            }
+            // UPDATE only
+            var existing = await _context.orderModels.FirstOrDefaultAsync(x => x.OrderId == orderStatusUpdateModelView.OrderId && x.IsActive == true);
+            if (existing == null)
+            {
+                throw new Exception("Record not found.");
+            }
+            existing.PaymentType = orderStatusUpdateModelView.PaymentType;
+            existing.PaymentStatus = orderStatusUpdateModelView.PaymentStatus;
+            existing.Status = orderStatusUpdateModelView.Status;
+            existing.Remark = orderStatusUpdateModelView.Remark;
+            existing.IsActive = true;
+            existing.ModifiedDate = DateTime.Now;  // optional
+            existing.ModifiedBy = orderStatusUpdateModelView.RgenId; 
+            await _context.SaveChangesAsync();
+            return orderStatusUpdateModelView;
+        }
         public async Task DeleteOrder(string OrderNumber)
         {
             var existing = await _context.orderModels.FirstOrDefaultAsync(x => x.OrderNumber == OrderNumber && x.IsActive == true);
