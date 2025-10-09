@@ -20,6 +20,9 @@ import { ConfirmationDialogService } from 'src/app/confirmation-dialog/confirmat
 import * as XLSX from 'xlsx';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+
+
+
 @Component({
   selector: 'app-day-wise-food-menu-item',
   standalone: true,
@@ -35,6 +38,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   pageSize: any = 10;
   dayWiseitemNameList: any = [];
   foodItems: any = [];
+  //foodItems: any[] = [];
   dayName: any = [];
 
   displayedColumns: string[] = ['sno', 'dayname', 'itemname', 'time', 'edit', 'delete'];
@@ -57,6 +61,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     private _coreService: CoreService) {
     this.addCanteenDayWiseItemForm = _formBuilder.group({
       foodMenuItemId: ['', Validators.required],
+      //foodMenuItemId: [[], Validators.required],
       dayId: ['', Validators.required],
       time: ['', Validators.required]
     });
@@ -97,6 +102,25 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       debugger
     });
   }
+  // toggleItemSelection(itemId: number, checked: boolean) {
+  //   const selected: number[] = this.addCanteenDayWiseItemForm.value.foodMenuItemId || [];
+
+  //   if (checked) {
+  //     if (!selected.includes(itemId)) {
+  //       selected.push(itemId);
+  //     }
+  //   } else {
+  //     const idx = selected.indexOf(itemId);
+  //     if (idx >= 0) {
+  //       selected.splice(idx, 1);
+  //     }
+  //   }
+
+  //   this.addCanteenDayWiseItemForm.patchValue({ foodMenuItemId: selected });
+  // }
+
+
+
   addNewCanteenDayWiseItem() {
     debugger
     if (this.addCanteenDayWiseItemForm.invalid) {

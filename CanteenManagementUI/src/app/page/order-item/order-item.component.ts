@@ -244,6 +244,11 @@ export class OrderItemComponent implements OnInit {
         this.modalService.dismissAll();
         this.addpayNow.enable();
         this.addpayNow.reset();
+
+        // CLEAR BILLING SUMMARY
+        //this.filteredItems = [];  // empties the table
+        //this.grandTotal = 0;      // resets the total amount
+        //this.orderNumber = '';    // optional: reset order number
         this.getGridData();
       },
       error: (err) => {

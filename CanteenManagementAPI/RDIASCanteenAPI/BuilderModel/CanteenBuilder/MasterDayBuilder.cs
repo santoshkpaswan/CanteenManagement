@@ -406,7 +406,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             //return await _context.orderModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
             var data = await (from o in _context.orderModels
                               join d in _context.masterDaysModels on o.DayId equals d.DayId
-                              where o.IsActive==true && d.IsActive==true
+                              where o.IsActive == true && d.IsActive == true
                               orderby o.OrderId descending
                               select new
                               {
@@ -422,7 +422,8 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                                   o.PaymentType,
                                   o.PaymentStatus,
                                   o.Status,
-                                   o.CreatedDate,
+                                  o.Remark,
+                                  o.CreatedDate,
                               }).ToListAsync();
 
             // Convert date format here (in-memory)
@@ -440,6 +441,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 PaymentType = o.PaymentType,
                 PaymentStatus = o.PaymentStatus,
                 Status = o.Status,
+                Remark = o.Remark,
                 // Convert DateTime → formatted string
                 OrderDate = o.CreatedDate?.ToString("dd/MM/yyyy")
             }).ToList();
@@ -494,7 +496,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                     TotalAmount = s.TotalAmount,
                     IsActive = true,
                     CreatedDate = DateTime.Now,
-                    CreatedBy = orderSaveModelView.RgenId??0
+                    CreatedBy = orderSaveModelView.RgenId ?? 0
                 }).ToList()
             };
             _context.orderModels.Add(obj);
@@ -568,7 +570,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             existing.Remark = orderStatusUpdateModelView.Remark;
             existing.IsActive = true;
             existing.ModifiedDate = DateTime.Now;  // optional
-            existing.ModifiedBy = orderStatusUpdateModelView.RgenId; 
+            existing.ModifiedBy = orderStatusUpdateModelView.RgenId;
             await _context.SaveChangesAsync();
             return orderStatusUpdateModelView;
         }

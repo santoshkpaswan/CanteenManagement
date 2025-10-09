@@ -82,7 +82,8 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     #region DayWiseFoodMenuItem
     public class DayWiseFoodMenuItemSaveModelView
     {
-        public int FoodMenuItemId { get; set; }
+        public  int FoodMenuItemId { get; set; }
+        //public List<int> FoodMenuItemId { get; set; }
         public int DayId { get; set; }
         public int Time { get; set; }
     }

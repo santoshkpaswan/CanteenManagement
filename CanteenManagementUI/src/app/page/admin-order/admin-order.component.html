@@ -49,10 +49,14 @@
           (click)="openAddCanteenOrderTemplate(canteenOrderAdd)">
           Order Accept</button> -->
 
-        <button type="button" style="margin-left: 10px;" class="btn btn-md btn-info" [disabled]="!selectedOrder"
+        <!-- <button type="button" style="margin-left: 10px;" class="btn btn-md btn-info" [disabled]="!selectedOrder"
           (click)="openEditCanteenOrderStatusTemplate(selectedOrder, aanteenOrderStatusEdit)">
           Order Status
-        </button>
+        </button> -->
+
+        <button type="button" style="margin-left: 10px;" class="btn btn-md btn-success" [disabled]="!selectedOrder"
+          (click)="openEditCanteenOrderStatusTemplate(selectedOrder, aanteenOrderStatusEdit)">
+          Order Accept</button>
 
         <button type="button" style="margin-left: 10px;" class="btn btn-md btn-danger" [disabled]="!selectedOrder"
           (click)="deleteSelectedOrder()">
