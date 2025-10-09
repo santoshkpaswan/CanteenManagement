@@ -36,7 +36,7 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> SaveMasterDay([FromBody] FoodDaySaveModelView foodDaySaveModel)
         {
             if (!ModelState.IsValid)
-                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
             try
             {
                 var result = await _masterDayInterface.SaveMasterDay(foodDaySaveModel);
@@ -55,7 +55,7 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> UpdateMasterDay([FromBody] FoodDayUpdateModelView foodDayUpdateModel)
         {
             if (!ModelState.IsValid)
-                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
 
             try
             {
@@ -106,7 +106,7 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> SaveFoodMenuItem([FromForm] FoodMenuItemModelView menuItemModelView)
         {
             if (!ModelState.IsValid)
-                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
 
             try
             {
@@ -126,7 +126,7 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> UpdateFoodMenuItem([FromForm] FoodMenuItemUpdateModelView menuItemUpdateModelView)
         {
             if (!ModelState.IsValid)
-                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
 
             try
             {
@@ -177,12 +177,12 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> SaveFoodMenuItemPrice([FromBody] FoodMenuItemPriceSaveModelView menuItemPriceSaveModelView)
         {
             if (!ModelState.IsValid)
-                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
 
             try
             {
                 var Objresult = await _masterDayInterface.SaveFoodMenuItemPrice(menuItemPriceSaveModelView);
-                return Ok(new { Success = true, Message = "Saved successfully"});
+                return Ok(new { Success = true, Message = "Saved successfully" });
             }
             catch (ArgumentException ex)
             {
@@ -197,7 +197,7 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> UpdateFoodMenuItemPrice([FromBody] FoodMenuItemPriceUpdateModelView menuItemPriceUpdateModelView)
         {
             if (!ModelState.IsValid)
-                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
 
             try
             {
@@ -210,7 +210,7 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Ok( new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("DeleteFoodMenuItemPrice/{FoodMenuItemPriceId}")]
@@ -246,7 +246,7 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> SaveDayWiseFoodMenuItem([FromBody] DayWiseFoodMenuItemSaveModelView dayWiseFoodMenuItemSaveModelView)
         {
             if (!ModelState.IsValid)
-                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
 
             try
             {
@@ -266,7 +266,7 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> UpdateDayWiseFoodMenuItem([FromBody] DayWiseFoodMenuItemUpdateModelView wiseFoodMenuItemUpdateModelView)
         {
             if (!ModelState.IsValid)
-                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
 
             try
             {
@@ -279,7 +279,7 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Ok( new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         [HttpPost("DeleteDayWiseFoodMenuItem/{DayWiseFoodMenuItemId}")]
@@ -292,7 +292,7 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Ok( new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         #endregion
@@ -312,13 +312,25 @@ namespace RDIASCanteenAPI.Controllers
             }
         }
 
+        // [HttpGet("GetOrderItemDetails/{orderId}")]
+        // public async Task<IActionResult> GetOrderItemDetails(int orderId)
+        // {
+        //     try
+        //     {
+        //         var Objitemlist = await _masterDayInterface.GetOrderItemDetails(orderId);
+        //         return Ok(new { Success = true, Data = Objitemlist  });
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return Ok(new { Success = false, Message = ex.Message });
+        //     }
+        // }
 
-         
         [HttpPost("SaveOrder")]
         public async Task<IActionResult> SaveOrder([FromBody] OrderSaveModelView orderSaveModelView)
         {
             if (!ModelState.IsValid)
-                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
 
             try
             {
@@ -339,7 +351,7 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> UpdateOrder([FromBody] OrderUpdateModelView orderUpdateModelView)
         {
             if (!ModelState.IsValid)
-                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
 
             try
             {
@@ -360,7 +372,7 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> UpdateOrderStatus([FromBody] OrderStatusUpdateModelView orderStatusUpdateModelView)
         {
             if (!ModelState.IsValid)
-                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
 
             try
             {
@@ -409,7 +421,7 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> SaveOrderItem([FromBody] OrderItemSaveModelView itemSaveModelView)
         {
             if (!ModelState.IsValid)
-               return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
 
             try
             {
@@ -422,7 +434,7 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Ok( new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
 
@@ -430,7 +442,7 @@ namespace RDIASCanteenAPI.Controllers
         public async Task<IActionResult> UpdateOrderItem([FromBody] OrderItemSaveModelView orderItemUpdateModel)
         {
             if (!ModelState.IsValid)
-                return Ok(new { Success = false, Message="Validation failed",Errors =ModelState});
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
 
             try
             {
@@ -456,7 +468,7 @@ namespace RDIASCanteenAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Ok( new { Success = false, Message = ex.Message });
+                return Ok(new { Success = false, Message = ex.Message });
             }
         }
         #endregion

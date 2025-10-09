@@ -82,7 +82,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     #region DayWiseFoodMenuItem
     public class DayWiseFoodMenuItemSaveModelView
     {
-        public  int FoodMenuItemId { get; set; }
+        public int FoodMenuItemId { get; set; }
         //public List<int> FoodMenuItemId { get; set; }
         public int DayId { get; set; }
         public int Time { get; set; }
@@ -104,7 +104,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string? DaysName { get; set; }
         public string OrderDate { get; set; }
     }
-     
+
     public class OrderSaveModelView
     {
         public string? OrderNumber { get; set; }
@@ -193,5 +193,15 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public decimal TotalAmount { get; set; }
     }
 
+
+    // public class OrderDetailsViewModel
+    // {
+    //     public int OrderItemId { get; set; }
+    //     public int ItemNo { get; set; }
+    //     public int FoodMenuItemId { get; set; }
+    //     public string ItemName { get; set; }
+    //     public decimal TotalAmount { get; set; }
+    //     public int OrderId { get; set; }
+    // }
     #endregion
 }

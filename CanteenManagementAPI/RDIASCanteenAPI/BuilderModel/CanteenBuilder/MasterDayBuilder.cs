@@ -448,7 +448,25 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             return result;
         }
 
-         
+        // public async Task<List<OrderDetailsViewModel>> GetOrderItemDetails(int orderId)
+        // {
+        //     var result = await (
+        //         from oi in _context.tblOrderItem
+        //         join fm in _context.foodMenuItemModels on oi.FoodMenuItemId equals fm.FoodMenuItemId
+        //         where oi.IsActive && oi.OrderId == orderId
+        //         select new OrderDetailsViewModel
+        //         {
+        //             OrderItemId = oi.OrderItemId,
+        //             ItemNo = oi.ItemNo,
+        //             FoodMenuItemId = oi.FoodMenuItemId,
+        //             ItemName = fm.ItemName,
+        //             TotalAmount = oi.TotalAmount,
+        //             OrderId = oi.OrderId,
+        //         }
+        //     ).ToListAsync();
+
+        //     return result;
+        // }
 
         public async Task<OrderSaveModelView> SaveOrder(OrderSaveModelView orderSaveModelView)
         {
