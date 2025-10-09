@@ -103,9 +103,8 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     {
         public string? DaysName { get; set; }
         public string OrderDate { get; set; }
-
-
     }
+     
     public class OrderSaveModelView
     {
         public string? OrderNumber { get; set; }
