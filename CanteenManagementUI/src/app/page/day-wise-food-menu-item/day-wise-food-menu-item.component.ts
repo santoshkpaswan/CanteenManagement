@@ -1,4 +1,4 @@
-import { Component ,ChangeDetectorRef, Inject, Input, OnInit, TemplateRef, ViewChild, inject} from '@angular/core';
+import { Component, ChangeDetectorRef, Inject, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -29,15 +29,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './day-wise-food-menu-item.component.scss'
 })
 export class DayWiseFoodMenuItemComponent implements OnInit {
- addCanteenDayWiseItemForm : FormGroup;
- editCanteenDayWiseItemForm :FormGroup;
+  addCanteenDayWiseItemForm: FormGroup;
+  editCanteenDayWiseItemForm: FormGroup;
   currentPage: any = 0;
   pageSize: any = 10;
   dayWiseitemNameList: any = [];
-  foodItems : any = [];
-  dayName : any = [];
+  foodItems: any = [];
+  dayName: any = [];
 
-  displayedColumns: string[] = ['sno', 'dayname','itemname', 'time', 'edit', 'delete'];
+  displayedColumns: string[] = ['sno', 'dayname', 'itemname', 'time', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
@@ -55,38 +55,38 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
     private _coreService: CoreService) {
-       this.addCanteenDayWiseItemForm = _formBuilder.group({
+    this.addCanteenDayWiseItemForm = _formBuilder.group({
       foodMenuItemId: ['', Validators.required],
       dayId: ['', Validators.required],
-      time:['',Validators.required]
+      time: ['', Validators.required]
     });
 
     this.editCanteenDayWiseItemForm = _formBuilder.group({
       foodMenuItemId: ['', Validators.required],
       dayId: ['', Validators.required],
-      time:['',Validators.required],
-      dayWiseFoodMenuItemId:['',Validators.required]
+      time: ['', Validators.required],
+      dayWiseFoodMenuItemId: ['', Validators.required]
     });
   }
-   ngOnInit(): void {
-     this.getGridData();
-     this.getFoodItemData();
-     this.getDayNameData();
+  ngOnInit(): void {
+    this.getGridData();
+    this.getFoodItemData();
+    this.getDayNameData();
   }
 
   getGridData() {
     this._canteenService.getDayWiseFoodItem().subscribe((response) => {
       this.dataSource = response.data;
       this.dayWiseitemNameList = response.data;
-      debugger
+      this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
- getFoodItemData() {
-     this._canteenService.getFoodMenuItem().subscribe((response) => {
-       this.foodItems=response.data;
-     debugger
+  getFoodItemData() {
+    this._canteenService.getFoodMenuItem().subscribe((response) => {
+      this.foodItems = response.data;
+      debugger
     });
   }
 
@@ -94,7 +94,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     debugger
     this._canteenService.getFoodDays().subscribe((response) => {
       this.dayName = response.data;
-       debugger
+      debugger
     });
   }
   addNewCanteenDayWiseItem() {
@@ -114,7 +114,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
 
   }
 
-    updateDayWiseItemName() {
+  updateDayWiseItemName() {
     if (this.editCanteenDayWiseItemForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
@@ -147,7 +147,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       });
   }
 
-openEditCanteenDayWiseItemTemplate(element: any, content: TemplateRef<any>) {
+  openEditCanteenDayWiseItemTemplate(element: any, content: TemplateRef<any>) {
     debugger
     this.editCanteenDayWiseItemForm = this._formBuilder.group({
       foodMenuItemId: [element.foodMenuItemId, Validators.required],
@@ -159,11 +159,11 @@ openEditCanteenDayWiseItemTemplate(element: any, content: TemplateRef<any>) {
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
 
-   openAddCanteenDayWiseItemTemplate(content: TemplateRef<any>) {
-       this.modalService.open(content, { size: 'md', backdrop: 'static' });
-     }
+  openAddCanteenDayWiseItemTemplate(content: TemplateRef<any>) {
+    this.modalService.open(content, { size: 'md', backdrop: 'static' });
+  }
 
-     pageChanged(event: PageEvent) {
+  pageChanged(event: PageEvent) {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
   }

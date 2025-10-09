@@ -25,8 +25,8 @@ import { environment } from 'src/environments/environment';
   selector: 'app-food-menu-item',
   standalone: true,
   providers: [],
-  imports: [ReactiveFormsModule,CommonModule,MatTooltipModule,FormsModule,MatSelectModule, MatGridListModule, MatCardModule, ReactiveFormsModule, MatExpansionModule, MatDialogModule,
-            MatIconModule,MatExpansionModule,MatSortModule,MatPaginatorModule,MatCheckboxModule,MatTableModule, MatPaginatorModule,  MatTooltipModule],
+  imports: [ReactiveFormsModule, CommonModule, MatTooltipModule, FormsModule, MatSelectModule, MatGridListModule, MatCardModule, ReactiveFormsModule, MatExpansionModule, MatDialogModule,
+    MatIconModule, MatExpansionModule, MatSortModule, MatPaginatorModule, MatCheckboxModule, MatTableModule, MatPaginatorModule, MatTooltipModule],
   templateUrl: './food-menu-item.component.html',
   styleUrl: './food-menu-item.component.scss'
 })
@@ -69,7 +69,7 @@ export class FoodMenuItemComponent implements OnInit {
       itemName: ['', Validators.required],
       itemURL: [''],
       itemDescriptin: ['', Validators.required],
-      foodMenuItemId: ['',Validators.required]
+      foodMenuItemId: ['', Validators.required]
     });
   }
 
@@ -81,7 +81,7 @@ export class FoodMenuItemComponent implements OnInit {
     this._canteenService.getFoodMenuItem().subscribe((response) => {
       this.dataSource = response.data;
       this.daysList = response.data;
-
+      this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
@@ -116,16 +116,16 @@ export class FoodMenuItemComponent implements OnInit {
     if (this.editCanteenMenuItemForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
-     } else if (this.isInvalidFileType == true) {
-       this._coreService.openSnackBar('Please select file.', 'Ok');
-       return;
+    } else if (this.isInvalidFileType == true) {
+      this._coreService.openSnackBar('Please select file.', 'Ok');
+      return;
     }
     this.editCanteenMenuItemForm.disable();
     const formData = new FormData();
-     formData.append('itemImageFile', this.selectedFile);
-     formData.append('ItemName', this.editCanteenMenuItemForm.value.itemName);
-     formData.append('ItemDescriptin', this.editCanteenMenuItemForm.value.itemDescriptin);
-     formData.append('foodMenuItemId',this.editCanteenMenuItemForm.value.foodMenuItemId);
+    formData.append('itemImageFile', this.selectedFile);
+    formData.append('ItemName', this.editCanteenMenuItemForm.value.itemName);
+    formData.append('ItemDescriptin', this.editCanteenMenuItemForm.value.itemDescriptin);
+    formData.append('foodMenuItemId', this.editCanteenMenuItemForm.value.foodMenuItemId);
 
     this._canteenService.updateFoodMenuItem(formData).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');

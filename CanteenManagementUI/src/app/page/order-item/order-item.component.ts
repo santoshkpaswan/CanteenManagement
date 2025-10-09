@@ -30,7 +30,7 @@ export interface OrderItem {
   imageUrl?: string;
   itemPriceDescriptin?: string;
   foodMenuItemId?: number;
-  dayId?:number;
+  dayId?: number;
 }
 
 @Component({
@@ -48,7 +48,7 @@ export class OrderItemComponent implements OnInit {
   currentPage: number = 0;
   pageSize: number = 10;
   itemList: OrderItem[] = [];
-  response:  any;
+  response: any;
   grandTotal: number = 0;
   orderNumber: string = '';
   filteredItems: any[] = [];
@@ -114,9 +114,9 @@ export class OrderItemComponent implements OnInit {
     this._canteenService.getOrderItem().subscribe((response) => {
       this.dataSource = response.data;
       this.itemList = response.data;
-      debugger
-      //this.dataSource.paginator = this.paginator;
-      //this.dataSource.sort = this.sort;
+      //this.dataSource = new MatTableDataSource<any>(response.data);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     });
   }
 
@@ -197,7 +197,7 @@ export class OrderItemComponent implements OnInit {
   //   }
   // }
 
-  payNow() {
+  orderPlace() {
     debugger
     // Check if the form is valid
     if (this.addpayNow.invalid) {

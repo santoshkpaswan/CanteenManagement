@@ -68,7 +68,7 @@ export class FoodMenuItemPriceComponent implements OnInit {
     this.editCanteenItemPriceForm = _formBuilder.group({
       foodMenuItemId: ['', Validators.required],
       academicSessionID: ['', Validators.required],
-      sessionName:['',Validators.required],
+      sessionName: ['', Validators.required],
       itemPrice: ['', Validators.required],
       itemPriceDescriptin: ['', Validators.required],
       foodMenuItemPriceId: ['', Validators.required]
@@ -90,7 +90,7 @@ export class FoodMenuItemPriceComponent implements OnInit {
     this._canteenService.getFoodItemPrice().subscribe((response) => {
       this.dataSource = response.data;
       this.itemNameList = response.data;
-      debugger
+      this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
@@ -178,7 +178,7 @@ export class FoodMenuItemPriceComponent implements OnInit {
     this.editCanteenItemPriceForm = this._formBuilder.group({
       foodMenuItemId: [element.foodMenuItemId, Validators.required],
       academicSessionID: [this.academicSessionList.AcademicSessionID, Validators.required],
-      sessionName:[this.academicSessionList.SessionName,Validators.required],
+      sessionName: [this.academicSessionList.SessionName, Validators.required],
       itemPrice: [element.itemPrice, Validators.required],
       itemPriceDescriptin: [element.itemPriceDescriptin, Validators.required],
       foodMenuItemPriceId: [element.foodMenuItemPriceId, Validators.required],

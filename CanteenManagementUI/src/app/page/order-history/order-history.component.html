@@ -1,3 +1,31 @@
+<!-- Filter Section -->
+<div class="card shadow-sm border-0 mb-4">
+  <div class="card-body">
+    <div class="row g-3 align-items-end">
+
+      <!-- Status Filter -->
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">Status</label>
+        <select class="form-control" [(ngModel)]="statusFilter">
+          <option value="">All</option>
+          <option *ngFor="let status of statusArray" [value]="status.value">{{ status.statuslabel }}</option>
+        </select>
+      </div>
+      <!-- Buttons -->
+      <div class="col-md-3 d-flex justify-content-start mt-3 mt-md-0">
+        <button type="button" class="btn btn-primary me-2 px-4" (click)="orderSearchFilter()">
+          <i class="bi bi-search me-1"></i> Search
+        </button>
+        <button type="button" class="btn btn-outline-secondary px-4" (click)="resetOrderSearchFilter()">
+          <i class="bi bi-x-circle me-1"></i> Reset
+        </button>
+      </div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+
 <div class="card text-center" style="margin-top: 10px;">
   <div class="card-header">
     <div class="row justify-content-between align-items-center">
@@ -51,7 +79,7 @@
         <td mat-cell *matCellDef="let element"> {{element.totalAmount}} </td>
       </ng-container>
 
-       <ng-container matColumnDef="status">
+      <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
         <td mat-cell *matCellDef="let element"> {{getOrderStatusLabel(element.status)}} </td>
       </ng-container>
@@ -64,7 +92,6 @@
       <ng-container matColumnDef="paymentstatus">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Status </th>
         <td mat-cell *matCellDef="let element">
-          <!-- {{getPaymentStatusLabel(element.paymentStatus)}} -->
           <span [ngClass]="getPaymentStatusLabel(element.paymentStatus).cssClass">
             {{ getPaymentStatusLabel(element.paymentStatus).label }}
           </span>
@@ -156,13 +183,7 @@
           <label>Total Amount<strong style="color: red;">*</strong></label>
           <input type="number" min="0" [formControlName]="'totalAmount'" class="form-control" required>
         </div>
-
         <!-- Payment Type -->
-        <!-- <div class="col-md-6 mb-2">
-          <label>Payment Type<strong style="color: red;">*</strong></label>
-          <input type="number" min="0" [formControlName]="'paymentType'" class="form-control" required>
-        </div> -->
-
         <div class="col-md-6 mb-2">
           <label>Payment Type *</label>
           <select [formControlName]="'paymentType'" class="form-control">
@@ -172,11 +193,6 @@
         </div>
 
         <!-- Payment Status -->
-        <!-- <div class="col-md-6 mb-2">
-          <label>Payment Status<strong style="color: red;">*</strong></label>
-          <input type="number" min="0" [formControlName]="'paymentStatus'" class="form-control" required>
-        </div> -->
-
         <div class="col-md-6 mb-2">
           <label>Payment Status *</label>
           <select [formControlName]="'paymentStatus'" class="form-control">
@@ -186,11 +202,6 @@
         </div>
 
         <!-- Status -->
-        <!-- <div class="col-md-6 mb-2">
-          <label>Status<strong style="color: red;">*</strong></label>
-          <input type="number" min="0"  [formControlName]="'status'" class="form-control" required>
-        </div> -->
-
         <div class="col-md-6 mb-2">
           <label>Status *</label>
           <select [formControlName]="'status'" class="form-control">
@@ -213,7 +224,7 @@
 </ng-template>
 
 <!-- ---------------------------------- Angular Template for updating a existing ------------------------------------ -->
- <ng-template #aanteenOrderEdit let-modal>
+<ng-template #aanteenOrderEdit let-modal>
   <form [formGroup]="editCanteenOrderForm" #signInNgForm="ngForm">
     <div class="modal-header">
       <h6 class="modal-title" id="modal-basic-title">Edit Order</h6>

@@ -77,7 +77,7 @@ export class FoodDayComponent implements OnInit {
     this._canteenService.getFoodDays().subscribe((response) => {
       this.dataSource = response.data;
       this.daysList = response.data;
-      debugger
+      this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });

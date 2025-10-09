@@ -39,9 +39,9 @@ export class OrderHistoryComponent implements OnInit {
   pageSize: any = 10;
   orderList: any = [];
   dayName: any = [];
+  statusFilter: string = '';
 
-
-  displayedColumns: string[] = ['sno', 'ordernumber','oderDate','totalamount','status', 'paymenttype', 'paymentstatus','delete'];
+  displayedColumns: string[] = ['sno', 'ordernumber', 'oderDate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'delete'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;
@@ -105,13 +105,22 @@ export class OrderHistoryComponent implements OnInit {
     this.getDayNameData();
   }
 
+
   getGridData() {
     this._canteenService.getOrder().subscribe((response) => {
       this.dataSource = response.data;
       this.orderList = response.data;
+      this.dataSource = new MatTableDataSource<any>(response.data);
       debugger
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+
+      this.dataSource.filterPredicate = (data: any, filter: string) => {
+        debugger
+        const filters = JSON.parse(filter);
+        const statusMatch = filters.status ? data.status === +filters.status : true;
+        return statusMatch;
+      };
     });
   }
 
@@ -131,15 +140,6 @@ export class OrderHistoryComponent implements OnInit {
     }
     // Ensure user info is latest from localStorage
     const currentUser = this._authService.getUser();
-    // if (currentUser) {
-    //   this.addCanteenOrderForm.patchValue({
-    //     rgenId: currentUser.account_id,
-    //     userId: currentUser.user_name,
-    //     userType: currentUser.usertype,
-    //   });
-
-    // }
-
     const addpayload: any = {
       dayId: Number(this.addCanteenOrderForm.value.dayId),
       rgenId: currentUser ? currentUser.account_id : this.addCanteenOrderForm.value.rgenId,
@@ -198,9 +198,6 @@ export class OrderHistoryComponent implements OnInit {
     })
 
   }
-
-
-
   deleteCanteenOrder(element: any) {
     this._confirmation.confirm('Are you sure?', 'Do you really want to delete this order?')
       .then((confirmed) => {
@@ -252,9 +249,9 @@ export class OrderHistoryComponent implements OnInit {
   statusArray = Object.keys(OrderStatus).filter(key => isNaN(Number(key))).map(key => ({ statuslabel: key, value: OrderStatus[key as keyof typeof OrderStatus] }));
 
   // Helper functions for table display
-   getPaymentTypeLabel(value: number): string {
+  getPaymentTypeLabel(value: number): string {
 
-     return this.paymentTypesArray.find(x => x.value === value)?.paymenttypelabel || '';
+    return this.paymentTypesArray.find(x => x.value === value)?.paymenttypelabel || '';
   }
   getPaymentStatusLabel(value: number): { label: string, cssClass: string } {
     const label = this.paymentStatusArray.find(x => x.value === value)?.paymentstatuslabel || '';
@@ -274,14 +271,27 @@ export class OrderHistoryComponent implements OnInit {
     return { label, cssClass };
   }
 
-
-
-  // getPaymentStatusLabel(value: number): string {
-  //   return this.paymentStatusArray.find(x => x.value === value)?.paymentstatuslabel || '';
-  // }
-
   getOrderStatusLabel(value: number): string {
     return this.statusArray.find(x => x.value === value)?.statuslabel || '';
+  }
+  orderSearchFilter() {
+    debugger
+    const filterObj = {
+      status: this.statusFilter.trim().toLowerCase(),
+    };
+
+    this.dataSource.filter = JSON.stringify(filterObj);
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  resetOrderSearchFilter() {
+    this.statusFilter = '';
+    this.dataSource.filter = '';
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
 }
