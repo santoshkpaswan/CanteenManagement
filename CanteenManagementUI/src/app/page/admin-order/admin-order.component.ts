@@ -42,6 +42,7 @@ export class AdminOrderComponent {
   selectedOrder: any;
   statusFilter: string = '';
   orderDateFilter: string = '';
+  selectedOrderDetails: any[] = [];
 
 
 
@@ -58,6 +59,7 @@ export class AdminOrderComponent {
   selection = new SelectionModel<any>(true, []);
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  @ViewChild('canteenOrderDetails', { static: true }) canteenOrderDetails!: TemplateRef<any>;
 
 
   @Inject(MAT_DIALOG_DATA) public data: any
@@ -416,6 +418,28 @@ export class AdminOrderComponent {
     }
   }
 
+  // Get OrderDetails View
+  getOrderDetailsById(orderId: number) {
+    debugger;
+    this._canteenService.getOrderItemDetails(orderId).subscribe({
+      next: (res: any) => {
+        debugger;
+        this.selectedOrderDetails = res?.data || [];
+        console.log('Order details:', this.selectedOrderDetails);
+        // this.modalService.open(this.canteenOrderDetails, { size: 'lg', backdrop: 'static' });
+        this.modalService.open(this.canteenOrderDetails, { size: 'md', backdrop: 'static' });
+      },
+      error: (err) => {
+        console.error(err);
+        this._coreService.openSnackBar('Failed to load order details.', 'Ok');
+      }
+    });
+  }
+
+  // Getter for Grand Total
+  get grandTotal(): number {
+    return this.selectedOrderDetails?.reduce((sum, x) => sum + (x.totalAmount || 0), 0) || 0;
+  }
 
 
 

@@ -194,14 +194,14 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     }
 
 
-    // public class OrderDetailsViewModel
-    // {
-    //     public int OrderItemId { get; set; }
-    //     public int ItemNo { get; set; }
-    //     public int FoodMenuItemId { get; set; }
-    //     public string ItemName { get; set; }
-    //     public decimal TotalAmount { get; set; }
-    //     public int OrderId { get; set; }
-    // }
+    public class OrderDetailsViewModel
+    {
+        public int OrderItemId { get; set; }
+        public int ItemNo { get; set; }
+        public int FoodMenuItemId { get; set; }
+        public string ItemName { get; set; }
+        public decimal TotalAmount { get; set; }
+        public int OrderId { get; set; }
+    }
     #endregion
 }

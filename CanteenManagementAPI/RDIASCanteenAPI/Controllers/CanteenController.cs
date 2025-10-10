@@ -312,19 +312,19 @@ namespace RDIASCanteenAPI.Controllers
             }
         }
 
-        // [HttpGet("GetOrderItemDetails/{orderId}")]
-        // public async Task<IActionResult> GetOrderItemDetails(int orderId)
-        // {
-        //     try
-        //     {
-        //         var Objitemlist = await _masterDayInterface.GetOrderItemDetails(orderId);
-        //         return Ok(new { Success = true, Data = Objitemlist  });
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         return Ok(new { Success = false, Message = ex.Message });
-        //     }
-        // }
+        [HttpGet("GetOrderItemDetails/{orderId}")]
+        public async Task<IActionResult> GetOrderItemDetails(int orderId)
+        {
+            try
+            {
+                var Objitemlist = await _masterDayInterface.GetOrderItemDetails(orderId);
+                return Ok(new { Success = true, Data = Objitemlist });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { Success = false, Message = ex.Message });
+            }
+        }
 
         [HttpPost("SaveOrder")]
         public async Task<IActionResult> SaveOrder([FromBody] OrderSaveModelView orderSaveModelView)

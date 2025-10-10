@@ -40,6 +40,7 @@ export class OrderHistoryComponent implements OnInit {
   orderList: any = [];
   dayName: any = [];
   statusFilter: string = '';
+  selectedOrderDetails: any[] = [];
 
   displayedColumns: string[] = ['sno', 'ordernumber', 'oderDate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'delete'];
   // expose enums for HTML template
@@ -52,6 +53,7 @@ export class OrderHistoryComponent implements OnInit {
   selection = new SelectionModel<any>(true, []);
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  @ViewChild('canteenOrderDetails', { static: true }) canteenOrderDetails!: TemplateRef<any>;
 
 
   @Inject(MAT_DIALOG_DATA) public data: any
@@ -70,7 +72,6 @@ export class OrderHistoryComponent implements OnInit {
     const userId = currentUser.user_name;  // always a string
     const userType = currentUser.usertype;  // always a string
     this.addCanteenOrderForm = _formBuilder.group({
-      //   //orderNumber: [''],
       dayId: [0, Validators.required],
       rgenId: [rgenId, Validators.required],
       userName: ['', Validators.required],
@@ -99,13 +100,10 @@ export class OrderHistoryComponent implements OnInit {
     });
   }
 
-
   ngOnInit(): void {
     this.getGridData();
     this.getDayNameData();
   }
-
-
   getGridData() {
     this._canteenService.getOrder().subscribe((response) => {
       this.dataSource = response.data;
@@ -184,9 +182,7 @@ export class OrderHistoryComponent implements OnInit {
       status: Number(this.editCanteenOrderForm.value.status),
       remark: this.editCanteenOrderForm.value.remark
     };
-
     this.editCanteenOrderForm.disable();
-
     ///this._canteenService.updateOrder(this.editCanteenOrderForm.value).subscribe((data) => {
     this._canteenService.updateOrder(updatepayload).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');
@@ -211,6 +207,27 @@ export class OrderHistoryComponent implements OnInit {
           })
         }
       });
+  }
+  // Get OrderDetails View
+  getOrderDetailsById(orderId: number) {
+    debugger;
+    this._canteenService.getOrderItemDetails(orderId).subscribe({
+      next: (res: any) => {
+        debugger;
+        this.selectedOrderDetails = res?.data || [];
+        console.log('Order details:', this.selectedOrderDetails);
+        this.modalService.open(this.canteenOrderDetails, { size: 'mb', backdrop: 'static' });
+      },
+      error: (err) => {
+        console.error(err);
+        this._coreService.openSnackBar('Failed to load order details.', 'Ok');
+      }
+    });
+  }
+
+  // Getter for Grand Total
+  get grandTotal(): number {
+    return this.selectedOrderDetails?.reduce((sum, x) => sum + (x.totalAmount || 0), 0) || 0;
   }
 
   openAddCanteenOrderTemplate(content: TemplateRef<any>) {
@@ -285,7 +302,6 @@ export class OrderHistoryComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
   resetOrderSearchFilter() {
     this.statusFilter = '';
     this.dataSource.filter = '';

@@ -448,25 +448,27 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             return result;
         }
 
-        // public async Task<List<OrderDetailsViewModel>> GetOrderItemDetails(int orderId)
-        // {
-        //     var result = await (
-        //         from oi in _context.tblOrderItem
-        //         join fm in _context.foodMenuItemModels on oi.FoodMenuItemId equals fm.FoodMenuItemId
-        //         where oi.IsActive && oi.OrderId == orderId
-        //         select new OrderDetailsViewModel
-        //         {
-        //             OrderItemId = oi.OrderItemId,
-        //             ItemNo = oi.ItemNo,
-        //             FoodMenuItemId = oi.FoodMenuItemId,
-        //             ItemName = fm.ItemName,
-        //             TotalAmount = oi.TotalAmount,
-        //             OrderId = oi.OrderId,
-        //         }
-        //     ).ToListAsync();
+        public async Task<List<OrderDetailsViewModel>> GetOrderItemDetails(int orderId)
+        {
+            var result = await (
+                from o in _context.orderModels
+                join om in _context.orderItemModels on o.OrderId equals om.OrderId
+                join fm in _context.foodMenuItemModels on om.FoodMenuItemId equals fm.FoodMenuItemId
+                where o.IsActive == true && om.IsActive == true && fm.IsActive == true && o.OrderId == orderId
+                select new OrderDetailsViewModel
+                {
+                    OrderItemId = om.OrderItemId,
+                    ItemNo = om.ItemNo,
+                    FoodMenuItemId = om.FoodMenuItemId,
+                    ItemName = fm.ItemName,
+                    TotalAmount = om.TotalAmount,
+                    OrderId = orderId,
+                }
+            ).ToListAsync();
 
-        //     return result;
-        // }
+            return result;
+        }
+
 
         public async Task<OrderSaveModelView> SaveOrder(OrderSaveModelView orderSaveModelView)
         {
