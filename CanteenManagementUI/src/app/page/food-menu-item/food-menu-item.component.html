@@ -1,5 +1,3 @@
-
-
 <div class="card text-center" style="margin-top: 10px;">
   <div class="card-header">
     <div class="row justify-content-between align-items-center">
@@ -87,26 +85,26 @@
     </div>
     <div class="modal-body">
       <div class="row">
-      <div class="col-md-6 mb-2">
-        <label>Item Name<strong style="color: red;">*</strong></label>
-        <div class="input-group">
-          <input [formControlName]="'itemName'" placeholder="Enter Item Name" class="form-control" required>
+        <div class="col-md-6 mb-2">
+          <label>Item Name<strong style="color: red;">*</strong></label>
+          <div class="input-group">
+            <input [formControlName]="'itemName'" placeholder="Enter Item Name" class="form-control" required>
+          </div>
         </div>
-      </div>
-      <div class="col-md-6 mb-2">
-        <label>Item URL<strong style="color: red;">*</strong></label>
-        <div class="input-group">
+        <div class="col-md-6 mb-2">
+          <label>Item URL<strong style="color: red;">*</strong></label>
+          <div class="input-group">
           <input type="file" [formControlName]="'itemURL'" placeholder="Select Image" class="form-control" (change)="handleFileInput($event)"
             accept="image/*">
+          </div>
         </div>
-      </div>
-      <div class="mb-4">
-        <label>Item Descriptin<strong style="color: red;">*</strong></label>
-        <div class="input-group">
+        <div class="mb-4">
+          <label>Item Descriptin<strong style="color: red;">*</strong></label>
+          <div class="input-group">
           <textarea [formControlName]="'itemDescriptin'" placeholder="Enter Item Description" class="form-control" rows="6" required></textarea>
+          </div>
         </div>
       </div>
-    </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-md btn-primary" (click)="addNewCanteenMenuItem()">Save</button>
@@ -123,27 +121,38 @@
     </div>
     <div class="modal-body">
       <div class="row">
-      <div class="col-md-6 mb-2">
-        <label>Item Name<strong style="color: red;">*</strong></label>
-        <div class="input-group">
-          <input [formControlName]="'itemName'" class="form-control" placeholder="Enter Item Name" required>
-          <input type="hidden" [formControlName]="'foodMenuItemId'" class="form-control" required>
+        <div class="col-md-6 mb-2">
+          <label>Item Name<strong style="color: red;">*</strong></label>
+          <div class="input-group">
+            <input [formControlName]="'itemName'" class="form-control" placeholder="Enter Item Name" required>
+            <input type="hidden" [formControlName]="'foodMenuItemId'" class="form-control" required>
+          </div>
+        </div>
+        <div class="col-md-6 mb-2">
+          <label>Item URL<strong style="color: red;">*</strong></label>
+          <div class="input-group">
+            <input type="file" [formControlName]="'itemURL'" class="form-control" placeholder="Select Image"
+              (change)="handleFileInput($event)" accept="image/*">
+          </div>
+        </div>
+        <!-- File Upload -->
+        <!-- <div class="col-md-6 mb-2">
+          <label>Item URL<strong style="color: red;">*</strong></label>
+          <div class="input-group">
+            <input type="file" class="form-control" (change)="handleFileInput($event)" accept="image/*">
+            <small *ngIf="editCanteenMenuItemForm.value.itemURL">{{ editCanteenMenuItemForm.value.itemURL}}</small>
+          </div>
+        </div> -->
+
+
+        <div class="mb-4">
+          <label>Item Descriptin<strong style="color: red;">*</strong></label>
+          <div class="input-group">
+            <textarea [formControlName]="'itemDescriptin'" class="form-control" rows="6"
+              placeholder="Enter Item Description"></textarea>
+          </div>
         </div>
       </div>
-      <div class="col-md-6 mb-2">
-        <label>Item URL<strong style="color: red;">*</strong></label>
-        <div class="input-group">
-          <input type="file" [formControlName]="'itemURL'" class="form-control" placeholder="Select Image" (change)="handleFileInput($event)"
-            accept="image/*">
-        </div>
-      </div>
-      <div class="mb-4">
-        <label>Item Descriptin<strong style="color: red;">*</strong></label>
-        <div class="input-group">
-          <textarea [formControlName]="'itemDescriptin'" class="form-control" rows="6" placeholder="Enter Item Description"></textarea>
-        </div>
-      </div>
-    </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-md btn-primary" (click)="updateMenuItemName()">Update</button>

@@ -76,6 +76,13 @@ export class AuthService {
     return localStorage.getItem('Role') ?? '';
   }
 
+  get isAdmin(): boolean {
+    return this.getUser().usertype.toLowerCase() === 'admin';
+  }
+
+  get accountId(): number {
+    return this.getUser().account_id;
+  }
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
   // -----------------------------------------------------------------------------------------------------

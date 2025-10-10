@@ -94,16 +94,39 @@
           </div>
         </div>
 
-          <div class="col-md-6 mb-2">
+        <div class="col-md-6 mb-2">
           <label>Item Name<strong style="color: red;">*</strong></label>
           <div class="input-group">
-            <select [formControlName]="'foodMenuItemId'" class="form-control" >
+            <select [formControlName]="'foodMenuItemId'" class="form-control">
               <option *ngFor="let item of foodItems" [value]="item.foodMenuItemId">
                 {{ item.itemName }}
               </option>
             </select>
           </div>
         </div>
+
+        <div class="col-md-6 mb-2">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Toppings</mat-label>
+            <mat-select [formControl]="toppings" multiple panelClass="toppings-panel">
+
+              <mat-select-trigger>
+                {{ toppings.value?.[0] || '' }}
+                <span class="example-additional-selection" *ngIf="(toppings.value?.length || 0) > 1">
+                  (+{{ (toppings.value?.length || 0) - 1 }}
+                  {{ toppings.value?.length === 2 ? 'other' : 'others' }})
+                </span>
+              </mat-select-trigger>
+
+              <mat-option *ngFor="let topping of toppingList" [value]="topping">
+                {{ topping }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+
+
 
         <!-- <div class="col-md-6 mb-2">
           <label>Item Name <strong style="color: red;">*</strong></label>

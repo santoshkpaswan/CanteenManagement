@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef, Inject, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CoreService } from 'src/app/services/core.service';
@@ -19,6 +19,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ConfirmationDialogService } from 'src/app/confirmation-dialog/confirmation-dialog.service';
 import * as XLSX from 'xlsx';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 
 
@@ -41,6 +42,9 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   //foodItems: any[] = [];
   dayName: any = [];
 
+  toppings = new FormControl('');
+  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+
   displayedColumns: string[] = ['sno', 'dayname', 'itemname', 'time', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
@@ -58,7 +62,13 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     private _confirmation: ConfirmationDialogService,
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
+    private overlayContainer: OverlayContainer,
     private _coreService: CoreService) {
+
+    this.overlayContainer.getContainerElement().classList.add('in-modal');
+
+
+
     this.addCanteenDayWiseItemForm = _formBuilder.group({
       foodMenuItemId: ['', Validators.required],
       //foodMenuItemId: [[], Validators.required],
@@ -72,6 +82,11 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       time: ['', Validators.required],
       dayWiseFoodMenuItemId: ['', Validators.required]
     });
+  }
+
+  ngOnDestroy() {
+    // Cleanup jab modal band ho
+    this.overlayContainer.getContainerElement().classList.remove('in-modal');
   }
   ngOnInit(): void {
     this.getGridData();

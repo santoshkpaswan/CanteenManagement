@@ -1,0 +1,12 @@
+.custom-overlay-container {
+  z-index: 1100 !important; /* higher than modal (1050) */
+}
+
+/* mat-select dropdown panel */
+.mat-select-panel {
+  z-index: 1101 !important;  /* higher than overlay container */
+  background-color: red !important; /* optional */
+  color: white !important;          /* optional */
+  max-height: 200px;                 /* optional scroll */
+  overflow-y: auto;
+}

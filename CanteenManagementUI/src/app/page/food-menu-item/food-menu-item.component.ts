@@ -173,6 +173,8 @@ export class FoodMenuItemComponent implements OnInit {
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
 
+
+
   handleFileInput(event: any) {
     if (event.target.files.length == 0) {
       this.selectedFile = [];
