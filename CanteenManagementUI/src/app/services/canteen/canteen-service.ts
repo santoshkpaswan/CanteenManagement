@@ -10,6 +10,22 @@ export class CanteenService {
 
   constructor(private _httpClient: HttpClient) { }
 
+  //  Helper to get RgenID as a number from localStorage
+  private get loginUserId(): number {
+    const userStr = localStorage.getItem('user');
+    if (!userStr) {
+      console.error('User not found in localStorage');
+      return 0;
+    }
+    try {
+      const user = JSON.parse(userStr);
+      return Number(user.account_id) || 0; // convert to number
+    } catch (e) {
+      console.error('Error parsing user JSON from localStorage', e);
+      return 0;
+    }
+  }
+
   getFoodDays(): Observable<any> {
     debugger
     return this._httpClient.get(`${environment.apiUrl}/Canteen/ListFoodDay`, {}).pipe(
@@ -156,7 +172,10 @@ export class CanteenService {
 
   getOrder(): Observable<any> {
     debugger
-    return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrder/${localStorage.getItem('RgenID')}`, {}).pipe(
+    //const rgenId = localStorage.getItem('RgenID');
+    const rgenId = this.loginUserId;
+
+    return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrder?rgenId=${rgenId}`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
       })
@@ -218,12 +237,12 @@ export class CanteenService {
 
 
   getOrderItemDetails(orderId: any): Observable<any> {
-      debugger
-      return this._httpClient.get(`${environment.apiUrl}/Canteen/GetOrderItemDetails/${orderId}`, {}).pipe(
-          switchMap((response: any) => {
-              return of(response);
-          })
-      );
+    debugger
+    return this._httpClient.get(`${environment.apiUrl}/Canteen/GetOrderItemDetails/${orderId}`, {}).pipe(
+      switchMap((response: any) => {
+        return of(response);
+      })
+    );
   }
 
 

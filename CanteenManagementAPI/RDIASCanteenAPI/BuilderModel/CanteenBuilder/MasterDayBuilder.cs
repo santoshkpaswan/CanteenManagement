@@ -401,12 +401,12 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #endregion
 
         #region Order
-        public async Task<List<OrderListGetModelView>> GetOrder()
+        public async Task<List<OrderListGetModelView>> GetOrder(int rgenId)
         {
             //return await _context.orderModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
             var data = await (from o in _context.orderModels
                               join d in _context.masterDaysModels on o.DayId equals d.DayId
-                              where o.IsActive == true && d.IsActive == true 
+                              where o.IsActive == true && d.IsActive == true && o.RgenId == rgenId
                               orderby o.OrderId descending
                               select new
                               {

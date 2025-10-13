@@ -52,6 +52,7 @@ export class AuthService {
   }
   get rgenId(): string {
     return localStorage.getItem('RgenID') ?? '';
+
   }
 
   set user_name(value: string) {

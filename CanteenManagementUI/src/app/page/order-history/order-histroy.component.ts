@@ -105,8 +105,12 @@ export class OrderHistoryComponent implements OnInit {
     this.getDayNameData();
   }
   getGridData() {
+
+    //const currentUser = this._authService.getUser();
+    //const rgenId = currentUser.account_id;
+    //const rgenId = Number(localStorage.getItem('RgenID'));
     this._canteenService.getOrder().subscribe((response) => {
-      this.dataSource = response.data;
+      //this.dataSource = response.data;
       this.orderList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
       debugger
