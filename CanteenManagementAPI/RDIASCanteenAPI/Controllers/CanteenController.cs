@@ -299,11 +299,11 @@ namespace RDIASCanteenAPI.Controllers
 
         #region Order
         [HttpGet("ListOrder")]
-        public async Task<IActionResult> GetOrder(int rgenId)
+        public async Task<IActionResult> GetOrder(int rgenId , string userType)
         {
             try
             {
-                var Objlist = await _masterDayInterface.GetOrder(rgenId);
+                var Objlist = await _masterDayInterface.GetOrder(rgenId,userType);
                 return Ok(new { Success = true, Data = Objlist });
             }
             catch (Exception ex)

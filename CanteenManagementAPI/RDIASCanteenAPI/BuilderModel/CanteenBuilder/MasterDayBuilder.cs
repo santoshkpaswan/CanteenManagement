@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RDIASCanteenAPI.Data;
 using RDIASCanteenAPI.Interface.CanteenInterface;
 using RDIASCanteenAPI.Models.CanteenModel;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
 {
@@ -401,31 +402,38 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #endregion
 
         #region Order
-        public async Task<List<OrderListGetModelView>> GetOrder(int rgenId)
+        public async Task<List<OrderListGetModelView>> GetOrder(int rgenId, string userType)
         {
             //return await _context.orderModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
-            var data = await (from o in _context.orderModels
-                              join d in _context.masterDaysModels on o.DayId equals d.DayId
-                              where o.IsActive == true && d.IsActive == true && o.RgenId == rgenId
-                              orderby o.OrderId descending
-                              select new
-                              {
-                                  o.OrderId,
-                                  o.OrderNumber,
-                                  o.DayId,
-                                  d.DaysName,
-                                  o.RgenId,
-                                  o.UserName,
-                                  o.UserId,
-                                  o.UserType,
-                                  o.TotalAmount,
-                                  o.PaymentType,
-                                  o.PaymentStatus,
-                                  o.Status,
-                                  o.Remark,
-                                  o.CreatedDate,
-                              }).ToListAsync();
-
+            var query = from o in _context.orderModels
+                       join d in _context.masterDaysModels on o.DayId equals d.DayId
+                       where o.IsActive == true && d.IsActive == true //&& o.RgenId == rgenId
+                       //orderby o.OrderId descending
+                       select new
+                       {
+                           o.OrderId,
+                           o.OrderNumber,
+                           o.DayId,
+                           d.DaysName,
+                           o.RgenId,
+                           o.UserName,
+                           o.UserId,
+                           o.UserType,
+                           o.TotalAmount,
+                           o.PaymentType,
+                           o.PaymentStatus,
+                           o.Status,
+                           o.Remark,
+                           o.CreatedDate,
+                       };
+            // Apply RgenId filter only for non-admin users
+            if (!string.Equals(userType, "Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                query = query.Where(o => o.RgenId == rgenId);
+            }
+            // Order descending
+            query = query.OrderByDescending(o => o.OrderId);
+            var data = await query.ToListAsync();
             // Convert date format here (in-memory)
             var result = data.Select(o => new OrderListGetModelView
             {

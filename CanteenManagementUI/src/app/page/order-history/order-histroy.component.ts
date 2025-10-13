@@ -108,6 +108,7 @@ export class OrderHistoryComponent implements OnInit {
 
     //const currentUser = this._authService.getUser();
     //const rgenId = currentUser.account_id;
+    //const userType = currentUser.usertype;  // always a string
     //const rgenId = Number(localStorage.getItem('RgenID'));
     this._canteenService.getOrder().subscribe((response) => {
       //this.dataSource = response.data;

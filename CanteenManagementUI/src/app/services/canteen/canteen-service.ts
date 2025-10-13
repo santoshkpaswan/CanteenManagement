@@ -12,6 +12,7 @@ export class CanteenService {
 
   //  Helper to get RgenID as a number from localStorage
   private get loginUserId(): number {
+    debugger
     const userStr = localStorage.getItem('user');
     if (!userStr) {
       console.error('User not found in localStorage');
@@ -23,6 +24,21 @@ export class CanteenService {
     } catch (e) {
       console.error('Error parsing user JSON from localStorage', e);
       return 0;
+    }
+  }
+
+  private get loginUserType(): string {
+    const userStr = localStorage.getItem('user');
+    if (!userStr) {
+      console.error('User type not found in localStorage');
+      return '';
+    }
+    try {
+      const user = JSON.parse(userStr);
+      return user.usertype || ''; // returns 'Staff', 'Admin', etc.
+    } catch(e) {
+      console.error('Error parsing user type JSON from localStorage', e);
+      return '';
     }
   }
 
@@ -174,8 +190,9 @@ export class CanteenService {
     debugger
     //const rgenId = localStorage.getItem('RgenID');
     const rgenId = this.loginUserId;
+    const userType = this.loginUserType;
 
-    return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrder?rgenId=${rgenId}`, {}).pipe(
+    return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrder?rgenId=${rgenId} &userType=${userType}`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
       })
