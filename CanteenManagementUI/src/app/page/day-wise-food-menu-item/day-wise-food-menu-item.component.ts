@@ -38,12 +38,12 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   currentPage: any = 0;
   pageSize: any = 10;
   dayWiseitemNameList: any = [];
-  foodItems: any = [];
-  //foodItems: any[] = [];
+  //foodItems: any = [];
+  foodItems: any[] = [];
   dayName: any = [];
 
-  toppings = new FormControl('');
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+  //toppings = new FormControl('');
+  //toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
 
   displayedColumns: string[] = ['sno', 'dayname', 'itemname', 'time', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
@@ -62,16 +62,16 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     private _confirmation: ConfirmationDialogService,
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
-    private overlayContainer: OverlayContainer,
+   // private overlayContainer: OverlayContainer,
     private _coreService: CoreService) {
 
-    this.overlayContainer.getContainerElement().classList.add('in-modal');
+    //this.overlayContainer.getContainerElement().classList.add('in-modal');
 
 
 
     this.addCanteenDayWiseItemForm = _formBuilder.group({
-      foodMenuItemId: ['', Validators.required],
-      //foodMenuItemId: [[], Validators.required],
+      //foodMenuItemId: ['', Validators.required],
+      foodMenuItemId: [[], Validators.required],
       dayId: ['', Validators.required],
       time: ['', Validators.required]
     });
@@ -84,10 +84,9 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     });
   }
 
-  ngOnDestroy() {
-    // Cleanup jab modal band ho
-    this.overlayContainer.getContainerElement().classList.remove('in-modal');
-  }
+  // ngOnDestroy() {
+  //   this.overlayContainer.getContainerElement().classList.remove('in-modal');
+  // }
   ngOnInit(): void {
     this.getGridData();
     this.getFoodItemData();
@@ -117,22 +116,22 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       debugger
     });
   }
-  // toggleItemSelection(itemId: number, checked: boolean) {
-  //   const selected: number[] = this.addCanteenDayWiseItemForm.value.foodMenuItemId || [];
+  toggleItemSelection(itemId: number, checked: boolean) {
+    const selected: number[] = this.addCanteenDayWiseItemForm.value.foodMenuItemId || [];
 
-  //   if (checked) {
-  //     if (!selected.includes(itemId)) {
-  //       selected.push(itemId);
-  //     }
-  //   } else {
-  //     const idx = selected.indexOf(itemId);
-  //     if (idx >= 0) {
-  //       selected.splice(idx, 1);
-  //     }
-  //   }
+    if (checked) {
+      if (!selected.includes(itemId)) {
+        selected.push(itemId);
+      }
+    } else {
+      const idx = selected.indexOf(itemId);
+      if (idx >= 0) {
+        selected.splice(idx, 1);
+      }
+    }
 
-  //   this.addCanteenDayWiseItemForm.patchValue({ foodMenuItemId: selected });
-  // }
+    this.addCanteenDayWiseItemForm.patchValue({ foodMenuItemId: selected });
+  }
 
 
 

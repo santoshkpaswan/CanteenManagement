@@ -94,7 +94,7 @@
           </div>
         </div>
 
-        <div class="col-md-6 mb-2">
+        <!-- <div class="col-md-6 mb-2">
           <label>Item Name<strong style="color: red;">*</strong></label>
           <div class="input-group">
             <select [formControlName]="'foodMenuItemId'" class="form-control">
@@ -103,9 +103,9 @@
               </option>
             </select>
           </div>
-        </div>
+        </div> -->
 
-        <div class="col-md-6 mb-2">
+        <!-- <div class="col-md-6 mb-2">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Toppings</mat-label>
             <mat-select [formControl]="toppings" multiple panelClass="toppings-panel">
@@ -123,16 +123,15 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </div>
+        </div> -->
 
 
 
 
-        <!-- <div class="col-md-6 mb-2">
+       <div class="col-md-6 mb-2">
           <label>Item Name <strong style="color: red;">*</strong></label>
           <mat-form-field appearance="outline" class="w-100">
-            <mat-select formControlName="foodMenuItemId" multiple placeholder="Select items"
-               >
+            <mat-select formControlName="foodMenuItemId" >
               <mat-option *ngFor="let item of foodItems" [value]="item.foodMenuItemId">
                 <mat-checkbox [checked]="addCanteenDayWiseItemForm.value.foodMenuItemId?.includes(item.foodMenuItemId)">
                   {{ item.itemName }}
@@ -140,7 +139,8 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </div> -->
+        </div>
+
 
 
         <div class="col-md-6 mb-2">
