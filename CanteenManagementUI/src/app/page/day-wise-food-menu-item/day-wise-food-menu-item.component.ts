@@ -20,6 +20,7 @@ import { ConfirmationDialogService } from 'src/app/confirmation-dialog/confirmat
 import * as XLSX from 'xlsx';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 
 
@@ -28,7 +29,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
   selector: 'app-day-wise-food-menu-item',
   standalone: true,
   providers: [],
-  imports: [ReactiveFormsModule, CommonModule, MatTooltipModule, FormsModule, MatSelectModule, MatGridListModule, MatCardModule, ReactiveFormsModule, MatExpansionModule, MatDialogModule, MatIconModule, MatExpansionModule, MatSortModule, MatPaginatorModule, MatCheckboxModule, MatTableModule, MatPaginatorModule, MatTooltipModule],
+  imports: [ReactiveFormsModule, NgMultiSelectDropDownModule, CommonModule, MatTooltipModule, FormsModule, MatSelectModule, MatGridListModule, MatCardModule, ReactiveFormsModule, MatExpansionModule, MatDialogModule, MatIconModule, MatExpansionModule, MatSortModule, MatPaginatorModule, MatCheckboxModule, MatTableModule, MatPaginatorModule, MatTooltipModule],
   templateUrl: './day-wise-food-menu-item.component.html',
   styleUrl: './day-wise-food-menu-item.component.scss'
 })
@@ -41,6 +42,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   //foodItems: any = [];
   foodItems: any[] = [];
   dayName: any = [];
+  dropdownSettings: any;
 
   //toppings = new FormControl('');
   //toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
@@ -62,7 +64,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     private _confirmation: ConfirmationDialogService,
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
-   // private overlayContainer: OverlayContainer,
+    // private overlayContainer: OverlayContainer,
     private _coreService: CoreService) {
 
     //this.overlayContainer.getContainerElement().classList.add('in-modal');
@@ -88,6 +90,16 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   //   this.overlayContainer.getContainerElement().classList.remove('in-modal');
   // }
   ngOnInit(): void {
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'foodMenuItemId',
+      textField: 'itemName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      enableCheckAll: false
+    };
+
     this.getGridData();
     this.getFoodItemData();
     this.getDayNameData();

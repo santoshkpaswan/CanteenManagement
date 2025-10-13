@@ -156,7 +156,7 @@ export class CanteenService {
 
   getOrder(): Observable<any> {
     debugger
-    return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrder`, {}).pipe(
+    return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrder/${localStorage.getItem('RgenID')}`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
       })

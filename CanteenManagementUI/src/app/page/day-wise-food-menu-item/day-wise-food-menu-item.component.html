@@ -105,41 +105,32 @@
           </div>
         </div> -->
 
-        <!-- <div class="col-md-6 mb-2">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Toppings</mat-label>
-            <mat-select [formControl]="toppings" multiple panelClass="toppings-panel">
-
-              <mat-select-trigger>
-                {{ toppings.value?.[0] || '' }}
-                <span class="example-additional-selection" *ngIf="(toppings.value?.length || 0) > 1">
-                  (+{{ (toppings.value?.length || 0) - 1 }}
-                  {{ toppings.value?.length === 2 ? 'other' : 'others' }})
-                </span>
-              </mat-select-trigger>
-
-              <mat-option *ngFor="let topping of toppingList" [value]="topping">
-                {{ topping }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div> -->
+           <div class="col-md-6 mb-4">
+          <label>Item Name<strong style="color: red;">*</strong></label>
+          <!-- <div class="input-group"> -->
+            <ng-multiselect-dropdown [formControlName]="'foodMenuItemId'" [settings]="dropdownSettings" [data]="foodItems"
+              >
+            </ng-multiselect-dropdown>
+          <!-- </div> -->
+        </div>
 
 
 
-
-       <div class="col-md-6 mb-2">
-          <label>Item Name <strong style="color: red;">*</strong></label>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-select formControlName="foodMenuItemId" >
+        <!-- <div class="mb-4">
+          <label>Item Name <strong style="color: red;">*</strong></label> -->
+          <!-- <mat-form-field appearance="outline" class="w-100"> -->
+            <!-- <mat-select formControlName="foodMenuItemId" >
               <mat-option *ngFor="let item of foodItems" [value]="item.foodMenuItemId">
                 <mat-checkbox [checked]="addCanteenDayWiseItemForm.value.foodMenuItemId?.includes(item.foodMenuItemId)">
                   {{ item.itemName }}
                 </mat-checkbox>
               </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+            </mat-select> -->
+            <!-- <ng-multiselect-dropdown [formControlName]="'foodMenuItemId'" [settings]="dropdownSettings" [data]="foodItems"
+              >
+            </ng-multiselect-dropdown> -->
+          <!-- </mat-form-field> -->
+        <!-- </div> -->
 
 
 
