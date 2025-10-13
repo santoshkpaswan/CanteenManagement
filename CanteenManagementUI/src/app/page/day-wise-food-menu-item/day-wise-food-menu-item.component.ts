@@ -39,8 +39,8 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   currentPage: any = 0;
   pageSize: any = 10;
   dayWiseitemNameList: any = [];
-  //foodItems: any = [];
-  foodItems: any[] = [];
+  foodItems: any = [];
+  //foodItems: any[] = [];
   dayName: any = [];
   dropdownSettings: any;
 
@@ -72,8 +72,8 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
 
 
     this.addCanteenDayWiseItemForm = _formBuilder.group({
-      //foodMenuItemId: ['', Validators.required],
-      foodMenuItemId: [[], Validators.required],
+      foodMenuItemId: ['', Validators.required],
+      //foodMenuItemId: [[], Validators.required],
       dayId: ['', Validators.required],
       time: ['', Validators.required]
     });
@@ -128,22 +128,22 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       debugger
     });
   }
-  toggleItemSelection(itemId: number, checked: boolean) {
-    const selected: number[] = this.addCanteenDayWiseItemForm.value.foodMenuItemId || [];
+  // toggleItemSelection(itemId: number, checked: boolean) {
+  //   const selected: number[] = this.addCanteenDayWiseItemForm.value.foodMenuItemId || [];
 
-    if (checked) {
-      if (!selected.includes(itemId)) {
-        selected.push(itemId);
-      }
-    } else {
-      const idx = selected.indexOf(itemId);
-      if (idx >= 0) {
-        selected.splice(idx, 1);
-      }
-    }
+  //   if (checked) {
+  //     if (!selected.includes(itemId)) {
+  //       selected.push(itemId);
+  //     }
+  //   } else {
+  //     const idx = selected.indexOf(itemId);
+  //     if (idx >= 0) {
+  //       selected.splice(idx, 1);
+  //     }
+  //   }
 
-    this.addCanteenDayWiseItemForm.patchValue({ foodMenuItemId: selected });
-  }
+  //   this.addCanteenDayWiseItemForm.patchValue({ foodMenuItemId: selected });
+  // }
 
 
 
@@ -154,7 +154,15 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       return;
     }
     this.addCanteenDayWiseItemForm.disable();
-    this._canteenService.addDayWiseFoodItem(this.addCanteenDayWiseItemForm.value).subscribe((data) => {
+    // const formData = new FormData();
+    // formData.append('dayId', this.addCanteenDayWiseItemForm.value.dayId);
+    // formData.append('foodMenuItemId', this.addCanteenDayWiseItemForm.value.foodMenuItemId);
+    // formData.append('time', this.addCanteenDayWiseItemForm.value.time);
+    const formValue = this.addCanteenDayWiseItemForm.value;
+    const payload = {...formValue,foodMenuItemId: formValue.foodMenuItemId.map((item: any) => item.foodMenuItemId)
+    };
+
+    this._canteenService.addDayWiseFoodItem(payload).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');
       this.modalService.dismissAll();
       this.addCanteenDayWiseItemForm.enable();

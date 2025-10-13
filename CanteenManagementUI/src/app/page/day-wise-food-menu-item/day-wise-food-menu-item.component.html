@@ -105,31 +105,29 @@
           </div>
         </div> -->
 
-           <div class="col-md-6 mb-4">
+        <div class="col-md-6 mb-4">
           <label>Item Name<strong style="color: red;">*</strong></label>
-          <!-- <div class="input-group"> -->
-            <ng-multiselect-dropdown [formControlName]="'foodMenuItemId'" [settings]="dropdownSettings" [data]="foodItems"
-              >
-            </ng-multiselect-dropdown>
-          <!-- </div> -->
+          <ng-multiselect-dropdown [formControlName]="'foodMenuItemId'" [settings]="dropdownSettings"
+            [data]="foodItems">
+          </ng-multiselect-dropdown>
         </div>
 
 
 
         <!-- <div class="mb-4">
           <label>Item Name <strong style="color: red;">*</strong></label> -->
-          <!-- <mat-form-field appearance="outline" class="w-100"> -->
-            <!-- <mat-select formControlName="foodMenuItemId" >
+        <!-- <mat-form-field appearance="outline" class="w-100"> -->
+        <!-- <mat-select formControlName="foodMenuItemId" >
               <mat-option *ngFor="let item of foodItems" [value]="item.foodMenuItemId">
                 <mat-checkbox [checked]="addCanteenDayWiseItemForm.value.foodMenuItemId?.includes(item.foodMenuItemId)">
                   {{ item.itemName }}
                 </mat-checkbox>
               </mat-option>
             </mat-select> -->
-            <!-- <ng-multiselect-dropdown [formControlName]="'foodMenuItemId'" [settings]="dropdownSettings" [data]="foodItems"
+        <!-- <ng-multiselect-dropdown [formControlName]="'foodMenuItemId'" [settings]="dropdownSettings" [data]="foodItems"
               >
             </ng-multiselect-dropdown> -->
-          <!-- </mat-form-field> -->
+        <!-- </mat-form-field> -->
         <!-- </div> -->
 
 

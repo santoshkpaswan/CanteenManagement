@@ -341,27 +341,30 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
 
         public async Task<DayWiseFoodMenuItemSaveModelView> SaveDayWiseFoodMenuItem(DayWiseFoodMenuItemSaveModelView dayWiseFoodMenuItemSaveModelView)
         {
-            if (dayWiseFoodMenuItemSaveModelView.FoodMenuItemId <= 0)
+            if (dayWiseFoodMenuItemSaveModelView.FoodMenuItemId == null || !dayWiseFoodMenuItemSaveModelView.FoodMenuItemId.Any())
             {
                 throw new ArgumentException("Food Menu Item is required.", nameof(dayWiseFoodMenuItemSaveModelView.FoodMenuItemId));
             }
-            // check for Duplicate record
-            bool exists = await _context.dayWiseFoodMenuItemModels.AnyAsync(x => x.FoodMenuItemId == dayWiseFoodMenuItemSaveModelView.FoodMenuItemId && x.DayId == dayWiseFoodMenuItemSaveModelView.DayId && x.IsActive == true);
-            if (exists)
+            foreach (var foodItemId in dayWiseFoodMenuItemSaveModelView.FoodMenuItemId)
             {
-                throw new Exception("Food Menu Item And Food Day already exists.");
-            }
+                // check for Duplicate record
+                //bool exists = await _context.dayWiseFoodMenuItemModels.AnyAsync(x => x.FoodMenuItemId == foodItemId && x.DayId == dayWiseFoodMenuItemSaveModelView.DayId && x.IsActive == true);
+                //if (exists)
+                //{
+                   // throw new Exception("Food Menu Item And Food Day already exists.");
+                //}
 
-            tblDayWiseFoodMenuItem obj = new tblDayWiseFoodMenuItem
-            {
-                FoodMenuItemId = dayWiseFoodMenuItemSaveModelView.FoodMenuItemId,
-                DayId = dayWiseFoodMenuItemSaveModelView.DayId,
-                Time = dayWiseFoodMenuItemSaveModelView.Time,
-                IsActive = true,
-                CreatedBy = 0,
-                CreatedDate = DateTime.Now,
-            };
-            _context.dayWiseFoodMenuItemModels.Add(obj);
+                var obj = new tblDayWiseFoodMenuItem
+                {
+                    FoodMenuItemId = foodItemId,
+                    DayId = dayWiseFoodMenuItemSaveModelView.DayId,
+                    Time = dayWiseFoodMenuItemSaveModelView.Time,
+                    IsActive = true,
+                    CreatedBy = 0,
+                    CreatedDate = DateTime.Now,
+                };
+                _context.dayWiseFoodMenuItemModels.Add(obj);
+            }
             await _context.SaveChangesAsync();
             return dayWiseFoodMenuItemSaveModelView;
 
