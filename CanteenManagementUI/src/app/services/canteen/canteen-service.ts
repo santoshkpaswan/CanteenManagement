@@ -170,6 +170,7 @@ export class CanteenService {
   }
 
   updateDayWiseItem(model: any): Observable<any> {
+    debugger
     return this._httpClient.post(`${environment.apiUrl}/Canteen/UpdateDayWiseFoodMenuItem`, model).pipe(
       switchMap((response: any) => {
         return of(response);

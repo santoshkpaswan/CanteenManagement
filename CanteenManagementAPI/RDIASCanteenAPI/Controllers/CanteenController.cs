@@ -299,11 +299,11 @@ namespace RDIASCanteenAPI.Controllers
 
         #region Order
         [HttpGet("ListOrder")]
-        public async Task<IActionResult> GetOrder(int rgenId , string userType)
+        public async Task<IActionResult> GetOrder(int rgenId, string userType)
         {
             try
             {
-                var Objlist = await _masterDayInterface.GetOrder(rgenId,userType);
+                var Objlist = await _masterDayInterface.GetOrder(rgenId, userType);
                 return Ok(new { Success = true, Data = Objlist });
             }
             catch (Exception ex)
@@ -473,6 +473,22 @@ namespace RDIASCanteenAPI.Controllers
         }
         #endregion
 
+        #region Order Notification
+        [HttpGet("Notifications")]
+        public async Task<IActionResult> GetOrderNotifications()
+        {
+            try
+            {
+                var Objlist = await _masterDayInterface.GetOrderNotifications();
+                return Ok(new { Success = true, Data = Objlist });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { Success = false, Message = ex.Message });
+            }
+        }
     }
+
+    #endregion
 }
 

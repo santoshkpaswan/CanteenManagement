@@ -351,7 +351,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 //bool exists = await _context.dayWiseFoodMenuItemModels.AnyAsync(x => x.FoodMenuItemId == foodItemId && x.DayId == dayWiseFoodMenuItemSaveModelView.DayId && x.IsActive == true);
                 //if (exists)
                 //{
-                   // throw new Exception("Food Menu Item And Food Day already exists.");
+                // throw new Exception("Food Menu Item And Food Day already exists.");
                 //}
 
                 var obj = new tblDayWiseFoodMenuItem
@@ -409,26 +409,26 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         {
             //return await _context.orderModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
             var query = from o in _context.orderModels
-                       join d in _context.masterDaysModels on o.DayId equals d.DayId
-                       where o.IsActive == true && d.IsActive == true //&& o.RgenId == rgenId
-                       //orderby o.OrderId descending
-                       select new
-                       {
-                           o.OrderId,
-                           o.OrderNumber,
-                           o.DayId,
-                           d.DaysName,
-                           o.RgenId,
-                           o.UserName,
-                           o.UserId,
-                           o.UserType,
-                           o.TotalAmount,
-                           o.PaymentType,
-                           o.PaymentStatus,
-                           o.Status,
-                           o.Remark,
-                           o.CreatedDate,
-                       };
+                        join d in _context.masterDaysModels on o.DayId equals d.DayId
+                        where o.IsActive == true && d.IsActive == true //&& o.RgenId == rgenId
+                                                                       //orderby o.OrderId descending
+                        select new
+                        {
+                            o.OrderId,
+                            o.OrderNumber,
+                            o.DayId,
+                            d.DaysName,
+                            o.RgenId,
+                            o.UserName,
+                            o.UserId,
+                            o.UserType,
+                            o.TotalAmount,
+                            o.PaymentType,
+                            o.PaymentStatus,
+                            o.Status,
+                            o.Remark,
+                            o.CreatedDate,
+                        };
             // Apply RgenId filter only for non-admin users
             if (!string.Equals(userType, "Admin", StringComparison.OrdinalIgnoreCase))
             {
@@ -714,5 +714,24 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             await _context.SaveChangesAsync();
         }
         #endregion
+
+
+        #region Order Notification
+        public async Task<List<OrderNotification>> GetOrderNotifications()
+        {
+            var result = await _context.orderModels.Where(x => x.Status == 0 && x.IsActive==true).OrderByDescending(x => x.OrderId)
+           .Select(o => new OrderNotification
+           {
+             OrderId = o.OrderId,
+             RgenId = o.RgenId,
+             Status = 0,
+            
+           }).ToListAsync();
+            return result;
+
+        }
+
+        #endregion
+
     }
 }

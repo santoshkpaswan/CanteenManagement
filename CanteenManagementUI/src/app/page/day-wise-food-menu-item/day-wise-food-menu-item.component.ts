@@ -106,6 +106,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   }
 
   getGridData() {
+    debugger
     this._canteenService.getDayWiseFoodItem().subscribe((response) => {
       this.dataSource = response.data;
       this.dayWiseitemNameList = response.data;
@@ -159,7 +160,8 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     // formData.append('foodMenuItemId', this.addCanteenDayWiseItemForm.value.foodMenuItemId);
     // formData.append('time', this.addCanteenDayWiseItemForm.value.time);
     const formValue = this.addCanteenDayWiseItemForm.value;
-    const payload = {...formValue,foodMenuItemId: formValue.foodMenuItemId.map((item: any) => item.foodMenuItemId)
+    const payload = {
+      ...formValue, foodMenuItemId: formValue.foodMenuItemId.map((item: any) => item.foodMenuItemId)
     };
 
     this._canteenService.addDayWiseFoodItem(payload).subscribe((data) => {
@@ -173,10 +175,16 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   }
 
   updateDayWiseItemName() {
+    debugger
     if (this.editCanteenDayWiseItemForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
     }
+
+    //const formValue = this.editCanteenDayWiseItemForm.value;
+    //const payload = {...formValue, foodMenuItemId: formValue.foodMenuItemId.map((item: any) => item.foodMenuItemId)
+    //};
+
     this.editCanteenDayWiseItemForm.disable();
 
     this._canteenService.updateDayWiseItem(this.editCanteenDayWiseItemForm.value).subscribe((data) => {
@@ -207,6 +215,11 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
 
   openEditCanteenDayWiseItemTemplate(element: any, content: TemplateRef<any>) {
     debugger
+
+    //const selectedItems = this.foodItems.filter((item: any) =>
+      //element.foodMenuItemId.includes(item.foodMenuItemId)
+    //);
+
     this.editCanteenDayWiseItemForm = this._formBuilder.group({
       foodMenuItemId: [element.foodMenuItemId, Validators.required],
       dayId: [element.dayId, Validators.required],

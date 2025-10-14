@@ -29,6 +29,22 @@ namespace RDIASCanteenAPI.Models.CanteenModel
 
 
     }
+
+    // public class FoodDayGroupedModelView
+    // {
+    //     public int DayId { get; set; }
+    //     public string? DaysName { get; set; }
+    //     public List<FoodDayItemModel> Items { get; set; } = new();
+    // }
+
+    // public class FoodDayItemModel
+    // {
+    //     public int DayWiseFoodMenuItemId { get; set; }
+    //     public int FoodMenuItemId { get; set; }
+    //     public string? ItemName { get; set; }
+    //     public int? Time { get; set; }
+    // }
+
     #endregion
 
     #region FoodMenuItemModel
@@ -203,5 +219,16 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public decimal TotalAmount { get; set; }
         public int OrderId { get; set; }
     }
+    #endregion
+
+    #region  Order Notification
+    public class OrderNotification
+    {
+        public int? OrderId { get; set; }
+        public int? RgenId { get; set; }
+        public int? Status { get; set; }
+        
+    }
+
     #endregion
 }

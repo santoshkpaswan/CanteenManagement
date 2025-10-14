@@ -62,7 +62,7 @@ export class NavRightComponent {
   }
 
   OnLogout() {
-    
+
     this._authService.removeToken();
     this.oauthService.logOut(true);
     this.router.navigate(['/signin']);
