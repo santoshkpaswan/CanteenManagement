@@ -71,14 +71,15 @@ export class SignInComponent implements OnInit {
         this.signInForm.enable();
 
         if (response.response_id == 1) {
+          debugger
           this._coreService.openSnackBar('Login successful!', 'Ok');
           const userData = localStorage.getItem("user")!;
           const user: any = JSON.parse(userData);
-          if (user.usertype?.toLocaleLowerCase() == "staff" || user.usertype?.toLocaleLowerCase() == "student") {
+          if ((user.user_name?.toLocaleLowerCase() != "canteen" ) && (user.usertype?.toLocaleLowerCase() == "staff" || user.usertype?.toLocaleLowerCase() == "student")) {
             this._router.navigate(['/canteen/order-item']);
           }
-          else {
-            this._router.navigate(['/user/home']);
+          else if (user.user_name?.toLocaleLowerCase() == "canteen" ){
+            this._router.navigate(['/canteen/admin-order']);
           }
         } else {
           this._coreService.openSnackBar(response.response || 'Login failed', 'Ok');
