@@ -12,7 +12,7 @@ export class CanteenService {
 
   //  Helper to get RgenID as a number from localStorage
   private get loginUserId(): number {
-    debugger
+
     const userStr = localStorage.getItem('user');
     if (!userStr) {
       console.error('User not found in localStorage');
@@ -42,8 +42,23 @@ export class CanteenService {
     }
   }
 
+  private get loginUserName(): string {
+    const userStr = localStorage.getItem('user');
+    if (!userStr) {
+      console.error('User type not found in localStorage');
+      return '';
+    }
+    try {
+      const user = JSON.parse(userStr);
+      return user.user_name || ''; // returns 'Staff', 'Admin', etc.
+    } catch(e) {
+      console.error('Error parsing user type JSON from localStorage', e);
+      return '';
+    }
+  }
+
   getFoodDays(): Observable<any> {
-    debugger
+
     return this._httpClient.get(`${environment.apiUrl}/Canteen/ListFoodDay`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -84,7 +99,7 @@ export class CanteenService {
   }
 
   addFoodMenuItem(model: any): Observable<any> {
-    debugger
+
     return this._httpClient.post(`${environment.apiUrl}/Canteen/SaveFoodMenuItem`, model).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -109,7 +124,7 @@ export class CanteenService {
   }
 
   getFoodItemPrice(): Observable<any> {
-    debugger
+
     return this._httpClient.get(`${environment.apiUrl}/Canteen/ListFoodMenuItemPrice`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -128,7 +143,7 @@ export class CanteenService {
   }
 
   addFoodItemPrice(model: any): Observable<any> {
-    debugger
+
     return this._httpClient.post(`${environment.apiUrl}/Canteen/SaveFoodMenuItemPrice`, model).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -144,7 +159,7 @@ export class CanteenService {
   }
 
   deleteItemPrice(id: any): Observable<any> {
-    debugger
+
     return this._httpClient.post(`${environment.apiUrl}/Canteen/DeleteFoodMenuItemPrice/${id}`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -152,7 +167,7 @@ export class CanteenService {
     );
   }
   getDayWiseFoodItem(): Observable<any> {
-    debugger
+
     return this._httpClient.get(`${environment.apiUrl}/Canteen/ListDayWiseFoodMenuItem`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -161,7 +176,7 @@ export class CanteenService {
   }
 
   addDayWiseFoodItem(model: any): Observable<any> {
-    debugger
+
     return this._httpClient.post(`${environment.apiUrl}/Canteen/SaveDayWiseFoodMenuItem`, model).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -170,7 +185,7 @@ export class CanteenService {
   }
 
   updateDayWiseItem(model: any): Observable<any> {
-    debugger
+
     return this._httpClient.post(`${environment.apiUrl}/Canteen/UpdateDayWiseFoodMenuItem`, model).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -179,7 +194,7 @@ export class CanteenService {
   }
 
   deleteDayWiseItem(id: any): Observable<any> {
-    debugger
+
     return this._httpClient.post(`${environment.apiUrl}/Canteen/DeleteDayWiseFoodMenuItem/${id}`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -188,19 +203,20 @@ export class CanteenService {
   }
 
   getOrder(): Observable<any> {
-    debugger
+
     //const rgenId = localStorage.getItem('RgenID');
     const rgenId = this.loginUserId;
     const userType = this.loginUserType;
+    const username =  this.loginUserName
 
-    return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrder?rgenId=${rgenId} &userType=${userType}`, {}).pipe(
+    return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrder?rgenId=${rgenId} &userType=${username}`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
       })
     );
   }
   addOrder(model: any): Observable<any> {
-    debugger
+
     return this._httpClient.post(`${environment.apiUrl}/Canteen/SaveOrder`, model).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -209,7 +225,7 @@ export class CanteenService {
   }
 
   updateOrder(model: any): Observable<any> {
-    debugger
+
     return this._httpClient.post(`${environment.apiUrl}/Canteen/UpdateOrder`, model).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -218,7 +234,7 @@ export class CanteenService {
   }
 
   deleteOrder(id: any): Observable<any> {
-    debugger
+
     return this._httpClient.post(`${environment.apiUrl}/Canteen/DeleteOrder/${id}`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -227,7 +243,7 @@ export class CanteenService {
   }
 
   getOrderItem(): Observable<any> {
-    debugger
+
     return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrderItem`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -236,7 +252,7 @@ export class CanteenService {
   }
 
   getLoginUserName(rgenId: number): Observable<any> {
-    debugger
+
     return this._httpClient.get(`${environment.apiLoginUrl}/Student?APIKey=651cb656-1fde-478d-badf-33f60553f36e&studentId=${rgenId}`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -245,7 +261,7 @@ export class CanteenService {
   }
 
   updateOrderStatus(model: any): Observable<any> {
-    debugger
+
     return this._httpClient.post(`${environment.apiUrl}/Canteen/UpdateOrderStatus`, model).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -255,7 +271,7 @@ export class CanteenService {
 
 
   getOrderItemDetails(orderId: any): Observable<any> {
-    debugger
+
     return this._httpClient.get(`${environment.apiUrl}/Canteen/GetOrderItemDetails/${orderId}`, {}).pipe(
       switchMap((response: any) => {
         return of(response);

@@ -78,13 +78,13 @@ export class FoodMenuItemPriceComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    debugger
+
     this.getGridData();
     this.getFoodItemData();
     this.getAcademicSessionData();
 
 
-    debugger
+
   }
 
   getGridData() {
@@ -108,20 +108,20 @@ export class FoodMenuItemPriceComponent implements OnInit {
   getFoodItemData() {
     this._canteenService.getFoodMenuItem().subscribe((response) => {
       this.foodItems = response.data;
-      debugger
+
     });
   }
 
   getAcademicSessionData() {
-    debugger
+
     this._canteenService.getAcademicSession().subscribe((response) => {
       this.academicSessionList = response;
-      debugger
+
     });
   }
 
   addNewCanteenItemPrice() {
-    debugger
+
     if (this.addCanteenItemPriceForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
@@ -134,7 +134,7 @@ export class FoodMenuItemPriceComponent implements OnInit {
       this.addCanteenItemPriceForm.enable();
       this.addCanteenItemPriceForm.reset();
       this.getGridData();
-      debugger
+
     })
 
   }
@@ -171,7 +171,7 @@ export class FoodMenuItemPriceComponent implements OnInit {
       });
   }
   openAddCanteenItemPriceTemplate(content: TemplateRef<any>) {
-    debugger
+
     this.addCanteenItemPriceForm = this._formBuilder.group({
       foodMenuItemId: ['', Validators.required],
       academicSessionID: [this.academicSessionList.AcademicSessionID, Validators.required],
@@ -179,11 +179,11 @@ export class FoodMenuItemPriceComponent implements OnInit {
       itemPrice: ['', Validators.required],
       itemPriceDescriptin: ['', Validators.required]
     });
-    debugger
+
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
   openEditCanteenItemPriceTemplate(element: any, content: TemplateRef<any>) {
-    debugger
+
     this.editCanteenItemPriceForm = this._formBuilder.group({
       foodMenuItemId: [element.foodMenuItemId, Validators.required],
       academicSessionID: [this.academicSessionList.AcademicSessionID, Validators.required],
@@ -195,7 +195,7 @@ export class FoodMenuItemPriceComponent implements OnInit {
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
   ChangeEvent(event: any) {
-    debugger
+
     this._coreService.openSnackBar("You have selected : " + event.value, 'Ok');
   }
   pageChanged(event: PageEvent) {

@@ -38,13 +38,13 @@
   </div>
 
   <!-- ***** Right Side - Billing Summary ***** -->
-  <div class="col-md-4" *ngIf="filteredItems.length > 0">
+  <div class="col-md-4" >
     <div class="card text-center">
       <div class="card-header">
         <h6 class="fw-bold">Billing Summary</h6>
         <p class="text-muted mb-0">Order No: <strong>{{ orderNumber }}</strong></p>
       </div>
-      <div class="card-body">
+      <div class="card-body" *ngIf="filteredItems.length > 0">
         <table class="table table-bordered table-sm">
           <thead>
             <tr>

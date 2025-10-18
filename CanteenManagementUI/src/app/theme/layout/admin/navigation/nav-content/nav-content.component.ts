@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NavigationItem, NavigationItems } from '../navigation';
 import { Location, LocationStrategy } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-nav-content',
@@ -10,7 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class NavContentComponent implements OnInit {
   // version
-  title = 'USER ACCESS MANAGEMENT';
+  title = 'CANTEEN MANAGEMENT';
   currentApplicationVersion = environment.appVersion;
 
   // public pops
@@ -23,30 +24,39 @@ export class NavContentComponent implements OnInit {
   // constructor
   constructor(
     private location: Location,
+    private _router: Router,
     private locationStrategy: LocationStrategy,
   ) {
     this.windowWidth = window.innerWidth;
+    debugger
     this.navigations = NavigationItems;
   }
 
   // life cycle event
   ngOnInit() {
+    debugger
     var navigationList = this.navigations;
-
     var indicesToRemove: number[];
-    var indicesToRemoveChild: number[];
-    if (localStorage.getItem("Role")?.toLocaleLowerCase() != "admin") {
-      navigationList.forEach((element: any) => {
-        if (element.id == "msr") {
-          indicesToRemove = [];
-          indicesToRemoveChild = [];
-          indicesToRemove.push(element.children.findIndex((item: any) => item.id === "msr-entry-detail"));
-          indicesToRemove.push(element.children.findIndex((item: any) => item.id === "msr-configuration"));
-          indicesToRemove.sort((a, b) => b - a).forEach(index => element.children?.splice(index, 1));
-        }
-      });
+    const userData = localStorage.getItem("user")!;
+    if (userData != null) {
+      const user: any = JSON.parse(userData);
+      if ((user.user_name?.toLocaleLowerCase() != "canteen") && (user.usertype?.toLocaleLowerCase() == "staff" || user.usertype?.toLocaleLowerCase() == "student")) {
+        navigationList = navigationList.filter(u => u.id !== "navigation1");
+        debugger
+        navigationList[0].children = navigationList[0].children?.filter(x => x.id == "orderitem" || x.id == "orderhistory");
+      }
+      else if (user.user_name?.toLocaleLowerCase() == "canteen") {
+        //navigationList = navigationList.filter(u => u.id !== "navigation1");
+        debugger
+        navigationList[1].children = navigationList[1].children?.filter(x => x.id != "orderhistory");
+        navigationList[1].children = navigationList[1].children?.filter(x => x.id != "orderitem");
+      }
+
     }
-    
+    else {
+      this._router.navigate(['/signin']);
+    }
+
     this.navigations = navigationList;
 
     if (this.windowWidth < 992) {

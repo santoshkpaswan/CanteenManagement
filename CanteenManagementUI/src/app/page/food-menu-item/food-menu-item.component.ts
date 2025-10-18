@@ -40,6 +40,8 @@ export class FoodMenuItemComponent implements OnInit {
   isInvalidFileType: any = true;
   borderColorValidationFile: any;
   imageUrl: any = environment.imageUrl;
+  previousImage: any;
+  showBrowser: any = false;
 
   displayedColumns: string[] = ['sno', 'itemname', 'itemurl', 'itemDescriptin', 'edit', 'delete'];
   @Input('enableBulkAction') enableBulkAction: boolean = false;
@@ -69,7 +71,8 @@ export class FoodMenuItemComponent implements OnInit {
       itemName: ['', Validators.required],
       itemURL: [''],
       itemDescriptin: ['', Validators.required],
-      foodMenuItemId: ['', Validators.required]
+      foodMenuItemId: ['', Validators.required],
+      prevousImage: ['']
     });
   }
 
@@ -112,7 +115,7 @@ export class FoodMenuItemComponent implements OnInit {
   }
 
   updateMenuItemName() {
-    debugger
+
     if (this.editCanteenMenuItemForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
@@ -126,6 +129,7 @@ export class FoodMenuItemComponent implements OnInit {
     formData.append('ItemName', this.editCanteenMenuItemForm.value.itemName);
     formData.append('ItemDescriptin', this.editCanteenMenuItemForm.value.itemDescriptin);
     formData.append('foodMenuItemId', this.editCanteenMenuItemForm.value.foodMenuItemId);
+    formData.append('prevousImage', this.editCanteenMenuItemForm.value.prevousImage);
 
     this._canteenService.updateFoodMenuItem(formData).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');
@@ -133,7 +137,7 @@ export class FoodMenuItemComponent implements OnInit {
       this.editCanteenMenuItemForm.enable();
       this.editCanteenMenuItemForm.reset();
       this.getGridData();
-      debugger
+
     });
   }
 
@@ -161,19 +165,32 @@ export class FoodMenuItemComponent implements OnInit {
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
   openEditCanteenMenuItemTemplate(element: any, content: TemplateRef<any>) {
-    debugger
-    this.isInvalidFileType = true;
 
+    this.isInvalidFileType = true;
+    this.previousImage = element.itemURL;
+    this.previousImage =  this.previousImage.split("/")[2];
+    if(this.previousImage.length>40){
+      this.previousImage=this.previousImage.substring(36);
+    }
+    if (element.itemURL !== "") {
+      this.showBrowser = true;
+    }
+    else {
+      this.showBrowser = false;
+    }
     this.editCanteenMenuItemForm = this._formBuilder.group({
       itemName: [element.itemName, Validators.required],
-      itemURL: [element.itemURL, Validators.required],
+      itemURL: [''],
       itemDescriptin: [element.itemDescriptin, Validators.required],
-      foodMenuItemId: [element.foodMenuItemId, Validators.required]
+      foodMenuItemId: [element.foodMenuItemId, Validators.required],
+      prevousImage: [this.previousImage, Validators.required]
     });
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
 
-
+  toggleButton() {
+    this.showBrowser = !this.showBrowser;
+  }
 
   handleFileInput(event: any) {
     if (event.target.files.length == 0) {

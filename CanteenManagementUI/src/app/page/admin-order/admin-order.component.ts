@@ -123,7 +123,7 @@ export class AdminOrderComponent {
 
   getGridData() {
     this._canteenService.getOrder().subscribe((response) => {
-      debugger
+
       //this.dataSource = response.data;
       this.orderList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
@@ -136,7 +136,7 @@ export class AdminOrderComponent {
 
 
       this.dataSource.filterPredicate = (data: any, filter: string) => {
-        debugger
+
         const filters = JSON.parse(filter);
         //const statusMatch = filters.status ? this.getOrderStatusLabel(data.status).toLowerCase().includes(filters.status) : true;
         const statusMatch = filters.status ? data.status === +filters.status : true;
@@ -154,15 +154,15 @@ export class AdminOrderComponent {
   }
 
   getDayNameData() {
-    debugger
+
     this._canteenService.getFoodDays().subscribe((response) => {
       this.dayName = response.data;
-      debugger
+
     });
   }
 
   addNewCanteenOrder() {
-    debugger
+
     if (this.addCanteenOrderForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
@@ -188,7 +188,7 @@ export class AdminOrderComponent {
       this.addCanteenOrderForm.enable();
       this.addCanteenOrderForm.reset();
       this.getGridData();
-      debugger
+
     })
 
   }
@@ -222,7 +222,7 @@ export class AdminOrderComponent {
       this.editCanteenOrderForm.enable();
       this.editCanteenOrderForm.reset();
       this.getGridData();
-      debugger
+
     })
 
   }
@@ -246,7 +246,7 @@ export class AdminOrderComponent {
   }
 
   openEditCanteenOrderTemplate(element: any, content: TemplateRef<any>) {
-    debugger
+
     this.editCanteenOrderForm = this._formBuilder.group({
       //orderNumber: [element.orderNumber],
       dayId: [element.dayId, Validators.required],
@@ -305,7 +305,7 @@ export class AdminOrderComponent {
 
   /** Handle Checkbox Selection */
   onCheckboxChange(element: any, event: any) {
-    debugger
+
     if (event.target.checked) {
       this.selectedOrder = element;
       // uncheck all others
@@ -319,7 +319,7 @@ export class AdminOrderComponent {
 
   /** Open Order Status Modal */
   openEditCanteenOrderStatusTemplate(element: any, content: TemplateRef<any>) {
-    debugger
+
     if (!element) {
       this._coreService.openSnackBar('Please select an order first.', 'Ok');
       return;
@@ -338,7 +338,7 @@ export class AdminOrderComponent {
 
   /** Update Order Status*/
   updateOrderStatus() {
-    debugger
+
     if (this.editCanteenOrderStatusForm.invalid) {
       this._coreService.openSnackBar('Please fill all required fields.', 'Ok');
       return;
@@ -373,7 +373,7 @@ export class AdminOrderComponent {
 
 
   deleteSelectedOrder() {
-    debugger
+
     if (!this.selectedOrder) {
       this._coreService.openSnackBar('Please select an order to cancel.', 'Ok');
       return;
@@ -397,7 +397,7 @@ export class AdminOrderComponent {
     });
   }
   orderSearchFilter() {
-    debugger
+
     const filterObj = {
       status: this.statusFilter.trim().toLowerCase(),
       orderDate: this.orderDateFilter
@@ -420,10 +420,10 @@ export class AdminOrderComponent {
 
   // Get OrderDetails View
   getOrderDetailsById(orderId: number) {
-    debugger;
+    ;
     this._canteenService.getOrderItemDetails(orderId).subscribe({
       next: (res: any) => {
-        debugger;
+        ;
         this.selectedOrderDetails = res?.data || [];
         console.log('Order details:', this.selectedOrderDetails);
         // this.modalService.open(this.canteenOrderDetails, { size: 'lg', backdrop: 'static' });

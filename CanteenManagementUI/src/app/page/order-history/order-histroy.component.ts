@@ -114,12 +114,12 @@ export class OrderHistoryComponent implements OnInit {
       //this.dataSource = response.data;
       this.orderList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
-      debugger
+
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
 
       this.dataSource.filterPredicate = (data: any, filter: string) => {
-        debugger
+
         const filters = JSON.parse(filter);
         const statusMatch = filters.status ? data.status === +filters.status : true;
         return statusMatch;
@@ -128,15 +128,15 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   getDayNameData() {
-    debugger
+
     this._canteenService.getFoodDays().subscribe((response) => {
       this.dayName = response.data;
-      debugger
+
     });
   }
 
   addNewCanteenOrder() {
-    debugger
+
     if (this.addCanteenOrderForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
@@ -163,7 +163,7 @@ export class OrderHistoryComponent implements OnInit {
       this.addCanteenOrderForm.enable();
       this.addCanteenOrderForm.reset();
       this.getGridData();
-      debugger
+
     })
 
   }
@@ -195,7 +195,7 @@ export class OrderHistoryComponent implements OnInit {
       this.editCanteenOrderForm.enable();
       this.editCanteenOrderForm.reset();
       this.getGridData();
-      debugger
+
     })
 
   }
@@ -215,10 +215,10 @@ export class OrderHistoryComponent implements OnInit {
   }
   // Get OrderDetails View
   getOrderDetailsById(orderId: number) {
-    debugger;
+    ;
     this._canteenService.getOrderItemDetails(orderId).subscribe({
       next: (res: any) => {
-        debugger;
+        ;
         this.selectedOrderDetails = res?.data || [];
         console.log('Order details:', this.selectedOrderDetails);
         this.modalService.open(this.canteenOrderDetails, { size: 'mb', backdrop: 'static' });
@@ -240,7 +240,7 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   openEditCanteenOrderTemplate(element: any, content: TemplateRef<any>) {
-    debugger
+
     this.editCanteenOrderForm = this._formBuilder.group({
       orderNumber: [element.orderNumber],
       dayId: [element.dayId, Validators.required],
@@ -297,7 +297,7 @@ export class OrderHistoryComponent implements OnInit {
     return this.statusArray.find(x => x.value === value)?.statuslabel || '';
   }
   orderSearchFilter() {
-    debugger
+
     const filterObj = {
       status: this.statusFilter.trim().toLowerCase(),
     };

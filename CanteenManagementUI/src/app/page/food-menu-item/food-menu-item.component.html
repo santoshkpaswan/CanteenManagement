@@ -94,14 +94,15 @@
         <div class="col-md-6 mb-2">
           <label>Item URL<strong style="color: red;">*</strong></label>
           <div class="input-group">
-          <input type="file" [formControlName]="'itemURL'" placeholder="Select Image" class="form-control" (change)="handleFileInput($event)"
-            accept="image/*">
+            <input type="file" [formControlName]="'itemURL'" placeholder="Select Image" class="form-control"
+              (change)="handleFileInput($event)" accept="image/*">
           </div>
         </div>
         <div class="mb-4">
           <label>Item Descriptin<strong style="color: red;">*</strong></label>
           <div class="input-group">
-          <textarea [formControlName]="'itemDescriptin'" placeholder="Enter Item Description" class="form-control" rows="6" required></textarea>
+            <textarea [formControlName]="'itemDescriptin'" placeholder="Enter Item Description" class="form-control"
+              rows="6" required></textarea>
           </div>
         </div>
       </div>
@@ -131,10 +132,23 @@
         <div class="col-md-6 mb-2">
           <label>Item URL<strong style="color: red;">*</strong></label>
           <div class="input-group">
-            <input type="file" [formControlName]="'itemURL'" class="form-control" placeholder="Select Image"
-              (change)="handleFileInput($event)" accept="image/*">
+            <input type="file" [hidden]="showBrowser" [formControlName]="'itemURL'" class="form-control" placeholder="Select Image"
+              (change)="handleFileInput($event)" accept="image/*" value="image">
+              <input type="text"  [hidden]="!showBrowser" [formControlName]="'prevousImage'" class="form-control"  placeholder="Select Image" readonly />
+              <button type="button" class="btn btn-md btn-primary" (click)="toggleButton()">
+                <i class="feather icon-lock" *ngIf="!showBrowser"></i>
+                <i class="feather icon-unlock" *ngIf="showBrowser"></i>
+              </button>
+
           </div>
+
         </div>
+         <!-- <div class="col-md-6 mb-2">
+          <label>Item URL<strong style="color: red;">*</strong></label>
+          <div class="input-group">
+            <input type="text"  [formControlName]="'prevousImage'" class="form-control"  placeholder="Select Image" readonly />
+          </div>
+        </div> -->
         <!-- File Upload -->
         <!-- <div class="col-md-6 mb-2">
           <label>Item URL<strong style="color: red;">*</strong></label>

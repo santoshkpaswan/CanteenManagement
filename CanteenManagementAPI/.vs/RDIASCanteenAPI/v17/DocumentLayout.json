@@ -43,8 +43,7 @@
               "ViewState": "AgIAAHMAAAAAAAAAAAAYwIAAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-03T05:04:06.578Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -56,8 +55,7 @@
               "RelativeToolTip": "RDIASCanteenAPI\\Interface\\CanteenInterface\\MasterDayInterface.cs",
               "ViewState": "AgIAAAIAAAAAAAAAAAD4vzQAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-04T10:15:13.907Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-04T10:15:13.907Z"
             },
             {
               "$type": "Document",
@@ -69,8 +67,7 @@
               "RelativeToolTip": "RDIASCanteenAPI\\Models\\CanteenModel\\APIModel.cs",
               "ViewState": "AgIAANUAAAAAAAAAAAAswOQAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T04:38:07.933Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T04:38:07.933Z"
             },
             {
               "$type": "Document",
@@ -82,8 +79,7 @@
               "RelativeToolTip": "RDIASCanteenAPI\\BuilderModel\\CanteenBuilder\\MasterDayBuilder.cs",
               "ViewState": "AgIAAFgAAAAAAAAAAAAuwNECAABgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T04:34:16.582Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T04:34:16.582Z"
             },
             {
               "$type": "Document",
@@ -93,7 +89,7 @@
               "RelativeDocumentMoniker": "RDIASCanteenAPI\\Controllers\\CanteenController.cs",
               "ToolTip": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\Controllers\\CanteenController.cs",
               "RelativeToolTip": "RDIASCanteenAPI\\Controllers\\CanteenController.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAgwN4BAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAN4BAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-01T04:32:22.435Z",
               "EditorCaption": ""

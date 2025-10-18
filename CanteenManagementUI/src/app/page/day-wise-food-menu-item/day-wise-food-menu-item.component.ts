@@ -106,7 +106,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   }
 
   getGridData() {
-    debugger
+
     this._canteenService.getDayWiseFoodItem().subscribe((response) => {
       this.dataSource = response.data;
       this.dayWiseitemNameList = response.data;
@@ -118,15 +118,15 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   getFoodItemData() {
     this._canteenService.getFoodMenuItem().subscribe((response) => {
       this.foodItems = response.data;
-      debugger
+
     });
   }
 
   getDayNameData() {
-    debugger
+
     this._canteenService.getFoodDays().subscribe((response) => {
       this.dayName = response.data;
-      debugger
+
     });
   }
   // toggleItemSelection(itemId: number, checked: boolean) {
@@ -149,7 +149,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
 
 
   addNewCanteenDayWiseItem() {
-    debugger
+
     if (this.addCanteenDayWiseItemForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
@@ -175,7 +175,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   }
 
   updateDayWiseItemName() {
-    debugger
+
     if (this.editCanteenDayWiseItemForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
@@ -214,7 +214,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   }
 
   openEditCanteenDayWiseItemTemplate(element: any, content: TemplateRef<any>) {
-    debugger
+
 
     //const selectedItems = this.foodItems.filter((item: any) =>
       //element.foodMenuItemId.includes(item.foodMenuItemId)

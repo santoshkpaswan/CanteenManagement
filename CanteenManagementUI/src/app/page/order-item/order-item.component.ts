@@ -101,16 +101,16 @@ export class OrderItemComponent implements OnInit {
 
 
   ngOnInit(): void {
-    debugger
+
     this.getGridData();
     this.getLoginUserNameGridData();
     // Generate order number
-    this.orderNumber = this.generateOrderNumber();
+
 
   }
 
   getGridData() {
-    debugger
+
     this._canteenService.getOrderItem().subscribe((response) => {
       this.dataSource = response.data;
       this.itemList = response.data;
@@ -121,12 +121,12 @@ export class OrderItemComponent implements OnInit {
   }
 
   getLoginUserNameGridData() {
-    debugger
+
     const currentUser = this._authService.getUser();
     const rgenId = currentUser.account_id;
     this._canteenService.getLoginUserName(rgenId).subscribe((response) => {
       this.response = response;
-      debugger
+
     });
   }
 
@@ -139,9 +139,12 @@ export class OrderItemComponent implements OnInit {
   }
 
   addItem(item: OrderItem) {
-    debugger
+    if (this.orderNumber == '') {
+      this.orderNumber = this.generateOrderNumber();
+    }
+
     item.count = (item.count || 0) + 1;
-    debugger
+
     // const index = this.filteredItems.indexOf(item);
     // if (index > -1) {
     //   this.filteredItems.splice(index, 1);
@@ -164,7 +167,7 @@ export class OrderItemComponent implements OnInit {
   }
   // Getter to avoid parser errors in template
   // get filteredItems(): OrderItem[] {
-  //   debugger
+  //
   //   return this.itemList.filter(x => x.count > 0);
   // }
   generateOrderNumber(): string {
@@ -201,7 +204,7 @@ export class OrderItemComponent implements OnInit {
     debugger
     // Check if the form is valid
     if (this.addpayNow.invalid) {
-      debugger
+
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
     }
@@ -233,7 +236,7 @@ export class OrderItemComponent implements OnInit {
         totalAmount: item.count * item.itemPrice
       }))
     };
-    debugger
+
     // Disable the form to prevent double submit
     this.addpayNow.disable();
 

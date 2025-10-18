@@ -37,7 +37,7 @@ export class SignInComponent implements OnInit {
   ngOnInit(): void {
     this.signInForm = this._formBuilder.group({
       username: ['', [Validators.required]],
-      password:['', [Validators.required]],
+      password: ['', [Validators.required]],
     });
   }
 
@@ -53,34 +53,42 @@ export class SignInComponent implements OnInit {
       password: this.signInForm.value.password
     };
     // this._router.navigate(['/user/home']);
-  //   this._authService.signIn(this.sendObj)
-  //     .subscribe(
-  //       (response: any) => {
-  //         debugger
-  //         this._router.navigate(['home']);
-  //       },
-  //       (error) => {
-  //         this.signInForm.enable();
-  //         this._coreService.openSnackBar(error.message, 'Ok');
-  //       });
+    //   this._authService.signIn(this.sendObj)
+    //     .subscribe(
+    //       (response: any) => {
+    //
+    //         this._router.navigate(['home']);
+    //       },
+    //       (error) => {
+    //         this.signInForm.enable();
+    //         this._coreService.openSnackBar(error.message, 'Ok');
+    //       });
 
 
-  this._authService.signIn(this.sendObj).subscribe({next: (response: any) => {
-    debugger
-    this.signInForm.enable();
+    this._authService.signIn(this.sendObj).subscribe({
+      next: (response: any) => {
 
-    if (response.response_id == 1) {
-      this._coreService.openSnackBar('Login successful!', 'Ok');
-      this._router.navigate(['/user/home']);
-    } else {
-      this._coreService.openSnackBar(response.response || 'Login failed', 'Ok');
-    }
-  },
-  error: (error) => {
-    this.signInForm.enable();
-    this._coreService.openSnackBar(error.message || 'Login failed', 'Ok');
-  }
-});
+        this.signInForm.enable();
+
+        if (response.response_id == 1) {
+          this._coreService.openSnackBar('Login successful!', 'Ok');
+          const userData = localStorage.getItem("user")!;
+          const user: any = JSON.parse(userData);
+          if (user.usertype?.toLocaleLowerCase() == "staff" || user.usertype?.toLocaleLowerCase() == "student") {
+            this._router.navigate(['/canteen/order-item']);
+          }
+          else {
+            this._router.navigate(['/user/home']);
+          }
+        } else {
+          this._coreService.openSnackBar(response.response || 'Login failed', 'Ok');
+        }
+      },
+      error: (error) => {
+        this.signInForm.enable();
+        this._coreService.openSnackBar(error.message || 'Login failed', 'Ok');
+      }
+    });
 
   }
 }

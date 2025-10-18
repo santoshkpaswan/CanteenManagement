@@ -110,7 +110,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                         Directory.CreateDirectory(folderPath);
 
                     // Generate unique file name
-                    var fileName = Guid.NewGuid() + Path.GetExtension(itemImageFile.FileName);
+                    var fileName = Guid.NewGuid() + itemImageFile.FileName;
                     var filePath = Path.Combine(folderPath, fileName);
 
                     // Save file
@@ -166,7 +166,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                         Directory.CreateDirectory(folderPath);
 
                     // Generate unique file name
-                    var fileName = Guid.NewGuid() + Path.GetExtension(itemImageFile.FileName);
+                    var fileName = Guid.NewGuid() + itemImageFile.FileName;
                     var fullFilePath = Path.Combine(folderPath, fileName);
 
                     // Save new file
@@ -187,7 +187,6 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                         }
                     }
                 }
-
                 // Update only the properties that should change
                 objexisting.ItemName = menuItemUpdateModelView.ItemName;
                 objexisting.ItemDescriptin = menuItemUpdateModelView.ItemDescriptin;
@@ -430,7 +429,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                             o.CreatedDate,
                         };
             // Apply RgenId filter only for non-admin users
-            if (!string.Equals(userType, "Admin", StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(userType, "Canteen", StringComparison.OrdinalIgnoreCase))
             {
                 query = query.Where(o => o.RgenId == rgenId);
             }

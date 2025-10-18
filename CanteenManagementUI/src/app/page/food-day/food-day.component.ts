@@ -69,7 +69,7 @@ export class FoodDayComponent implements OnInit {
 
 
   ngOnInit(): void {
-    debugger
+
     this.getGridData();
   }
 
@@ -146,7 +146,7 @@ export class FoodDayComponent implements OnInit {
   }
 
   openEditCanteenDayTemplate(element: any, content: TemplateRef<any>) {
-    debugger
+
     this.editCanteenDayForm = this._formBuilder.group({
       daysName: [element.daysName, Validators.required],
       dayNo: [element.dayNo, Validators.required],
@@ -156,7 +156,7 @@ export class FoodDayComponent implements OnInit {
   }
 
   ChangeEvent(event: any) {
-    debugger
+
     this._coreService.openSnackBar("You have selected : " + event.value, 'Ok');
   }
 

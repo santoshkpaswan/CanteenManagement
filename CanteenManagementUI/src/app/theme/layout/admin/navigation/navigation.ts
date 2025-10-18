@@ -20,7 +20,7 @@ export interface NavigationItem {
 
 export const NavigationItems: NavigationItem[] = [
   {
-    id: 'navigation',
+    id: 'navigation1',
     title: 'Home',
     type: 'group',
     icon: 'icon-group',
@@ -68,18 +68,18 @@ export const NavigationItems: NavigationItem[] = [
         url: '/canteen/day-wise-food-menu-item',
         icon: 'feather icon-file-text'
       },
+       {
+        id: 'orderitem',
+        title: 'order item',
+        type: 'item',
+        url: '/canteen/order-item',
+        icon: 'feather icon-shopping-cart'
+      },
       {
         id: 'orderhistory',
         title: 'order history',
         type: 'item',
         url: '/canteen/order-history',
-        icon: 'feather icon-shopping-cart'
-      },
-      {
-        id: 'orderitem',
-        title: 'order item',
-        type: 'item',
-        url: '/canteen/order-item',
         icon: 'feather icon-shopping-cart'
       },
       {
@@ -91,34 +91,4 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
-
-  // {
-  //   id: 'request-status',
-  //   title: 'Action Request',
-  //   type: 'group',
-  //   icon: 'icon-group',
-  //   children: [
-  //     {
-  //       id: 'review_access_request',
-  //       title: 'Review Access Request',
-  //       type: 'item',
-  //       url: '/request/approval',
-  //       icon: 'feather icon-inbox'
-  //     },
-  //     {
-  //       id: 'action_access_implement',
-  //       title: 'Action Access Implement',
-  //       type: 'item',
-  //       url: '/request/implementation',
-  //       icon: 'feather icon-activity'
-  //     },
-  //     {
-  //       id: 'action_access_termination',
-  //       title: 'Action Access Termination',
-  //       type: 'item',
-  //       url: '/temination/access',
-  //       icon: 'feather icon-sidebar'
-  //     }
-  //   ]
-  // }
 ];
