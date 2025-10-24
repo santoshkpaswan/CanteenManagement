@@ -19,12 +19,10 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(buil
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularClient",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:4200") // Angular dev server 
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
+        policy => policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 });
 
 builder.Services.AddControllers();
@@ -35,11 +33,11 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 app.UseStaticFiles();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+// if (app.Environment.IsDevelopment())
+// {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+// }
 // Angular Authorization & MapControllers
 app.UseCors("AllowAngularClient");
 

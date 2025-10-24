@@ -71,7 +71,7 @@ export class SignInComponent implements OnInit {
         this.signInForm.enable();
 
         if (response.response_id == 1) {
-          debugger
+          
           this._coreService.openSnackBar('Login successful!', 'Ok');
           const userData = localStorage.getItem("user")!;
           const user: any = JSON.parse(userData);

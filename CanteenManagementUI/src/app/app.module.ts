@@ -54,7 +54,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, HashLocationStrategy, LocationStrategy, NgFor, NgIf } from '@angular/common';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from './confirmation-dialog/confirmation-dialog.service';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -134,7 +134,12 @@ import { MomentDateModule } from '@angular/material-moment-adapter';
   providers: [{
     provide: MAT_RADIO_DEFAULT_OPTIONS,
     useValue: { color: 'accent' }
-  }, AuthService,CanteenService, ConfirmationDialogService, MessageDialogService, AccessConfigService],
+  },
+  {
+    provide: LocationStrategy,
+    useClass: HashLocationStrategy  // Add this provider
+  },
+    AuthService, CanteenService, ConfirmationDialogService, MessageDialogService, AccessConfigService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

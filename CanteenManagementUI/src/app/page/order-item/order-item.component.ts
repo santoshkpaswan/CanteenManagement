@@ -201,7 +201,7 @@ export class OrderItemComponent implements OnInit {
   // }
 
   orderPlace() {
-    debugger
+    
     // Check if the form is valid
     if (this.addpayNow.invalid) {
 
