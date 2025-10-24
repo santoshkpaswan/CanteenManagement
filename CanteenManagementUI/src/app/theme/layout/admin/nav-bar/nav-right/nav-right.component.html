@@ -1,9 +1,13 @@
 
 <ul class="navbar-nav ms-auto">
-  <li>
-    <div class="btn btn-light position-relative">🔔<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
+  <li *ngIf="userName === 'canteen'">
+    <div class="btn btn-light position-relative">🔔<span *ngIf="notificationCount > 0"
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+      {{ notificationCount }}
+    </span>
     </div>
   </li>
+
 
   <li>
     <div class="dropdown drp-user" ngbDropdown placement="auto">
@@ -12,7 +16,7 @@
       </a>
       <div class="dropdown-menu dropdown-menu-end profile-notification" ngbDropdownMenu>
         <div class="pro-head">
-          <span>{{ emailid }}</span>
+          <span>{{Name}}</span>
         </div>
         <ul class="pro-body">
           <li><a href="/about-us" class="dud-logout" title="About Us"> <!--(click)="OnLogout()"-->

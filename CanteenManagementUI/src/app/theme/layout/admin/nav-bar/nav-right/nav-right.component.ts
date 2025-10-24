@@ -5,7 +5,7 @@ import { GradientConfig } from 'src/app/app-config';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { JwksValidationHandler, OAuthService } from 'angular-oauth2-oidc';
 import { HttpClient } from '@angular/common/http';
-
+import { CanteenService } from 'src/app/services/canteen/canteen-service';
 // bootstrap
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -31,7 +31,11 @@ export class NavRightComponent {
   visibleUserList: boolean;
   chatMessage: boolean;
   friendId!: number;
-  emailid:any;
+  emailid: any;
+  Name: string = '';
+  userName: string = '';
+  showNotification: boolean = false;
+  notificationCount: number = 0;
   gradientConfig = GradientConfig;
 
   // constructor
@@ -40,7 +44,9 @@ export class NavRightComponent {
     private _httpClient: HttpClient,
     private _activatedRoute: ActivatedRoute,
     private router: Router,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _canteenService: CanteenService,
+
   ) {
     this.visibleUserList = false;
     this.chatMessage = false;
@@ -51,6 +57,52 @@ export class NavRightComponent {
   onChatToggle(friendID: number) {
     this.friendId = friendID;
     this.chatMessage = !this.chatMessage;
+  }
+
+  ngOnInit(): void {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const user: any = JSON.parse(userData);
+      const userName = user.user_name?.toLowerCase(); // normalize case
+      this.userName = userName;
+      //this.showNotification = userName === 'canteen'; // only for canteen
+      if (this.userName === 'canteen') {
+      this.getNotificationData();
+    }
+    }
+    this.getLoginUserNameGridData();
+  }
+
+  getNotificationData() {
+    this._canteenService.getNotification().subscribe({
+      next: (response) => {
+        if (response && Array.isArray(response.data)) {
+          this.notificationCount = response.data.length;
+        }
+        else if (response?.count) {
+          this.notificationCount = response.count;
+        }
+        else {
+          this.notificationCount = 0;
+        }
+
+      },
+    });
+  }
+
+  // fetch name from backend
+  getLoginUserNameGridData() {
+    const currentUser = this._authService.getUser();
+    const rgenId = currentUser.account_id;
+
+    this._canteenService.getLoginUserName(rgenId).subscribe({
+      next: (response) => {
+        this.Name = response.Name;
+      },
+      error: (err) => {
+        console.error('Error fetching name:', err);
+      }
+    });
   }
 
   ngDoCheck() {

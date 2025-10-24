@@ -280,4 +280,13 @@ export class CanteenService {
   }
 
 
+ getNotification(): Observable<any> {
+    return this._httpClient.get(`${environment.apiUrl}/Canteen/Notifications`, {}).pipe(
+      switchMap((response: any) => {
+        return of(response);
+      })
+    );
+  }
+
+
 }

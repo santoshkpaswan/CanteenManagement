@@ -480,7 +480,8 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         }
 
 
-public async Task<OrderSaveModelView> SaveOrder(OrderSaveModelView orderSaveModelView)
+
+        public async Task<OrderSaveModelView> SaveOrder(OrderSaveModelView orderSaveModelView)
         {
             if (orderSaveModelView.DayId <= 0)
             {
@@ -508,7 +509,7 @@ public async Task<OrderSaveModelView> SaveOrder(OrderSaveModelView orderSaveMode
 
             tblOrder obj = new tblOrder
             {
-                OrderNumber = orderSaveModelView.OrderNumber,
+                //OrderNumber = orderSaveModelView.OrderNumber,
                 DayId = orderSaveModelView.DayId,
                 RgenId = orderSaveModelView.RgenId,
                 UserName = orderSaveModelView.UserName,
@@ -536,17 +537,18 @@ public async Task<OrderSaveModelView> SaveOrder(OrderSaveModelView orderSaveMode
             _context.Entry(obj).State = EntityState.Added;
             await _context.SaveChangesAsync();
 
-            //// after saving to get OrderId
-            //var today = DateTime.Now.Date;
-            //// count existing orders for today
-            //int todayCount = await _context.orderModels.CountAsync(o => o.CreatedDate.Date == today);
-            //// +1 for new order
-            //int sequence = todayCount;
-            //// Order number format: RDIAS0001, RDIAS0002, ...
+            // after saving to get OrderId
+            var today = DateTime.Now.Date;
+            // count existing orders for today
+            int todayCount = await _context.orderModels.CountAsync(o => o.CreatedDate.Value.Date == today);
+            // +1 for new order
+            int sequence = todayCount;
+            // Order number format: RDIAS0001, RDIAS0002, ...
             //obj.OrderNumber = $"RDIAS{sequence:D4}";
-            ////obj.OrderNumber = $"ORD-{DateTime.Now:yyyyMMdd}-{obj.OrderId:D4}";
-            //// update and save again
-            //await _context.SaveChangesAsync();
+            //obj.OrderNumber = $"RDIAS{DateTime.Now:yyyyMMdd}{obj.OrderId:D4}";
+            obj.OrderNumber = $"RDIAS{DateTime.Now:yyyyMMdd}{obj.OrderId}{sequence:D4}";
+            // update and save again
+            await _context.SaveChangesAsync();
 
             ////orderSaveModelView.OrderNumber = obj.OrderNumber;
 
@@ -555,6 +557,81 @@ public async Task<OrderSaveModelView> SaveOrder(OrderSaveModelView orderSaveMode
 
 
         }
+        // public async Task<OrderSaveModelView> SaveOrder(OrderSaveModelView orderSaveModelView)
+        // {
+        //     if (orderSaveModelView.DayId <= 0)
+        //     {
+        //         throw new ArgumentException("Day is required.", nameof(orderSaveModelView.DayId));
+        //     }
+        //     if (orderSaveModelView.TotalAmount <= 0)
+        //     {
+        //         throw new ArgumentException("Total Amount must be greater than 0.", nameof(orderSaveModelView.TotalAmount));
+        //     }
+        //     if (string.IsNullOrWhiteSpace(orderSaveModelView.UserName))
+        //     {
+        //         throw new ArgumentException("User Name is required.", nameof(orderSaveModelView.UserName));
+        //     }
+        //     if (string.IsNullOrWhiteSpace(orderSaveModelView.UserType))
+        //     {
+        //         throw new ArgumentException("User Type is required.", nameof(orderSaveModelView.UserType));
+        //     }
+
+        //     // check for Duplicate record
+        //     //bool exists = await _context.orderModels.AnyAsync(x => x.OrderNumber == orderSaveModelView.OrderNumber && x.IsActive == true);
+        //     //if (exists)
+        //     //{
+        //     //    throw new Exception("Order Number already exists.");
+        //     //}
+
+        //     tblOrder obj = new tblOrder
+        //     {
+        //         OrderNumber = orderSaveModelView.OrderNumber,
+        //         DayId = orderSaveModelView.DayId,
+        //         RgenId = orderSaveModelView.RgenId,
+        //         UserName = orderSaveModelView.UserName,
+        //         UserId = orderSaveModelView.UserId,
+        //         UserType = orderSaveModelView.UserType,
+        //         TotalAmount = orderSaveModelView.TotalAmount,
+        //         PaymentType = orderSaveModelView.PaymentType,
+        //         PaymentStatus = orderSaveModelView.PaymentStatus,
+        //         Status = orderSaveModelView.Status,
+        //         Remark = orderSaveModelView.Remark,
+        //         IsActive = true,
+        //         CreatedBy = orderSaveModelView.RgenId,
+        //         CreatedDate = DateTime.Now,
+        //         OrderItems = orderSaveModelView.OrderItems.Select(s => new tblOrderItem()
+        //         {
+        //             ItemNo = s.ItemNo,
+        //             FoodMenuItemId = s.FoodMenuItemId,
+        //             TotalAmount = s.TotalAmount,
+        //             IsActive = true,
+        //             CreatedDate = DateTime.Now,
+        //             CreatedBy = orderSaveModelView.RgenId ?? 0
+        //         }).ToList()
+        //     };
+        //     _context.orderModels.Add(obj);
+        //     _context.Entry(obj).State = EntityState.Added;
+        //     await _context.SaveChangesAsync();
+
+        //     //// after saving to get OrderId
+        //     //var today = DateTime.Now.Date;
+        //     //// count existing orders for today
+        //     //int todayCount = await _context.orderModels.CountAsync(o => o.CreatedDate.Date == today);
+        //     //// +1 for new order
+        //     //int sequence = todayCount;
+        //     //// Order number format: RDIAS0001, RDIAS0002, ...
+        //     //obj.OrderNumber = $"RDIAS{sequence:D4}";
+        //     ////obj.OrderNumber = $"ORD-{DateTime.Now:yyyyMMdd}-{obj.OrderId:D4}";
+        //     //// update and save again
+        //     //await _context.SaveChangesAsync();
+
+        //     ////orderSaveModelView.OrderNumber = obj.OrderNumber;
+
+        //     return orderSaveModelView;
+
+
+
+        // }
         public async Task<OrderUpdateModelView> UpdateOrder(OrderUpdateModelView orderUpdateModelView)
         {
             if (orderUpdateModelView.DayId <= 0)
@@ -718,13 +795,13 @@ public async Task<OrderSaveModelView> SaveOrder(OrderSaveModelView orderSaveMode
         #region Order Notification
         public async Task<List<OrderNotification>> GetOrderNotifications()
         {
-            var result = await _context.orderModels.Where(x => x.Status == 0 && x.IsActive==true).OrderByDescending(x => x.OrderId)
+            var result = await _context.orderModels.Where(x => x.Status == 0 && x.PaymentStatus == 0 && x.IsActive == true).OrderByDescending(x => x.OrderId)
            .Select(o => new OrderNotification
            {
-             OrderId = o.OrderId,
-             RgenId = o.RgenId,
-             Status = 0,
-            
+               OrderId = o.OrderId,
+               RgenId = o.RgenId,
+               Status = 0,
+
            }).ToListAsync();
             return result;
 

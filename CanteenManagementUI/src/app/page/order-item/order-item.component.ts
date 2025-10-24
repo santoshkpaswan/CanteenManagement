@@ -50,7 +50,7 @@ export class OrderItemComponent implements OnInit {
   itemList: OrderItem[] = [];
   response: any;
   grandTotal: number = 0;
-  orderNumber: string = '';
+  //orderNumber: string = '';
   filteredItems: any[] = [];
 
 
@@ -82,7 +82,7 @@ export class OrderItemComponent implements OnInit {
     const userId = currentUser.user_name;  // always a string
     const userType = currentUser.usertype;  // always a string
     this.addpayNow = _formBuilder.group({
-      orderNumber: [''],
+      //orderNumber: [''],
       dayId: [0,],
       rgenId: [rgenId],
       userName: [''],
@@ -139,9 +139,9 @@ export class OrderItemComponent implements OnInit {
   }
 
   addItem(item: OrderItem) {
-    if (this.orderNumber == '') {
-      this.orderNumber = this.generateOrderNumber();
-    }
+    // if (this.orderNumber == '') {
+    //   this.orderNumber = this.generateOrderNumber();
+    // }
 
     item.count = (item.count || 0) + 1;
 
@@ -170,26 +170,26 @@ export class OrderItemComponent implements OnInit {
   //
   //   return this.itemList.filter(x => x.count > 0);
   // }
-  generateOrderNumber(): string {
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0]; // "YYYY-MM-DD"
+  // generateOrderNumber(): string {
+  //   const today = new Date();
+  //   const todayStr = today.toISOString().split('T')[0]; // "YYYY-MM-DD"
 
-    // Get order counts from localStorage
-    const orderCounts = JSON.parse(localStorage.getItem('orderCounts') || '{}');
+  //   // Get order counts from localStorage
+  //   const orderCounts = JSON.parse(localStorage.getItem('orderCounts') || '{}');
 
-    // Get today's count or 0 if new day
-    let todayCount = orderCounts[todayStr] || 0;
+  //   // Get today's count or 0 if new day
+  //   let todayCount = orderCounts[todayStr] || 0;
 
-    // Increment for new order
-    todayCount += 1;
+  //   // Increment for new order
+  //   todayCount += 1;
 
-    // Save updated count
-    orderCounts[todayStr] = todayCount;
-    localStorage.setItem('orderCounts', JSON.stringify(orderCounts));
+  //   // Save updated count
+  //   orderCounts[todayStr] = todayCount;
+  //   localStorage.setItem('orderCounts', JSON.stringify(orderCounts));
 
-    // Format: RDIAS00001 (5-digit sequence)
-    return `RDIAS${todayCount.toString().padStart(5, '0')}`;
-  }
+  //   // Format: RDIAS00001 (5-digit sequence)
+  //   return `RDIAS${todayCount.toString().padStart(5, '0')}`;
+  // }
 
 
   // Mock payment process
@@ -201,7 +201,7 @@ export class OrderItemComponent implements OnInit {
   // }
 
   orderPlace() {
-    
+
     // Check if the form is valid
     if (this.addpayNow.invalid) {
 
@@ -216,7 +216,7 @@ export class OrderItemComponent implements OnInit {
 
     // Prepare the payload
     const orderData: any = {
-      orderNumber: this.addpayNow.value.orderNumber || this.orderNumber, // auto/given
+     // orderNumber: this.addpayNow.value.orderNumber || this.orderNumber, // auto/given
       dayId: dayId,
 
       rgenId: currentUser?.account_id || this.addpayNow.value.rgenId,
@@ -249,10 +249,12 @@ export class OrderItemComponent implements OnInit {
         this.addpayNow.reset();
 
         // CLEAR BILLING SUMMARY
-        //this.filteredItems = [];  // empties the table
-        //this.grandTotal = 0;      // resets the total amount
+        this.filteredItems = [];  // empties the table
+        this.grandTotal = 0;      // resets the total amount
         //this.orderNumber = '';    // optional: reset order number
         this.getGridData();
+
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error(err);
