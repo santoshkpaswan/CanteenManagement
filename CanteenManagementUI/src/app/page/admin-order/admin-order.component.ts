@@ -117,17 +117,20 @@ export class AdminOrderComponent {
       this.dataSource.sort = this.sort;
 
       // Set filter predicate once
-      function parseDDMMYYYY(dateStr: string): Date {
-        const [day, month, year] = dateStr.split('-').map(Number);
-        return new Date(year, month - 1, day);
-      }
-      this.dataSource.filterPredicate = (data: any, filter: string) => {
+
+      this.dataSource.filterPredicate = (data: any, filter: any) => {
         const filters = JSON.parse(filter);
         const statusMatch = filters.status ? data.status === +filters.status : true;
-        const dateMatch = filters.orderDate ? parseDDMMYYYY(data.orderDate).toDateString() === new Date(filters.orderDate).toDateString(): true;
+        const dateMatch = filters.orderDate ? new Date(data.orderDate.replaceAll("/", "-").split('-')[2] + "-" + data.orderDate.replaceAll("/", "-").split('-')[1] + "-" + data.orderDate.replaceAll("/", "-").split('-')[0]).toDateString() === new Date(filters.orderDate).toDateString() : true;
+
         return statusMatch && dateMatch;
       };
     });
+  }
+
+  parseDDMMYYYY(dateStr: string): Date {
+    const [day, month, year] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day);
   }
 
   getDayNameData() {
@@ -259,7 +262,7 @@ export class AdminOrderComponent {
     else if (['failed', 'denied', 'unpaid'].includes(lower)) {
       cssClass = 'status-red';
     }
-     else if (['refunded', 'canceled', 'voided'].includes(lower)) {
+    else if (['refunded', 'canceled', 'voided'].includes(lower)) {
       cssClass = 'status-gray';
     }
     else if (['cancelled', 'denied'].includes(lower)) {

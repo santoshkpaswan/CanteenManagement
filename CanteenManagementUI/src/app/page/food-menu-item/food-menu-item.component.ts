@@ -119,9 +119,6 @@ export class FoodMenuItemComponent implements OnInit {
     if (this.editCanteenMenuItemForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
-    } else if (this.isInvalidFileType == true) {
-      this._coreService.openSnackBar('Please select file.', 'Ok');
-      return;
     }
     this.editCanteenMenuItemForm.disable();
     const formData = new FormData();

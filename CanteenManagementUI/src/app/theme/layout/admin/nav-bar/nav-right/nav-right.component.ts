@@ -84,7 +84,7 @@ export class NavRightComponent {
         this.getNotificationData();
 
         // Poll notifications every 10 seconds
-        setInterval(() => this.getNotificationData(), 1000);
+        setInterval(() => this.getNotificationData(), 15000);
       }
     }
     this.getGridData();
@@ -126,17 +126,13 @@ export class NavRightComponent {
           newCount = response.count;
         }
         // Play sound & show toast if new notification
-        if (newCount > this.previousNotificationCount) {
+        if (this.previousNotificationCount !== null && newCount > this.previousNotificationCount) {
           this.playNotificationSound();
           this.showToast('🔔 New Order Received!');
         }
 
         this.previousNotificationCount = newCount;
         this.notificationCount = newCount;
-        // else {
-        //   this.notificationCount = 0;
-        // }
-
       },
     });
   }

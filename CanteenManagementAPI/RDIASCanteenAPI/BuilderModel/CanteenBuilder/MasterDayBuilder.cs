@@ -453,7 +453,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 Status = o.Status,
                 Remark = o.Remark,
                 // Convert DateTime → formatted string
-                OrderDate = o.CreatedDate?.ToString("dd/MM/yyyy")
+                OrderDate =Convert.ToDateTime(Convert.ToString(o.CreatedDate)).ToString("dd/MM/yyyy")
             }).ToList();
             return result;
         }
