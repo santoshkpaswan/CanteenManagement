@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { JwksValidationHandler, OAuthService } from 'angular-oauth2-oidc';
 import { HttpClient } from '@angular/common/http';
 import { CanteenService } from 'src/app/services/canteen/canteen-service';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 // bootstrap
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -36,8 +37,21 @@ export class NavRightComponent {
   userName: string = '';
   showNotification: boolean = false;
   notificationCount: number = 0;
-  gradientConfig = GradientConfig;
+  previousNotificationCount: number = 0;
 
+  currentPage: any = 0;
+  pageSize: any = 10;
+  orderList: any = [];
+  dayName: any = [];
+  selectedOrder: any;
+  statusFilter: string = '';
+  orderDateFilter: string = '';
+  selectedOrderDetails: any[] = [];
+  gradientConfig = GradientConfig;
+  dataSource = new MatTableDataSource<any>();
+
+
+  private audio = new Audio('assets/notification/mixkit-clear-announce-tones-2861.wav');
   // constructor
   constructor(
     private oauthService: OAuthService,
@@ -67,27 +81,92 @@ export class NavRightComponent {
       this.userName = userName;
       //this.showNotification = userName === 'canteen'; // only for canteen
       if (this.userName === 'canteen') {
-      this.getNotificationData();
+        this.getNotificationData();
+
+        // Poll notifications every 10 seconds
+        setInterval(() => this.getNotificationData(), 1000);
+      }
     }
-    }
+    this.getGridData();
     this.getLoginUserNameGridData();
+  }
+
+  getGridData() {
+    this._canteenService.getOrder().subscribe((response) => {
+
+      //this.dataSource = response.data;
+      this.orderList = response.data;
+      this.dataSource = new MatTableDataSource<any>(response.data);
+
+
+      // Set filter predicate once
+      function parseDDMMYYYY(dateStr: string): Date {
+        const [day, month, year] = dateStr.split('-').map(Number);
+        return new Date(year, month - 1, day);
+      }
+      this.dataSource.filterPredicate = (data: any, filter: string) => {
+        const filters = JSON.parse(filter);
+        const statusMatch = filters.status ? data.status === +filters.status : true;
+        const dateMatch = filters.orderDate ? parseDDMMYYYY(data.orderDate).toDateString() === new Date(filters.orderDate).toDateString() : true;
+        return statusMatch && dateMatch;
+      };
+    });
   }
 
   getNotificationData() {
     this._canteenService.getNotification().subscribe({
       next: (response) => {
+        let newCount = 0;
         if (response && Array.isArray(response.data)) {
-          this.notificationCount = response.data.length;
+          newCount = response.data.length;
+          //this.notificationCount = response.data.length;
         }
         else if (response?.count) {
-          this.notificationCount = response.count;
+          //this.notificationCount = response.count;
+          newCount = response.count;
         }
-        else {
-          this.notificationCount = 0;
+        // Play sound & show toast if new notification
+        if (newCount > this.previousNotificationCount) {
+          this.playNotificationSound();
+          this.showToast('🔔 New Order Received!');
         }
+
+        this.previousNotificationCount = newCount;
+        this.notificationCount = newCount;
+        // else {
+        //   this.notificationCount = 0;
+        // }
 
       },
     });
+  }
+
+  // Play notification sound
+  playNotificationSound() {
+    this.audio.currentTime = 0;
+    this.audio.play().catch(err => console.warn('Audio play blocked or failed:', err));
+  }
+
+  // Simple toast popup (vanilla JS)
+  showToast(message: string) {
+    const toast = document.createElement('div');
+    toast.innerText = message;
+    toast.style.position = 'fixed';
+    toast.style.top = '20px';
+    toast.style.right = '20px';
+    toast.style.padding = '10px 20px';
+    toast.style.background = '#28a745';
+    toast.style.color = '#fff';
+    toast.style.borderRadius = '5px';
+    toast.style.boxShadow = '0px 2px 10px rgba(0,0,0,0.3)';
+    toast.style.zIndex = '9999';
+    toast.style.transition = 'opacity 0.5s';
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => document.body.removeChild(toast), 500);
+    }, 3000);
   }
 
   // fetch name from backend
