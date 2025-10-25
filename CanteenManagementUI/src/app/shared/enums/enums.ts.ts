@@ -8,12 +8,13 @@ export enum OrderPaymentStatus {
   Pending = 0,
   Paid = 1,
   Failed = 2,
-  //Refunded = 3
+  //Refunded = 3,
+   Cancelled = 4
 }
 
 export enum OrderStatus {
-  Created = 0,
+  OrderPlace = 0,
   InProgress = 1,
   Completed = 2,
-  Cancelled = 3
+  //Cancelled = 3
 }

@@ -121,6 +121,7 @@ export class AdminOrderComponent {
     this.getDayNameData();
   }
 
+
   getGridData() {
     this._canteenService.getOrder().subscribe((response) => {
 
@@ -131,21 +132,15 @@ export class AdminOrderComponent {
       this.dataSource.sort = this.sort;
 
       // Set filter predicate once
-      //this.dataSource.filterPredicate = (data: any, filter: string) =>
-      /// data.orderNumber?.toString().toLowerCase().includes(filter);
-
+      function parseDDMMYYYY(dateStr: string): Date {
+        const [day, month, year] = dateStr.split('-').map(Number);
+        return new Date(year, month - 1, day);
+      }
 
       this.dataSource.filterPredicate = (data: any, filter: string) => {
-
         const filters = JSON.parse(filter);
-        //const statusMatch = filters.status ? this.getOrderStatusLabel(data.status).toLowerCase().includes(filters.status) : true;
         const statusMatch = filters.status ? data.status === +filters.status : true;
-        const dateMatch = filters.orderDate ? new Date(data.orderDate).toDateString() === new Date(filters.orderDate).toDateString() : true;
-        //const dateMatch = filters.orderDate   ? new Date(data.orderDate).toISOString().split('T')[0] === filters.orderDate  : true;
-        //const dbDate = data.orderDate.split(' ')[0];         // "2025-10-08"
-        //const filterDate = filters.orderDate.split('T')[0]; // "2025-10-08"
-        //const dateMatch = filters.orderDate ? dbDate === filterDate : true;
-
+        const dateMatch = filters.orderDate ? parseDDMMYYYY(data.orderDate).toDateString() === new Date(filters.orderDate).toDateString(): true;
         return statusMatch && dateMatch;
       };
 
@@ -288,12 +283,18 @@ export class AdminOrderComponent {
     let cssClass = '';
     if (['paid', 'successful', 'completed'].includes(lower)) {
       cssClass = 'status-green';
-    } else if (['pending', 'in progress'].includes(lower)) {
+    }
+    else if (['pending', 'in progress'].includes(lower)) {
       cssClass = 'status-yellow';
-    } else if (['failed', 'denied', 'unpaid'].includes(lower)) {
+    }
+    else if (['failed', 'denied', 'unpaid'].includes(lower)) {
       cssClass = 'status-red';
-    } else if (['refunded', 'canceled', 'voided'].includes(lower)) {
+    }
+     else if (['refunded', 'canceled', 'voided'].includes(lower)) {
       cssClass = 'status-gray';
+    }
+    else if (['cancelled', 'denied'].includes(lower)) {
+      cssClass = 'status-dark';
     }
 
     return { label, cssClass };

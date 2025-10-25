@@ -289,6 +289,9 @@ export class OrderHistoryComponent implements OnInit {
     } else if (['refunded', 'canceled', 'voided'].includes(lower)) {
       cssClass = 'status-gray';
     }
+    else if (['cancelled', 'denied'].includes(lower)) {
+      cssClass = 'status-dark';
+    }
 
     return { label, cssClass };
   }

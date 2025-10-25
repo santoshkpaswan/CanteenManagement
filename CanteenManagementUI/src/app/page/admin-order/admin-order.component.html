@@ -76,7 +76,7 @@
         <th mat-header-cell *matHeaderCellDef>#</th>
         <td mat-cell *matCellDef="let element">
           <input type="checkbox" name="orderCheckbox" [checked]="selectedOrder?.orderId === element.orderId"
-            [disabled]="element.paymentStatus === 1" (change)="onCheckboxChange(element, $event)" />
+            [disabled]="element.paymentStatus === 1 || element.paymentStatus === 4" (change)="onCheckboxChange(element, $event)" />
         </td>
       </ng-container>
 
@@ -359,6 +359,15 @@
 
     <div class="modal-body">
       <div class="row">
+        <!-- Payment Status -->
+        <div class="col-md-6 mb-2">
+          <label>Payment Status <strong class="text-danger">*</strong></label>
+          <select class="form-control" formControlName="paymentStatus">
+            <option *ngFor="let pystatus of paymentStatusArray" [value]="pystatus.value">{{ pystatus.paymentstatuslabel
+              }}</option>
+          </select>
+        </div>
+
         <!-- Payment Type -->
         <div class="col-md-6 mb-2">
           <label>Payment Type <strong class="text-danger">*</strong></label>
@@ -368,14 +377,7 @@
           </select>
         </div>
 
-        <!-- Payment Status -->
-        <div class="col-md-6 mb-2">
-          <label>Payment Status <strong class="text-danger">*</strong></label>
-          <select class="form-control" formControlName="paymentStatus">
-            <option *ngFor="let pystatus of paymentStatusArray" [value]="pystatus.value">{{ pystatus.paymentstatuslabel
-              }}</option>
-          </select>
-        </div>
+
 
         <!-- Status -->
         <div class="col-md-6 mb-2">

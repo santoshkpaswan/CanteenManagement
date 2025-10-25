@@ -19,7 +19,7 @@
 }
 
 .status-red {
-  background-color: #dc3545; /* Red */
+  background-color: #DC355B; /* Red */
   color: #ffffff;            /* White text */
   padding: 2px 8px;
   border-radius: 12px;
@@ -32,6 +32,16 @@
   background-color: #6c757d; /* Gray */
   color: #ffffff;            /* White text */
   padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-dark {
+  background-color: #B71C1C; /* dark red */
+  color: #fff;
+   padding: 2px 8px;
   border-radius: 12px;
   font-size: 12px;
   font-weight: 600;

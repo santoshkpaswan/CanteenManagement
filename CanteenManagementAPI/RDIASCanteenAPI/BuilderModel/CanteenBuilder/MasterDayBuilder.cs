@@ -691,7 +691,8 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             {
                 throw new Exception("Record not found.");
             }
-            existing.IsActive = false;
+            existing.PaymentStatus = OrderPaymentStatus.Cancelled;;
+            //existing.IsActive = false;
             existing.ModifiedBy = 0;
             existing.ModifiedDate = DateTime.Now;
             await _context.SaveChangesAsync();

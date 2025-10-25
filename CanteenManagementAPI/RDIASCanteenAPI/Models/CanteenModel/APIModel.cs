@@ -174,15 +174,16 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         Pending = 0,         /// Pending / In Progress (Yellow / Orange)
         Paid = 1,           /// Paid / Successful / Completed  (Green)
         Failed = 2,        /// Failed / Denied / Unpaid  (Red)
-        Refunded = 3      /// Refunded / Canceled / Voided  (Gray)
+        Refunded = 3,      /// Refunded / Canceled / Voided  (Gray)
+        Cancelled = 4    /// 
     }
 
     public enum OrderStatus
     {
-        Created = 0,
+        OrderPlace = 0,
         InProgress = 1,
         Completed = 2,
-        Cancelled = 3
+        // Cancelled = 3
     }
 
     #endregion
