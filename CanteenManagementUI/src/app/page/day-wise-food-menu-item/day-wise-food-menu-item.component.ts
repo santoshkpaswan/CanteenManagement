@@ -44,9 +44,6 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   dayName: any = [];
   dropdownSettings: any;
 
-  //toppings = new FormControl('');
-  //toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
-
   displayedColumns: string[] = ['sno', 'dayname', 'itemname', 'time', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
@@ -64,16 +61,10 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     private _confirmation: ConfirmationDialogService,
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef,
-    // private overlayContainer: OverlayContainer,
     private _coreService: CoreService) {
-
-    //this.overlayContainer.getContainerElement().classList.add('in-modal');
-
-
 
     this.addCanteenDayWiseItemForm = _formBuilder.group({
       foodMenuItemId: ['', Validators.required],
-      //foodMenuItemId: [[], Validators.required],
       dayId: ['', Validators.required],
       time: ['', Validators.required]
     });
@@ -85,10 +76,6 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       dayWiseFoodMenuItemId: ['', Validators.required]
     });
   }
-
-  // ngOnDestroy() {
-  //   this.overlayContainer.getContainerElement().classList.remove('in-modal');
-  // }
   ngOnInit(): void {
     this.dropdownSettings = {
       singleSelection: false,
@@ -129,24 +116,6 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
 
     });
   }
-  // toggleItemSelection(itemId: number, checked: boolean) {
-  //   const selected: number[] = this.addCanteenDayWiseItemForm.value.foodMenuItemId || [];
-
-  //   if (checked) {
-  //     if (!selected.includes(itemId)) {
-  //       selected.push(itemId);
-  //     }
-  //   } else {
-  //     const idx = selected.indexOf(itemId);
-  //     if (idx >= 0) {
-  //       selected.splice(idx, 1);
-  //     }
-  //   }
-
-  //   this.addCanteenDayWiseItemForm.patchValue({ foodMenuItemId: selected });
-  // }
-
-
 
   addNewCanteenDayWiseItem() {
 
@@ -155,10 +124,6 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       return;
     }
     this.addCanteenDayWiseItemForm.disable();
-    // const formData = new FormData();
-    // formData.append('dayId', this.addCanteenDayWiseItemForm.value.dayId);
-    // formData.append('foodMenuItemId', this.addCanteenDayWiseItemForm.value.foodMenuItemId);
-    // formData.append('time', this.addCanteenDayWiseItemForm.value.time);
     const formValue = this.addCanteenDayWiseItemForm.value;
     const payload = {
       ...formValue, foodMenuItemId: formValue.foodMenuItemId.map((item: any) => item.foodMenuItemId)
@@ -180,11 +145,6 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
     }
-
-    //const formValue = this.editCanteenDayWiseItemForm.value;
-    //const payload = {...formValue, foodMenuItemId: formValue.foodMenuItemId.map((item: any) => item.foodMenuItemId)
-    //};
-
     this.editCanteenDayWiseItemForm.disable();
 
     this._canteenService.updateDayWiseItem(this.editCanteenDayWiseItemForm.value).subscribe((data) => {
@@ -214,12 +174,6 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   }
 
   openEditCanteenDayWiseItemTemplate(element: any, content: TemplateRef<any>) {
-
-
-    //const selectedItems = this.foodItems.filter((item: any) =>
-      //element.foodMenuItemId.includes(item.foodMenuItemId)
-    //);
-
     this.editCanteenDayWiseItemForm = this._formBuilder.group({
       foodMenuItemId: [element.foodMenuItemId, Validators.required],
       dayId: [element.dayId, Validators.required],

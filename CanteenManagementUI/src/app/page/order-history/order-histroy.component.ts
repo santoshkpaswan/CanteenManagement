@@ -105,21 +105,12 @@ export class OrderHistoryComponent implements OnInit {
     this.getDayNameData();
   }
   getGridData() {
-
-    //const currentUser = this._authService.getUser();
-    //const rgenId = currentUser.account_id;
-    //const userType = currentUser.usertype;  // always a string
-    //const rgenId = Number(localStorage.getItem('RgenID'));
     this._canteenService.getOrder().subscribe((response) => {
-      //this.dataSource = response.data;
       this.orderList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
-
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-
       this.dataSource.filterPredicate = (data: any, filter: string) => {
-
         const filters = JSON.parse(filter);
         const statusMatch = filters.status ? data.status === +filters.status : true;
         return statusMatch;
@@ -128,10 +119,8 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   getDayNameData() {
-
     this._canteenService.getFoodDays().subscribe((response) => {
       this.dayName = response.data;
-
     });
   }
 
@@ -262,7 +251,6 @@ export class OrderHistoryComponent implements OnInit {
     this.pageSize = event.pageSize;
   }
 
-
   // Keep only the string keys (Cash, Card, UPI)
   paymentTypesArray = Object.keys(OrderPaymentType).filter(key => isNaN(Number(key))).map(key => ({ paymenttypelabel: key, value: OrderPaymentType[key as keyof typeof OrderPaymentType] }));
 
@@ -292,7 +280,6 @@ export class OrderHistoryComponent implements OnInit {
     else if (['cancelled', 'denied'].includes(lower)) {
       cssClass = 'status-dark';
     }
-
     return { label, cssClass };
   }
 

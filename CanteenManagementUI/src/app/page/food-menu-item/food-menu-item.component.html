@@ -12,9 +12,6 @@
     </div>
   </div>
   <div class="card-body" style="overflow-x: scroll;">
-
-
-
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="sno">
         <th mat-header-cell *matHeaderCellDef>#</th>
@@ -62,7 +59,6 @@
           </mat-dialog-actions>
         </td>
       </ng-container>
-
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;">

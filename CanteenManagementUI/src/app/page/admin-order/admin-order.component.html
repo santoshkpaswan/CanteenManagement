@@ -42,18 +42,6 @@
       </div>
 
       <div class="col-sm-6 d-flex flex-column flex-sm-row justify-content-sm-end">
-
-
-
-        <!-- <button type="button" style="margin-left: 10px;" class="btn btn-md btn-success"
-          (click)="openAddCanteenOrderTemplate(canteenOrderAdd)">
-          Order Accept</button> -->
-
-        <!-- <button type="button" style="margin-left: 10px;" class="btn btn-md btn-info" [disabled]="!selectedOrder"
-          (click)="openEditCanteenOrderStatusTemplate(selectedOrder, aanteenOrderStatusEdit)">
-          Order Status
-        </button> -->
-
         <button type="button" style="margin-left: 10px;" class="btn btn-md btn-success" [disabled]="!selectedOrder"
           (click)="openEditCanteenOrderStatusTemplate(selectedOrder, aanteenOrderStatusEdit)">
           Order Accept</button>
@@ -62,7 +50,6 @@
           (click)="deleteSelectedOrder()">
           Order Cancel
         </button>
-
       </div>
 
 
@@ -108,11 +95,6 @@
         <td mat-cell *matCellDef="let element"> {{element.orderDate}} </td>
       </ng-container>
 
-      <!-- <ng-container matColumnDef="totalamount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
-        <td mat-cell *matCellDef="let element"> {{element.totalAmount}} </td>
-      </ng-container> -->
-
       <ng-container matColumnDef="totalamount">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Amount </th>
         <td mat-cell *matCellDef="let element" style="color: green;" (click)="getOrderDetailsById(element.orderId)">
@@ -137,32 +119,6 @@
           </span>
         </td>
       </ng-container>
-
-
-
-
-      <!-- <ng-container matColumnDef="edit">
-        <th mat-header-cell *matHeaderCellDef> Edit </th>
-        <td mat-cell *matCellDef="let element">
-          <mat-dialog-actions>
-            <button class="btn btn-sm" style="color: green;"
-              (click)="openEditCanteenOrderTemplate(element,aanteenOrderEdit)">
-              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit"></mat-icon>
-            </button>
-          </mat-dialog-actions>
-        </td>
-      </ng-container> -->
-      <!-- <ng-container matColumnDef="delete">
-        <th mat-header-cell *matHeaderCellDef> Delete </th>
-        <td mat-cell *matCellDef="let element">
-          <mat-dialog-actions>
-            <button class="btn btn-sm" style="color: red;" (click)="deleteCanteenOrder(element)">
-              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
-            </button>
-          </mat-dialog-actions>
-        </td>
-      </ng-container> -->
-
 
       <!-- Header + Row -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

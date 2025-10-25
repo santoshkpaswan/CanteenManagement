@@ -92,15 +92,8 @@ export class AdminOrderComponent {
     });
 
     this.editCanteenOrderForm = _formBuilder.group({
-      //orderNumber: [''],
       dayId: ['', Validators.required],
       rgenId: [rgenId, Validators.required],
-      //userName: ['', Validators.required],
-      //userId: [userId, Validators.required],
-      ///userType: [userType, Validators.required],
-      //totalAmount: ['', Validators.required],
-      //paymentType: ['', Validators.required],
-      //paymentStatus: ['', Validators.required],
       status: ['', Validators.required],
       remark: ['', Validators.required],
       orderId: ['', Validators.required]
@@ -114,14 +107,10 @@ export class AdminOrderComponent {
       orderId: ['', Validators.required]
     });
   }
-
-
   ngOnInit(): void {
     this.getGridData();
     this.getDayNameData();
   }
-
-
   getGridData() {
     this._canteenService.getOrder().subscribe((response) => {
 
@@ -136,15 +125,12 @@ export class AdminOrderComponent {
         const [day, month, year] = dateStr.split('-').map(Number);
         return new Date(year, month - 1, day);
       }
-
       this.dataSource.filterPredicate = (data: any, filter: string) => {
         const filters = JSON.parse(filter);
         const statusMatch = filters.status ? data.status === +filters.status : true;
         const dateMatch = filters.orderDate ? parseDDMMYYYY(data.orderDate).toDateString() === new Date(filters.orderDate).toDateString(): true;
         return statusMatch && dateMatch;
       };
-
-
     });
   }
 
@@ -197,15 +183,9 @@ export class AdminOrderComponent {
     // Prepare payload explicitly with numeric fields
     const updatepayload: any = {
       orderId: this.editCanteenOrderForm.value.orderId,
-      //orderNumber: this.editCanteenOrderForm.value.orderNumber,
       dayId: Number(this.editCanteenOrderForm.value.dayId),
       rgenId: currentUser ? currentUser.account_id : this.editCanteenOrderForm.value.rgenId,
       userId: currentUser ? currentUser.user_name : this.editCanteenOrderForm.value.userId,
-      //userType: currentUser ? currentUser.usertype : this.editCanteenOrderForm.value.userType,
-      //userName: this.editCanteenOrderForm.value.userName,
-      //totalAmount: Number(this.editCanteenOrderForm.value.totalAmount),
-      //paymentType: Number(this.editCanteenOrderForm.value.paymentType),
-      //paymentStatus: Number(this.editCanteenOrderForm.value.paymentStatus),
       status: Number(this.editCanteenOrderForm.value.status),
       remark: this.editCanteenOrderForm.value.remark
     };
@@ -241,17 +221,10 @@ export class AdminOrderComponent {
   }
 
   openEditCanteenOrderTemplate(element: any, content: TemplateRef<any>) {
-
     this.editCanteenOrderForm = this._formBuilder.group({
-      //orderNumber: [element.orderNumber],
       dayId: [element.dayId, Validators.required],
       rgenId: [element.rgenId, Validators.required],
-      //userName: [element.userName, Validators.required],
       userId: [element.userId, Validators.required],
-      //userType: [element.userType, Validators.required],
-      //totalAmount: [element.totalAmount, Validators.required],
-      //paymentType: [element.paymentType, Validators.required],
-      //paymentStatus: [element.paymentStatus, Validators.required],
       status: [element.status, Validators.required],
       remark: [element.remark, Validators.required],
       orderId: [element.orderId, Validators.required],

@@ -74,17 +74,11 @@ export class FoodMenuItemPriceComponent implements OnInit {
       itemPriceDescriptin: ['', Validators.required],
       foodMenuItemPriceId: ['', Validators.required]
     });
-
-
   }
   ngOnInit(): void {
-
     this.getGridData();
     this.getFoodItemData();
     this.getAcademicSessionData();
-
-
-
   }
 
   getGridData() {

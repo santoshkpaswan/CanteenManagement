@@ -1,11 +1,3 @@
-<!-- <mat-form-field fxFlex="20" style="padding-right: 20px;">
-    <mat-label>Days</mat-label>
-    <mat-select (selectionChange)="ChangeEvent($event)">
-        <mat-option *ngFor="let acd of daysList" [value]="acd.dayNo">
-            {{ acd.daysName }}
-        </mat-option>
-    </mat-select>
-</mat-form-field> -->
 
 <div class="card text-center" style="margin-top: 10px;">
   <div class="card-header">
@@ -21,9 +13,6 @@
     </div>
   </div>
   <div class="card-body" style="overflow-x: scroll;">
-
-
-
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="sno">
         <th mat-header-cell *matHeaderCellDef>#</th>
