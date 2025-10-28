@@ -128,7 +128,7 @@ export class NavRightComponent {
         // Play sound & show toast if new notification
         if (this.previousNotificationCount !== null && newCount > this.previousNotificationCount) {
           this.playNotificationSound();
-          this.showToast('🔔 New Order Received!');
+          this.showToast('🔔 New Order!');
         }
 
         this.previousNotificationCount = newCount;

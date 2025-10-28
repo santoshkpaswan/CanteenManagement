@@ -11,18 +11,20 @@
 
   <li>
     <div class="dropdown drp-user" ngbDropdown placement="auto">
-      <a href="javascript:" ngbDropdownToggle>
+      <a href="javascript:" (click)="OnLogout()" ngbDropdownToggle>
+        <span class="text-white fw-bold" style="padding: 1%;text-align: right;">{{ Name }}</span>
         <img src="assets/images/user/avatar-1.jpg" class="img-radius wid-40" alt="User-Profile-Image" />
+
       </a>
       <div class="dropdown-menu dropdown-menu-end profile-notification" ngbDropdownMenu>
         <div class="pro-head">
           <span>{{Name}}</span>
         </div>
-        <ul class="pro-body">
-          <li><a href="/about-us" class="dud-logout" title="About Us"> <!--(click)="OnLogout()"-->
+        <!-- <ul class="pro-body">
+          <li><a href="/about-us" class="dud-logout" title="About Us">
               <i class="feather icon-help-circle"></i> About
             </a></li>
-        </ul>
+        </ul> -->
         <ul class="pro-body">
           <!-- <li><a href="javascript:" class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li> -->
           <!-- <li><a href="javascript:" class="dropdown-item"><i class="feather icon-mail"></i> My Messages</a></li> -->

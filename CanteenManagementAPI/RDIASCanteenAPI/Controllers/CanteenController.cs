@@ -335,7 +335,7 @@ namespace RDIASCanteenAPI.Controllers
             try
             {
                 var Objresult = await _masterDayInterface.SaveOrder(orderSaveModelView);
-                return Ok(new { Success = true, Message = "Saved successfully" });
+                return Ok(new { Success = true, Message = $"Saved successfully (Order No: {Objresult.OrderNumber})" });
             }
             catch (ArgumentException ex)
             {

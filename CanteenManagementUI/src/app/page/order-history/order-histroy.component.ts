@@ -283,8 +283,24 @@ export class OrderHistoryComponent implements OnInit {
     return { label, cssClass };
   }
 
-  getOrderStatusLabel(value: number): string {
-    return this.statusArray.find(x => x.value === value)?.statuslabel || '';
+  getOrderStatusLabel(value: number): { label: string, cssClass: string } {
+    const label = this.statusArray.find(x => x.value === value)?.statuslabel || '';
+    const lower = label.toLowerCase();
+
+    let cssClass = '';
+    if (['orderplace'].includes(lower)) {
+      cssClass = 'status-yellow';   // Order Placed
+    }
+    else if (['inprogress', 'in progress'].includes(lower)) {
+      cssClass = 'status-orange';   // In Progress
+    }
+    else if (['completed'].includes(lower)) {
+      cssClass = 'status-green';    // Completed
+    }
+    else if (['cancelled', 'canceled'].includes(lower)) {
+      cssClass = 'status-red';      // Cancelled
+    }
+    return { label, cssClass };
   }
   orderSearchFilter() {
 

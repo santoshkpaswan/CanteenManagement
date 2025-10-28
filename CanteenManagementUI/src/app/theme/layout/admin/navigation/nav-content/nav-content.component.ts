@@ -28,13 +28,13 @@ export class NavContentComponent implements OnInit {
     private locationStrategy: LocationStrategy,
   ) {
     this.windowWidth = window.innerWidth;
-    
+
     this.navigations = NavigationItems;
   }
 
   // life cycle event
   ngOnInit() {
-    
+
     var navigationList = this.navigations;
     var indicesToRemove: number[];
     const userData = localStorage.getItem("user")!;
@@ -42,12 +42,13 @@ export class NavContentComponent implements OnInit {
       const user: any = JSON.parse(userData);
       if ((user.user_name?.toLocaleLowerCase() != "canteen") && (user.usertype?.toLocaleLowerCase() == "staff" || user.usertype?.toLocaleLowerCase() == "student")) {
         navigationList = navigationList.filter(u => u.id !== "navigation1");
-        
+
         navigationList[0].children = navigationList[0].children?.filter(x => x.id == "orderitem" || x.id == "orderhistory");
       }
       else if (user.user_name?.toLocaleLowerCase() == "canteen") {
         //navigationList = navigationList.filter(u => u.id !== "navigation1");
-        
+
+        navigationList[0].children = navigationList[0].children?.filter(x => x.id !== "dashboard");
         navigationList[1].children = navigationList[1].children?.filter(x => x.id != "orderhistory");
         navigationList[1].children = navigationList[1].children?.filter(x => x.id != "orderitem");
       }
