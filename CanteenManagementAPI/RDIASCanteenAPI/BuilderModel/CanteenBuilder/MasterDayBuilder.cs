@@ -427,6 +427,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                             o.Status,
                             o.Remark,
                             o.CreatedDate,
+                            o.UserMobileNo,
                         };
             // Apply RgenId filter only for non-admin users
             if (!string.Equals(userType, "Canteen", StringComparison.OrdinalIgnoreCase))
@@ -452,8 +453,9 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 PaymentStatus = o.PaymentStatus,
                 Status = o.Status,
                 Remark = o.Remark,
-                // Convert DateTime → formatted string
-                OrderDate = Convert.ToDateTime(Convert.ToString(o.CreatedDate)).ToString("dd/MM/yyyy")
+                // Convert DateTime formatted string
+                OrderDate = Convert.ToDateTime(Convert.ToString(o.CreatedDate)).ToString("dd/MM/yyyy"),
+                UserMobileNo=o.UserMobileNo
             }).ToList();
             return result;
         }
@@ -523,6 +525,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 IsActive = true,
                 CreatedBy = orderSaveModelView.RgenId,
                 CreatedDate = DateTime.Now,
+                UserMobileNo = orderSaveModelView.UserMobileNo,
                 OrderItems = orderSaveModelView.OrderItems.Select(s => new tblOrderItem()
                 {
                     ItemNo = s.ItemNo,

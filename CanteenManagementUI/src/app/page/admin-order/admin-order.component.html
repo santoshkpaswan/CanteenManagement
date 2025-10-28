@@ -96,6 +96,11 @@
         <td mat-cell *matCellDef="let element"> {{element.userType}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="userMobileNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No </th>
+        <td mat-cell *matCellDef="let element"> {{element.userMobileNo}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="orderdate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Order Date </th>
         <td mat-cell *matCellDef="let element"> {{element.orderDate}} </td>

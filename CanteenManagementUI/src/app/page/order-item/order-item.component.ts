@@ -86,31 +86,24 @@ export class OrderItemComponent implements OnInit {
       dayId: [0,],
       rgenId: [rgenId],
       userName: [''],
+      userMobileNo: [''],
       userId: [userId],
       userType: [userType],
       totalAmount: [0],
       paymentType: [0],
       paymentStatus: [0],
       status: [0]
-
     });
-
-
   }
-
-
 
   ngOnInit(): void {
 
     this.getGridData();
     this.getLoginUserNameGridData();
     // Generate order number
-
-
   }
 
   getGridData() {
-
     this._canteenService.getOrderItem().subscribe((response) => {
       this.dataSource = response.data;
       this.itemList = response.data;
@@ -121,18 +114,12 @@ export class OrderItemComponent implements OnInit {
   }
 
   getLoginUserNameGridData() {
-
     const currentUser = this._authService.getUser();
     const rgenId = currentUser.account_id;
     this._canteenService.getLoginUserName(rgenId).subscribe((response) => {
       this.response = response;
-
     });
   }
-
-
-
-
   pageChanged(event: PageEvent) {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
@@ -201,10 +188,8 @@ export class OrderItemComponent implements OnInit {
   // }
 
   orderPlace() {
-
     // Check if the form is valid
     if (this.addpayNow.invalid) {
-
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
     }
@@ -213,17 +198,17 @@ export class OrderItemComponent implements OnInit {
     const currentUser = this._authService.getUser();
     const dayId = this.itemList?.length ? this.itemList[0].dayId : null;
     const userName = this.response.Name;
-
+    const userMobileNumber = this.response.MobileNo;
     // Prepare the payload
     const orderData: any = {
-     // orderNumber: this.addpayNow.value.orderNumber || this.orderNumber, // auto/given
+      // orderNumber: this.addpayNow.value.orderNumber || this.orderNumber, // auto/given
       dayId: dayId,
-
       rgenId: currentUser?.account_id || this.addpayNow.value.rgenId,
       userId: currentUser?.user_name || this.addpayNow.value.userId,
       userType: currentUser?.usertype || this.addpayNow.value.userType,
       //userName: this.addpayNow.value.userName,
       userName: userName,
+      userMobileNo: userMobileNumber,
       totalAmount: this.grandTotal,//Number(this.addpayNow.value.totalAmount),
       paymentType: Number(this.addpayNow.value.paymentType),
       paymentStatus: Number(this.addpayNow.value.paymentStatus),
@@ -239,7 +224,6 @@ export class OrderItemComponent implements OnInit {
 
     // Disable the form to prevent double submit
     this.addpayNow.disable();
-
     // Call API
     this._canteenService.addOrder(orderData).subscribe({
       next: (res: any) => {
@@ -253,7 +237,6 @@ export class OrderItemComponent implements OnInit {
         this.grandTotal = 0;      // resets the total amount
         //this.orderNumber = '';    // optional: reset order number
         this.getGridData();
-
         this.cdr.detectChanges();
       },
       error: (err) => {

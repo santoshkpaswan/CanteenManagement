@@ -44,7 +44,7 @@ export class AdminOrderComponent {
   orderDateFilter: string = '';
   selectedOrderDetails: any[] = [];
 
-  displayedColumns: string[] = ['checkbox', 'sno', 'ordernumber', 'username', 'usertype', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus'];
+  displayedColumns: string[] = ['checkbox', 'sno', 'ordernumber', 'username', 'usertype','userMobileNo', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;
