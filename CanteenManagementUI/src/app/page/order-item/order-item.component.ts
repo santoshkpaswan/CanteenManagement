@@ -87,6 +87,7 @@ export class OrderItemComponent implements OnInit {
       rgenId: [rgenId],
       userName: [''],
       userMobileNo: [''],
+      enrollNo: [''],
       userId: [userId],
       userType: [userType],
       totalAmount: [0],
@@ -199,6 +200,7 @@ export class OrderItemComponent implements OnInit {
     const dayId = this.itemList?.length ? this.itemList[0].dayId : null;
     const userName = this.response.Name;
     const userMobileNumber = this.response.MobileNo;
+    const userEnrollNumber = this.response.enroll_no;
     // Prepare the payload
     const orderData: any = {
       // orderNumber: this.addpayNow.value.orderNumber || this.orderNumber, // auto/given
@@ -209,6 +211,7 @@ export class OrderItemComponent implements OnInit {
       //userName: this.addpayNow.value.userName,
       userName: userName,
       userMobileNo: userMobileNumber,
+      enrollNo: userEnrollNumber,
       totalAmount: this.grandTotal,//Number(this.addpayNow.value.totalAmount),
       paymentType: Number(this.addpayNow.value.paymentType),
       paymentStatus: Number(this.addpayNow.value.paymentStatus),

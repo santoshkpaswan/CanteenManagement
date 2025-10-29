@@ -135,7 +135,8 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public List<OrderItemSaveModelView>? OrderItems { get; set; }
         public OrderStatus? Status { get; set; }
         public string? Remark { get; set; }
-        public string? UserMobileNo{ get; set; }
+        public string? UserMobileNo { get; set; }
+        public string? EnrollNo { get; set; }
     }
     public class OrderUpdateModelView
     {

@@ -455,7 +455,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 Remark = o.Remark,
                 // Convert DateTime formatted string
                 OrderDate = Convert.ToDateTime(Convert.ToString(o.CreatedDate)).ToString("dd/MM/yyyy"),
-                UserMobileNo=o.UserMobileNo
+                UserMobileNo = o.UserMobileNo
             }).ToList();
             return result;
         }
@@ -503,11 +503,11 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             }
 
             // check for Duplicate record
-            //bool exists = await _context.orderModels.AnyAsync(x => x.OrderNumber == orderSaveModelView.OrderNumber && x.IsActive == true);
-            //if (exists)
-            //{
-            //    throw new Exception("Order Number already exists.");
-            //}
+            bool exists = await _context.orderModels.AnyAsync(x => x.OrderNumber == orderSaveModelView.OrderNumber && x.IsActive == true);
+            if (exists)
+            {
+                throw new Exception("Order Number already exists.");
+            }
 
             tblOrder obj = new tblOrder
             {
@@ -540,6 +540,8 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             _context.Entry(obj).State = EntityState.Added;
             await _context.SaveChangesAsync();
 
+            //string enrollNo = orderSaveModelView.EnrollNo ?? "0000"; // fallback if null
+            
             // after saving to get OrderId
             var today = DateTime.Now.Date;
             // count existing orders for today
@@ -549,6 +551,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             // Order number format: RDIAS0001, RDIAS0002, ...
             //obj.OrderNumber = $"RDIAS{sequence:D4}";
             //obj.OrderNumber = $"RDIAS{DateTime.Now:yyyyMMdd}{obj.OrderId:D4}";
+            //{enrollNo}
             obj.OrderNumber = $"RDIAS{DateTime.Now:yyyyMMdd}{obj.OrderId}{sequence:D4}";
             // update and save again
             await _context.SaveChangesAsync();
