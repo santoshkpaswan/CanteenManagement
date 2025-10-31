@@ -44,7 +44,7 @@ export class AdminOrderComponent {
   orderDateFilter: string = '';
   selectedOrderDetails: any[] = [];
 
-  displayedColumns: string[] = ['checkbox', 'sno', 'ordernumber', 'username', 'usertype','userMobileNo', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus'];
+  displayedColumns: string[] = ['checkbox', 'sno', 'ordernumber', 'username', 'usertype', 'userMobileNo', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;
@@ -109,7 +109,7 @@ export class AdminOrderComponent {
   }
   getGridData() {
     this._canteenService.getOrder().subscribe((response) => {
-
+      debugger
       //this.dataSource = response.data;
       this.orderList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
@@ -295,7 +295,7 @@ export class AdminOrderComponent {
 
   /** Handle Checkbox Selection */
   onCheckboxChange(element: any, event: any) {
-
+    debugger
     if (event.target.checked) {
       this.selectedOrder = element;
       // uncheck all others
@@ -309,12 +309,11 @@ export class AdminOrderComponent {
 
   /** Open Order Status Modal */
   openEditCanteenOrderStatusTemplate(element: any, content: TemplateRef<any>) {
-
+    debugger
     if (!element) {
       this._coreService.openSnackBar('Please select an order first.', 'Ok');
       return;
     }
-
     this.editCanteenOrderStatusForm = this._formBuilder.group({
       paymentType: [element.paymentType, Validators.required],
       paymentStatus: [element.paymentStatus, Validators.required],

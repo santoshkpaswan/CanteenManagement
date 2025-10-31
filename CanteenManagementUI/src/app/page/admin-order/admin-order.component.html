@@ -68,7 +68,7 @@
         <th mat-header-cell *matHeaderCellDef>#</th>
         <td mat-cell *matCellDef="let element">
           <input type="checkbox" name="orderCheckbox" [checked]="selectedOrder?.orderId === element.orderId"
-            [disabled]="element.paymentStatus === 1 || element.paymentStatus === 4"
+            [disabled]="element.paymentStatus === 1 && element.status === 2"
             (change)="onCheckboxChange(element, $event)" />
         </td>
       </ng-container>
