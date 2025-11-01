@@ -135,10 +135,6 @@ import { MomentDateModule } from '@angular/material-moment-adapter';
     provide: MAT_RADIO_DEFAULT_OPTIONS,
     useValue: { color: 'accent' }
   },
-  {
-    provide: LocationStrategy,
-    useClass: HashLocationStrategy  // Add this provider
-  },
     AuthService, CanteenService, ConfirmationDialogService, MessageDialogService, AccessConfigService],
   bootstrap: [AppComponent],
 })

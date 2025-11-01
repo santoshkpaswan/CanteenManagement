@@ -21,7 +21,6 @@ export class NavContentComponent implements OnInit {
   windowWidth: number;
 
   @Output() NavMobCollapse = new EventEmitter();
-  // constructor
   constructor(
     private location: Location,
     private _router: Router,
@@ -29,12 +28,11 @@ export class NavContentComponent implements OnInit {
   ) {
     this.windowWidth = window.innerWidth;
 
-    this.navigations = NavigationItems;
+    this.navigations = JSON.parse(JSON.stringify(NavigationItems));
   }
 
   // life cycle event
   ngOnInit() {
-
     var navigationList = this.navigations;
     var indicesToRemove: number[];
     const userData = localStorage.getItem("user")!;
