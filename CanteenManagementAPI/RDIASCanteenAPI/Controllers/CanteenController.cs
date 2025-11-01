@@ -305,7 +305,7 @@ namespace RDIASCanteenAPI.Controllers
         {
             try
             {
-                var Objlist = await _masterDayInterface.GetOrder(rgenId, userType);
+                var Objlist = await _masterDayInterface.GetOrder(rgenId, isAdmin);
                 return Ok(new { Success = true, Data = Objlist });
             }
             catch (Exception ex)
