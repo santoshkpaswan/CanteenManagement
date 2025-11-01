@@ -15,6 +15,8 @@ namespace RDIASCanteenAPI.Data
         public DbSet<tblDayWiseFoodMenuItem> dayWiseFoodMenuItemModels { get; set; }
         public DbSet<tblOrder> orderModels { get; set; }
         public DbSet<tblOrderItem> orderItemModels { get; set; }
+        public DbSet<tblUsers> users { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -158,5 +160,27 @@ namespace RDIASCanteenAPI.Data
     }
     #endregion
 
+    #region User Login
+    [Table("tblUsers")]  // Maps to Your SQL Table
+    public class tblUsers
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int UsersId { get; set; }
+        public string UsersName { get; set; }
+        public string Password { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Mobile { get; set; }
+        public string Email { get; set; }
+        public string QRCode_file { get; set; }
+        public bool IsActive { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public int? ModifiedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
+    }
+    #endregion
 }
+

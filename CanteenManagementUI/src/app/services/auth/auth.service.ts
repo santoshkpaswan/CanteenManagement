@@ -43,26 +43,21 @@ export class AuthService {
    *
    * @param credentials
    */
-  signIn(credentials: { user_name: string; password: string }): Observable<any> {
-
-    // Throw error, if the user is already logged in
-    //if (this._authenticated) {
-    //  return throwError('User is already logged in.');
-    //}
-
+  signIn(model:any): Observable<any> {
     //this.authenticated = 'true';
     //this.userid ="1";
-    return this._httpClient.post(`${environment.apiLoginUrl}/Account/Autentication?APIKey=651cb656-1fde-478d-badf-33f60553f36e`, credentials).pipe(
+     return this._httpClient.post(`${environment.apiUrl}/Canteen/login`, model).pipe(
       switchMap((response: any) => {
 
-        if (response.response_id == 1) {
+        if (response.success) {
           // Set the authenticated flag to true
-          this._authenticated = true;
+         // this._authenticated = true;
           // Save user info in localStorage
           const userData = {
             account_id: response.account_id,
-            user_name: credentials.user_name,
+            user_name: model.username,
             usertype: response.account_type_name ,
+            isAdmin:response.account_type_name.toLocaleLowerCase()==="admin"
           };
           localStorage.setItem('user', JSON.stringify(userData));
         }
@@ -72,6 +67,7 @@ export class AuthService {
   }
 
   getUser(): { account_id: number; user_name: string; usertype:string; } {
+    debugger
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
       return JSON.parse(savedUser);

@@ -40,12 +40,12 @@ export class NavContentComponent implements OnInit {
     const userData = localStorage.getItem("user")!;
     if (userData != null) {
       const user: any = JSON.parse(userData);
-      if ((user.user_name?.toLocaleLowerCase() != "canteen") && (user.usertype?.toLocaleLowerCase() == "staff" || user.usertype?.toLocaleLowerCase() == "student")) {
+      if ((!user.isAdmin) && (user.usertype?.toLocaleLowerCase() == "staff" || user.usertype?.toLocaleLowerCase() == "student")) {
         navigationList = navigationList.filter(u => u.id !== "navigation1");
 
         navigationList[0].children = navigationList[0].children?.filter(x => x.id == "orderitem" || x.id == "orderhistory");
       }
-      else if (user.user_name?.toLocaleLowerCase() == "canteen") {
+      else if (user.isAdmin) {
         //navigationList = navigationList.filter(u => u.id !== "navigation1");
 
         navigationList[0].children = navigationList[0].children?.filter(x => x.id !== "dashboard");

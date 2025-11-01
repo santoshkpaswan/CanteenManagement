@@ -8,6 +8,7 @@ import { JwksValidationHandler, OAuthService } from 'angular-oauth2-oidc';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { CoreService } from 'src/app/services/core.service';
+// import { CanteenService } from 'src/app/services/canteen/canteen-service';
 
 @Component({
   selector: 'app-sign-in',
@@ -24,6 +25,7 @@ export class SignInComponent implements OnInit {
   sendObj!: any;
 
   constructor(
+    // private _canteenService: CanteenService,
     private _authService: AuthService,
     private _formBuilder: FormBuilder,
     private _router: Router,
@@ -49,36 +51,26 @@ export class SignInComponent implements OnInit {
     this.signInForm.disable();
 
     this.sendObj = {
-      user_name: this.signInForm.value.username,
+      username: this.signInForm.value.username,
       password: this.signInForm.value.password
     };
-    // this._router.navigate(['/user/home']);
-    //   this._authService.signIn(this.sendObj)
-    //     .subscribe(
-    //       (response: any) => {
-    //
-    //         this._router.navigate(['home']);
-    //       },
-    //       (error) => {
-    //         this.signInForm.enable();
-    //         this._coreService.openSnackBar(error.message, 'Ok');
-    //       });
-
 
     this._authService.signIn(this.sendObj).subscribe({
+
       next: (response: any) => {
 
         this.signInForm.enable();
 
-        if (response.response_id == 1) {
-          
+        if (response.success) {
+debugger
           this._coreService.openSnackBar('Login successful!', 'Ok');
           const userData = localStorage.getItem("user")!;
           const user: any = JSON.parse(userData);
-          if ((user.user_name?.toLocaleLowerCase() != "canteen" ) && (user.usertype?.toLocaleLowerCase() == "staff" || user.usertype?.toLocaleLowerCase() == "student")) {
+          if ((!user.isAdmin) && (user.usertype?.toLocaleLowerCase() == "staff" || user.usertype?.toLocaleLowerCase() == "student")) {
             this._router.navigate(['/canteen/order-item']);
           }
-          else if (user.user_name?.toLocaleLowerCase() == "canteen" ){
+          else if (user.isAdmin ){
+           //environment.isAdmin =true
             this._router.navigate(['/canteen/admin-order']);
           }
         } else {

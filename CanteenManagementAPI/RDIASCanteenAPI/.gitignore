@@ -71,3 +71,4 @@ packages
 **/bin/
 **/obj/
 publish
+/.vs/

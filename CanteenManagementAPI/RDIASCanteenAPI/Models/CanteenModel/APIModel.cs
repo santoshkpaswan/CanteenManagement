@@ -234,4 +234,21 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     }
 
     #endregion
+
+    #region  User Login Username and Password
+    public class LoginRequest
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class UserModel
+    {
+        public int response_id { get; set; }
+        public int account_id { get; set; }
+        public int account_type { get; set; }
+        public string account_type_name { get; set; }
+        public string response { get; set; }
+    }
+    #endregion
 }

@@ -2,6 +2,8 @@
 using RDIASCanteenAPI.Data;
 using RDIASCanteenAPI.Interface.CanteenInterface;
 using RDIASCanteenAPI.Models.CanteenModel;
+using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace RDIASCanteenAPI.Controllers
@@ -299,7 +301,7 @@ namespace RDIASCanteenAPI.Controllers
 
         #region Order
         [HttpGet("ListOrder")]
-        public async Task<IActionResult> GetOrder(int rgenId, string userType)
+        public async Task<IActionResult> GetOrder(int rgenId, bool isAdmin)
         {
             try
             {
@@ -487,8 +489,59 @@ namespace RDIASCanteenAPI.Controllers
                 return Ok(new { Success = false, Message = ex.Message });
             }
         }
-    }
 
-    #endregion
+        #endregion
+
+        #region  User Login API
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
+            }
+            UserModel objUser = new UserModel();
+            try
+            {
+                if (model.Username=="Admin")
+                {
+                    objUser = await _masterDayInterface.GetLogin(model.Username, model.Password);
+
+                    if (objUser == null)
+                    {
+                        return Ok(new { Success = false, Message = "Invalid username or password." });
+                    }
+                    return Ok(new { Success = true, objUser.account_id, objUser.account_type, account_type_name = model.Username });
+                }
+                else
+                {
+                    var client = new HttpClient();
+                    var request = new HttpRequestMessage(HttpMethod.Post, "http://eshaala.rdias.ac.in:89/API/Account/Autentication?APIKey=651cb656-1fde-478d-badf-33f60553f36e");
+                    var content = new StringContent("{\r\n    \"user_name\":\""+ model.Username + "\",\r\n    \"password\":\""+ model.Password + "\"\r\n}", null, "application/json");
+                    request.Content = content;
+                    var response = await client.SendAsync(request);
+                    response.EnsureSuccessStatusCode();
+
+                    string json = await response.Content.ReadAsStringAsync();
+
+                    // Convert to C# object
+                    objUser = JsonSerializer.Deserialize<UserModel>(json);
+                    return Ok(new { Success = true, objUser.account_id, objUser.account_type_name, objUser.account_type });
+
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return Ok(new { Success = false, Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { Success = false, Message = ex.Message });
+            }
+        }
+         
+        #endregion
+    }
 }
 

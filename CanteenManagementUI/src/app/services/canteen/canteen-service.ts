@@ -26,7 +26,21 @@ export class CanteenService {
       return 0;
     }
   }
+ private get loginIsAdmin(): boolean {
 
+    const userStr = localStorage.getItem('user');
+    if (!userStr) {
+      console.error('User not found in localStorage');
+      return false;
+    }
+    try {
+      const user = JSON.parse(userStr);
+      return user.isAdmin; // convert to number
+    } catch (e) {
+      console.error('Error parsing user JSON from localStorage', e);
+      return false;
+    }
+  }
   private get loginUserType(): string {
     const userStr = localStorage.getItem('user');
     if (!userStr) {
@@ -208,8 +222,8 @@ export class CanteenService {
     const rgenId = this.loginUserId;
     const userType = this.loginUserType;
     const username =  this.loginUserName
-
-    return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrder?rgenId=${rgenId} &userType=${username}`, {}).pipe(
+    const isAdmin =  this.loginIsAdmin
+    return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrder?rgenId=${rgenId} &isAdmin=${isAdmin}`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
       })
@@ -283,6 +297,36 @@ export class CanteenService {
  getNotification(): Observable<any> {
     return this._httpClient.get(`${environment.apiUrl}/Canteen/Notifications`, {}).pipe(
       switchMap((response: any) => {
+        return of(response);
+      })
+    );
+  }
+
+
+  signIns(model: any): Observable<any> {
+debugger
+    // Throw error, if the user is already logged in
+    //if (this._authenticated) {
+    //  return throwError('User is already logged in.');
+    //}
+
+    //this.authenticated = 'true';
+    //this.userid ="1";
+    return this._httpClient.post(`${environment.apiUrl}/Canteen/login`, model).pipe(
+      switchMap((response: any) => {
+
+        if (response.success) {
+          // Set the authenticated flag to true
+         // this._authenticated = true;
+          // Save user info in localStorage
+          const userData = {
+            account_id: response.account_id,
+            user_name: model.username,
+            usertype: response.account_type_name ,
+            isAdmin:response.account_type_name.toLocaleLowerCase()==="admin"
+          };
+          localStorage.setItem('user', JSON.stringify(userData));
+        }
         return of(response);
       })
     );

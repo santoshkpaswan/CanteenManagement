@@ -404,7 +404,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #endregion
 
         #region Order
-        public async Task<List<OrderListGetModelView>> GetOrder(int rgenId, string userType)
+        public async Task<List<OrderListGetModelView>> GetOrder(int rgenId, bool isAdmin)
         {
             //return await _context.orderModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
             var query = from o in _context.orderModels
@@ -430,7 +430,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                             o.UserMobileNo,
                         };
             // Apply RgenId filter only for non-admin users
-            if (!string.Equals(userType, "Canteen", StringComparison.OrdinalIgnoreCase))
+            if (!isAdmin)
             {
                 query = query.Where(o => o.RgenId == rgenId);
             }
@@ -830,5 +830,14 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
 
         #endregion
 
+
+        public async Task<UserModel> GetLogin(string username, string password)
+        {
+            return await _context.users.Where(u => u.UsersName == username && u.Password == password && u.IsActive).Select(u => new UserModel
+        {
+            account_id = u.UsersId,
+            account_type_name = u.UsersName
+        }).FirstOrDefaultAsync();
+        }
     }
 }
