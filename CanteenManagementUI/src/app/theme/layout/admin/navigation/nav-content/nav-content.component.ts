@@ -36,6 +36,7 @@ export class NavContentComponent implements OnInit {
     var navigationList = this.navigations;
     var indicesToRemove: number[];
     const userData = localStorage.getItem("user")!;
+    debugger
     if (userData != null) {
       const user: any = JSON.parse(userData);
       if ((!user.isAdmin) && (user.usertype?.toLocaleLowerCase() == "staff" || user.usertype?.toLocaleLowerCase() == "student")) {
@@ -46,9 +47,8 @@ export class NavContentComponent implements OnInit {
       else if (user.isAdmin) {
         //navigationList = navigationList.filter(u => u.id !== "navigation1");
 
-        navigationList[0].children = navigationList[0].children?.filter(x => x.id !== "dashboard");
-        navigationList[1].children = navigationList[1].children?.filter(x => x.id != "orderhistory");
-        navigationList[1].children = navigationList[1].children?.filter(x => x.id != "orderitem");
+        navigationList[0].children = navigationList[0].children?.filter(x => x.id != "orderhistory");
+        navigationList[0].children = navigationList[0].children?.filter(x => x.id != "orderitem");
       }
 
     }
