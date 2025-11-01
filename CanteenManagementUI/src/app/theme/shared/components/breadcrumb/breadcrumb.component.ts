@@ -35,7 +35,7 @@ export class BreadcrumbComponent {
     private route: Router,
     private titleService: Title
   ) {
-    this.navigations = NavigationItems;
+    this.navigations = JSON.parse(JSON.stringify(NavigationItems));
     this.setBreadcrumb();
   }
 

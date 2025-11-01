@@ -19,21 +19,6 @@ export interface NavigationItem {
 }
 
 export const NavigationItems: NavigationItem[] = [
-  {
-    id: 'navigation1',
-    title: 'Home',
-    type: 'group',
-    icon: 'icon-group',
-    children: [
-      {
-        id: 'dashboard',
-        title: 'Dashboard',
-        type: 'item',
-        url: '/user/home',
-        icon: 'feather icon-home'
-      }
-    ]
-  },
    {
     id: 'canteen',
     title: 'Canteen',
