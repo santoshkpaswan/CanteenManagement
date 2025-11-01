@@ -41,6 +41,7 @@ export class OrderHistoryComponent implements OnInit {
   dayName: any = [];
   statusFilter: string = '';
   selectedOrderDetails: any[] = [];
+  selectedOrder: any;
 
   displayedColumns: string[] = ['sno', 'ordernumber', 'oderDate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'delete'];
   // expose enums for HTML template
@@ -319,6 +320,17 @@ export class OrderHistoryComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  // ✅ Modal open function
+  openPaymentModal(content: any, order: any): void {
+    this.selectedOrder = {...order,
+      qrImageUrl: order.qrImageUrl || 'assets/images/CanteenPaymentQR.jpg',
+      //transactionId: order.transactionId || 'TXN' + Math.floor(Math.random() * 1000000),
+      //transactionDate: order.transactionDate || new Date()
+    };
+
+    this.modalService.open(content, { size: 'lg', backdrop: 'static' });
   }
 
 }

@@ -91,7 +91,8 @@
       <ng-container matColumnDef="paymentstatus">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Status </th>
         <td mat-cell *matCellDef="let element">
-          <span [ngClass]="getPaymentStatusLabel(element.paymentStatus).cssClass">
+          <span [ngClass]="getPaymentStatusLabel(element.paymentStatus).cssClass"
+            (click)="openPaymentModal(canteenPaymentQRDetails, element)">
             {{ getPaymentStatusLabel(element.paymentStatus).label }}
           </span>
         </td>
@@ -315,5 +316,31 @@
   </div>
   <div class="modal-footer">
     <!-- <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')"> Close </button> -->
+  </div>
+</ng-template>
+
+<!-- ---------------------------------- Angular Template for Payment QR Pop ------------------------------------ -->
+<ng-template #canteenPaymentQRDetails let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title fw-bold">UPI QR</h6>
+    <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+
+  <div class="modal-body">
+    <div class="card text-center shadow-sm">
+      <div class="card-header bg-light">
+        <h6 class="fw-bold">Payment Details</h6>
+      </div>
+
+      <div class="card-body">
+        <!-- ✅ QR Image -->
+        <div class="mb-3">
+          <img [src]="selectedOrder?.qrImageUrl || 'assets/images/CanteenPaymentQR.jpg'" alt="UPI QR"
+            class="img-fluid rounded" style="max-width: 200px;" />
+        </div>
+      </div>
+
+
+    </div>
   </div>
 </ng-template>

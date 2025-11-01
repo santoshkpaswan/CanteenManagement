@@ -833,7 +833,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
 
         public async Task<UserModel> GetLogin(string username, string password)
         {
-            return await _context.users.Where(u => u.UsersName == username && u.Password == password && u.IsActive).Select(u => new UserModel
+            return await _context.users.Where(u => u.UsersName.Trim().ToLower() == username.Trim().ToLower() && u.Password == password && u.IsActive).Select(u => new UserModel
         {
             account_id = u.UsersId,
             account_type_name = u.UsersName

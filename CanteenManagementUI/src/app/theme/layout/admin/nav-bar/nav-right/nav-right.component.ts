@@ -74,13 +74,14 @@ export class NavRightComponent {
   }
 
   ngOnInit(): void {
+    debugger
     const userData = localStorage.getItem("user");
     if (userData) {
       const user: any = JSON.parse(userData);
       const userName = user.user_name?.toLowerCase(); // normalize case
       this.userName = userName;
       //this.showNotification = userName === 'canteen'; // only for canteen
-      if (this.userName === 'canteen') {
+      if (this.userName) {
         this.getNotificationData();
 
         // Poll notifications every 10 seconds

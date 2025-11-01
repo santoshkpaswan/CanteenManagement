@@ -504,7 +504,8 @@ namespace RDIASCanteenAPI.Controllers
             UserModel objUser = new UserModel();
             try
             {
-                if (model.Username=="Admin")
+                //.Trim().ToLower()
+                if (model.Username.Trim().ToLower() == "admin")
                 {
                     objUser = await _masterDayInterface.GetLogin(model.Username, model.Password);
 
