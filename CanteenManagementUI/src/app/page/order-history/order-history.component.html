@@ -99,6 +99,11 @@
         </td>
       </ng-container>
 
+         <ng-container matColumnDef="transtionId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Transtion ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.transtionId}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef> Cancel </th>
         <td mat-cell *matCellDef="let element">

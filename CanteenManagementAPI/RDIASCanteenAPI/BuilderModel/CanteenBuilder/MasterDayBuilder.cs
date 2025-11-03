@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using System.Transactions;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using RDIASCanteenAPI.Data;
 using RDIASCanteenAPI.Interface.CanteenInterface;
@@ -428,6 +429,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                             o.Remark,
                             o.CreatedDate,
                             o.UserMobileNo,
+                            o.transtionId,
                         };
             // Apply RgenId filter only for non-admin users
             if (!isAdmin)
@@ -455,7 +457,8 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 Remark = o.Remark,
                 // Convert DateTime formatted string
                 OrderDate = Convert.ToDateTime(Convert.ToString(o.CreatedDate)).ToString("dd/MM/yyyy"),
-                UserMobileNo = o.UserMobileNo
+                UserMobileNo = o.UserMobileNo,
+                transtionId = o.transtionId
             }).ToList();
             return result;
         }
@@ -850,7 +853,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 throw new ArgumentException("TranstionId is required.", nameof(paymentQRTranstion.TranstionId));
             }
             // check for Duplicate record
-            bool exists = await _context.orderModels.AnyAsync(x => x.transtionId.ToLower() == paymentQRTranstion.TranstionId.ToLower() && x.IsActive ==true);
+            bool exists = await _context.orderModels.AnyAsync(x => x.transtionId.ToLower() == paymentQRTranstion.TranstionId.ToLower() && x.IsActive == true);
             if (exists)
             {
                 throw new Exception("TranstionId already exists.");

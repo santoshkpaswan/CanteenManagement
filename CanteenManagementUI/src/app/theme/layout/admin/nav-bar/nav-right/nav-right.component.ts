@@ -168,6 +168,7 @@ export class NavRightComponent {
 
   // fetch name from backend
   getLoginUserNameGridData() {
+    debugger
     const currentUser = this._authService.getUser();
     const rgenId = currentUser.account_id;
 

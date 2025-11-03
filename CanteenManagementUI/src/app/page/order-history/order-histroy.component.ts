@@ -43,9 +43,9 @@ export class OrderHistoryComponent implements OnInit {
   statusFilter: string = '';
   selectedOrderDetails: any[] = [];
   selectedOrder: any;
-  qrImageUrl: string =  'assets/images/CanteenPaymentQR.jpg';
+  qrImageUrl: string =  'assets/images/CanteenPaymentGooglePayQR.jpg';
 
-  displayedColumns: string[] = ['sno', 'ordernumber', 'oderDate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'delete'];
+  displayedColumns: string[] = ['sno', 'ordernumber', 'oderDate', 'totalamount', 'status', 'paymenttype', 'paymentstatus','transtionId', 'delete'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;
