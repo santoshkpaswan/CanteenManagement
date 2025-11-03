@@ -332,5 +332,13 @@ debugger
     );
   }
 
+  paymentTranstion(model: any): Observable<any> {
+    return this._httpClient.post(`${environment.apiUrl}/Canteen/PaymentQRTranstion`, model).pipe(
+      switchMap((response: any) => {
+        return of(response);
+      })
+    );
+  }
+
 
 }

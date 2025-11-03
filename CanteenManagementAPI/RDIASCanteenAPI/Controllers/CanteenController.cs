@@ -519,7 +519,7 @@ namespace RDIASCanteenAPI.Controllers
                 {
                     var client = new HttpClient();
                     var request = new HttpRequestMessage(HttpMethod.Post, "http://eshaala.rdias.ac.in:89/API/Account/Autentication?APIKey=651cb656-1fde-478d-badf-33f60553f36e");
-                    var content = new StringContent("{\r\n    \"user_name\":\""+ model.Username + "\",\r\n    \"password\":\""+ model.Password + "\"\r\n}", null, "application/json");
+                    var content = new StringContent("{\r\n    \"user_name\":\"" + model.Username + "\",\r\n    \"password\":\"" + model.Password + "\"\r\n}", null, "application/json");
                     request.Content = content;
                     var response = await client.SendAsync(request);
                     response.EnsureSuccessStatusCode();
@@ -543,6 +543,31 @@ namespace RDIASCanteenAPI.Controllers
         }
          
         #endregion
+    
+    #region Payment QR Transtion 
+    [HttpPost("PaymentQRTranstion")]
+        public async Task<IActionResult> PaymentQRTranstion([FromBody] PaymentQRTranstion paymentQRTranstion)
+        {
+            if (!ModelState.IsValid)
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
+
+            try
+            {
+                var result = await _masterDayInterface.PaymentQRTranstion(paymentQRTranstion);
+                return Ok(new { Success = true, Message = "Save TranstionId successfully" });
+            }
+            catch (ArgumentException ex)
+            {
+                return Ok(new { Success = false, Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { Success = false, Message = ex.Message });
+            }
+        } 
+
+    #endregion
+    
     }
 }
 

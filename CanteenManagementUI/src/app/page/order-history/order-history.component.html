@@ -91,8 +91,9 @@
       <ng-container matColumnDef="paymentstatus">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Payment Status </th>
         <td mat-cell *matCellDef="let element">
-          <span [ngClass]="getPaymentStatusLabel(element.paymentStatus).cssClass"
-            (click)="openPaymentModal(canteenPaymentQRDetails, element)">
+          <span [ngClass]="[
+        getPaymentStatusLabel(element.paymentStatus).cssClass, isPaymentAllowed(element) ? '' : 'disabled']"
+            (click)="isPaymentAllowed(element) && openPaymentModal(element, canteenPaymentQRDetails)">
             {{ getPaymentStatusLabel(element.paymentStatus).label }}
           </span>
         </td>
@@ -321,26 +322,44 @@
 
 <!-- ---------------------------------- Angular Template for Payment QR Pop ------------------------------------ -->
 <ng-template #canteenPaymentQRDetails let-modal>
-  <div class="modal-header">
-    <h6 class="modal-title fw-bold">UPI QR</h6>
-    <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
+  <form [formGroup]="savePaymentTransactionCanteenOrderForm" #signInNgForm="ngForm">
 
-  <div class="modal-body">
-    <div class="card text-center shadow-sm">
-      <div class="card-header bg-light">
-        <h6 class="fw-bold">Payment Details</h6>
-      </div>
+    <div class="modal-header">
+      <h6 class="modal-title fw-bold">UPI QR Payment</h6>
+      <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
 
-      <div class="card-body">
-        <!-- ✅ QR Image -->
-        <div class="mb-3">
-          <img [src]="selectedOrder?.qrImageUrl || 'assets/images/CanteenPaymentQR.jpg'" alt="UPI QR"
-            class="img-fluid rounded" style="max-width: 200px;" />
+    <div class="modal-body">
+      <div class="card text-center shadow-sm">
+        <div class="card-header bg-light">
+          <h6 class="fw-bold">Scan this QR to make payment</h6>
+        </div>
+
+        <div class="card-body">
+          <!--QR Image -->
+          <div class="mb-3">
+            <img [src]="qrImageUrl" alt="UPI QR"
+              class="img-fluid rounded" style="max-width: 200px;" />
+          </div>
+
+          <!--Transaction ID -->
+          <div class="mb-3">
+            <label>Transaction ID<strong style="color: red;">*</strong></label>
+            <input type="hidden" [formControlName]="'orderId'" class="form-control" required>
+            <input type="text" [formControlName]="'transtionId'" class="form-control" placeholder="Enter Transaction ID"
+              required />
+          </div>
+
+          <!--Transaction Date -->
+          <div class="mb-3">
+            <label>Transaction Date<strong style="color: red;">*</strong></label>
+            <input type="date" [formControlName]="'transtionDate'" class="form-control" required />
+          </div>
+
+          <!--Submit Button -->
+          <button class="btn btn-success w-100" (click)="saveTransaction()">Submit Payment</button>
         </div>
       </div>
-
-
     </div>
-  </div>
+  </form>
 </ng-template>

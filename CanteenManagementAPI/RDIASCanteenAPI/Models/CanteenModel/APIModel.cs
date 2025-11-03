@@ -251,4 +251,14 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string response { get; set; }
     }
     #endregion
+
+    #region 
+    public class PaymentQRTranstion
+    {
+        public int OrderId { get; set; }
+        public string TranstionId { get; set; }
+        public DateTime TranstionDate { get; set; }
+
+    }
+    #endregion
 }

@@ -35,6 +35,7 @@ import { OrderPaymentType, OrderPaymentStatus, OrderStatus } from 'src/app/share
 export class OrderHistoryComponent implements OnInit {
   addCanteenOrderForm: FormGroup;
   editCanteenOrderForm: FormGroup;
+  savePaymentTransactionCanteenOrderForm: FormGroup;
   currentPage: any = 0;
   pageSize: any = 10;
   orderList: any = [];
@@ -42,6 +43,7 @@ export class OrderHistoryComponent implements OnInit {
   statusFilter: string = '';
   selectedOrderDetails: any[] = [];
   selectedOrder: any;
+  qrImageUrl: string =  'assets/images/CanteenPaymentQR.jpg';
 
   displayedColumns: string[] = ['sno', 'ordernumber', 'oderDate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'delete'];
   // expose enums for HTML template
@@ -99,6 +101,14 @@ export class OrderHistoryComponent implements OnInit {
       remark: ['', Validators.required],
       orderId: ['', Validators.required]
     });
+
+    this.savePaymentTransactionCanteenOrderForm = _formBuilder.group({
+      transtionId: ['', Validators.required],
+      transtionDate: ['', Validators.required],
+      orderId: [0, Validators.required]
+
+    })
+
   }
 
   ngOnInit(): void {
@@ -189,6 +199,26 @@ export class OrderHistoryComponent implements OnInit {
     })
 
   }
+  saveTransaction() {
+    debugger
+    if (this.savePaymentTransactionCanteenOrderForm.invalid) {
+      this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
+      return;
+    }
+    this.savePaymentTransactionCanteenOrderForm.disable();
+
+    this._canteenService.paymentTranstion(this.savePaymentTransactionCanteenOrderForm.value).subscribe((data) => {
+      this._coreService.openSnackBar(data.message, 'Ok');
+      if (data.success) {
+        this.modalService.dismissAll();
+        this.savePaymentTransactionCanteenOrderForm.reset();
+        this.getGridData();
+      }
+      this.savePaymentTransactionCanteenOrderForm.enable();
+    })
+
+  }
+
   deleteCanteenOrder(element: any) {
     this._confirmation.confirm('Are you sure?', 'Do you really want to delete this order?')
       .then((confirmed) => {
@@ -261,10 +291,10 @@ export class OrderHistoryComponent implements OnInit {
 
   // Helper functions for table display
   getPaymentTypeLabel(value: number): string {
-
     return this.paymentTypesArray.find(x => x.value === value)?.paymenttypelabel || '';
   }
   getPaymentStatusLabel(value: number): { label: string, cssClass: string } {
+    debugger
     const label = this.paymentStatusArray.find(x => x.value === value)?.paymentstatuslabel || '';
     const lower = label.toLowerCase();
 
@@ -322,15 +352,31 @@ export class OrderHistoryComponent implements OnInit {
     }
   }
 
-  // ✅ Modal open function
-  openPaymentModal(content: any, order: any): void {
-    this.selectedOrder = {...order,
-      qrImageUrl: order.qrImageUrl || 'assets/images/CanteenPaymentQR.jpg',
-      //transactionId: order.transactionId || 'TXN' + Math.floor(Math.random() * 1000000),
-      //transactionDate: order.transactionDate || new Date()
-    };
+  // paymentQR mode
+  isPaymentAllowed(element: any): boolean {
+    debugger
+    const orderStatus = this.getOrderStatusLabel(element.status).label.toLowerCase();
+    const paymentTypeValue = element.paymentType;
+    const paymentStatus = this.getPaymentStatusLabel(element.paymentStatus).label.toLowerCase();
+    return ((orderStatus === 'orderplace' || orderStatus === 'inprogress') && paymentTypeValue === 2 && paymentStatus === 'pending');
+  }
 
-    this.modalService.open(content, { size: 'lg', backdrop: 'static' });
+  // paymentQR mode Pop page open
+  openPaymentModal(element: any, content: TemplateRef<any>) {
+    this.selectedOrder = element;
+
+    // if (element.qrImageName) {
+    //   this.qrImageUrl = `assets/qr/${element.qrImageName}`;
+    // } else {
+    //   this.qrImageUrl = 'assets/images/CanteenPaymentQR.jpg';
+    // }
+    this.qrImageUrl;
+    this.savePaymentTransactionCanteenOrderForm = this._formBuilder.group({
+      transtionId: ['', Validators.required],
+      transtionDate: ['', Validators.required],
+      orderId: [element.orderId]
+    });
+    this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
 
 }

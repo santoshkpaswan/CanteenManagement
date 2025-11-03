@@ -541,7 +541,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             await _context.SaveChangesAsync();
 
             //string enrollNo = orderSaveModelView.EnrollNo ?? "0000"; // fallback if null
-            
+
             // after saving to get OrderId
             var today = DateTime.Now.Date;
             // count existing orders for today
@@ -830,14 +830,45 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
 
         #endregion
 
-
+        #region Admin User Login
         public async Task<UserModel> GetLogin(string username, string password)
         {
             return await _context.users.Where(u => u.UsersName.Trim().ToLower() == username.Trim().ToLower() && u.Password == password && u.IsActive).Select(u => new UserModel
-        {
-            account_id = u.UsersId,
-            account_type_name = u.UsersName
-        }).FirstOrDefaultAsync();
+            {
+                account_id = u.UsersId,
+                account_type_name = u.UsersName
+            }).FirstOrDefaultAsync();
         }
+
+        #endregion
+
+        #region Payment QR Transtion
+        public async Task<PaymentQRTranstion> PaymentQRTranstion(PaymentQRTranstion paymentQRTranstion)
+        {
+            if (string.IsNullOrWhiteSpace(paymentQRTranstion.TranstionId) || paymentQRTranstion.TranstionId.Trim().ToLower() == "string" || paymentQRTranstion.TranstionId.Trim().ToLower() == "null")
+            {
+                throw new ArgumentException("TranstionId is required.", nameof(paymentQRTranstion.TranstionId));
+            }
+            // check for Duplicate record
+            bool exists = await _context.orderModels.AnyAsync(x => x.transtionId.ToLower() == paymentQRTranstion.TranstionId.ToLower() && x.IsActive ==true);
+            if (exists)
+            {
+                throw new Exception("TranstionId already exists.");
+            }
+            // UPDATE only
+            var existing = await _context.orderModels.FirstOrDefaultAsync(x => x.OrderId == paymentQRTranstion.OrderId && x.IsActive == true);
+            if (existing == null)
+            {
+                throw new Exception("Record not found.");
+            }
+            existing.transtionId = paymentQRTranstion.TranstionId;
+            existing.transtionDate = paymentQRTranstion.TranstionDate;
+            await _context.SaveChangesAsync();
+            return paymentQRTranstion;
+        }
+
+        #endregion
     }
 }
+
+

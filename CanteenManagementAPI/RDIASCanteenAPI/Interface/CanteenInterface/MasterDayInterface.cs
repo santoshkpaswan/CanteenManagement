@@ -51,10 +51,18 @@ namespace RDIASCanteenAPI.Interface.CanteenInterface
 
         #region Order Notification
         Task<List<OrderNotification>> GetOrderNotifications();
+
+        #endregion
+
+        #region admin User Login
         Task<UserModel> GetLogin(string username, string password);
 
         #endregion
 
-        
+        #region Payment QR Transtion
+        Task<PaymentQRTranstion> PaymentQRTranstion(PaymentQRTranstion paymentQRTranstion);
+        #endregion
+
+
     }
 }

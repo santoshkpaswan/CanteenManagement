@@ -136,6 +136,8 @@ namespace RDIASCanteenAPI.Data
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string? UserMobileNo { get; set; }
+        public string? transtionId {  get; set; }
+        public DateTime? transtionDate {  get; set; }
     }
     #endregion
 
