@@ -109,7 +109,6 @@ export class AdminOrderComponent {
   }
   getGridData() {
     this._canteenService.getOrder().subscribe((response) => {
-      debugger
       //this.dataSource = response.data;
       this.orderList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
@@ -295,7 +294,6 @@ export class AdminOrderComponent {
 
   /** Handle Checkbox Selection */
   onCheckboxChange(element: any, event: any) {
-    debugger
     if (event.target.checked) {
       this.selectedOrder = element;
       // uncheck all others
@@ -309,7 +307,6 @@ export class AdminOrderComponent {
 
   /** Open Order Status Modal */
   openEditCanteenOrderStatusTemplate(element: any, content: TemplateRef<any>) {
-    debugger
     if (!element) {
       this._coreService.openSnackBar('Please select an order first.', 'Ok');
       return;
@@ -327,7 +324,6 @@ export class AdminOrderComponent {
 
   /** Update Order Status*/
   updateOrderStatus() {
-
     if (this.editCanteenOrderStatusForm.invalid) {
       this._coreService.openSnackBar('Please fill all required fields.', 'Ok');
       return;
@@ -362,7 +358,6 @@ export class AdminOrderComponent {
 
 
   deleteSelectedOrder() {
-
     if (!this.selectedOrder) {
       this._coreService.openSnackBar('Please select an order to cancel.', 'Ok');
       return;
@@ -415,7 +410,6 @@ export class AdminOrderComponent {
         ;
         this.selectedOrderDetails = res?.data || [];
         console.log('Order details:', this.selectedOrderDetails);
-        // this.modalService.open(this.canteenOrderDetails, { size: 'lg', backdrop: 'static' });
         this.modalService.open(this.canteenOrderDetails, { size: 'md', backdrop: 'static' });
       },
       error: (err) => {

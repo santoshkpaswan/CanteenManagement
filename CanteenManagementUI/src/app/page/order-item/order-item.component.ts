@@ -127,16 +127,7 @@ export class OrderItemComponent implements OnInit {
   }
 
   addItem(item: OrderItem) {
-    // if (this.orderNumber == '') {
-    //   this.orderNumber = this.generateOrderNumber();
-    // }
-
     item.count = (item.count || 0) + 1;
-
-    // const index = this.filteredItems.indexOf(item);
-    // if (index > -1) {
-    //   this.filteredItems.splice(index, 1);
-    // }
     if (!this.filteredItems.some(x => x.foodMenuItemId === item.foodMenuItemId)) {
       this.filteredItems.push(item);
     }
@@ -153,40 +144,6 @@ export class OrderItemComponent implements OnInit {
   calculateGrandTotal() {
     this.grandTotal = this.filteredItems.reduce((sum: any, x: any) => sum + x.count * x.itemPrice, 0);
   }
-  // Getter to avoid parser errors in template
-  // get filteredItems(): OrderItem[] {
-  //
-  //   return this.itemList.filter(x => x.count > 0);
-  // }
-  // generateOrderNumber(): string {
-  //   const today = new Date();
-  //   const todayStr = today.toISOString().split('T')[0]; // "YYYY-MM-DD"
-
-  //   // Get order counts from localStorage
-  //   const orderCounts = JSON.parse(localStorage.getItem('orderCounts') || '{}');
-
-  //   // Get today's count or 0 if new day
-  //   let todayCount = orderCounts[todayStr] || 0;
-
-  //   // Increment for new order
-  //   todayCount += 1;
-
-  //   // Save updated count
-  //   orderCounts[todayStr] = todayCount;
-  //   localStorage.setItem('orderCounts', JSON.stringify(orderCounts));
-
-  //   // Format: RDIAS00001 (5-digit sequence)
-  //   return `RDIAS${todayCount.toString().padStart(5, '0')}`;
-  // }
-
-
-  // Mock payment process
-  // payNow() {
-  //   if (this.filteredItems.length === 0) {
-  //     alert('Add items to cart before payment.');
-  //     return;
-  //   }
-  // }
 
   orderPlace() {
     // Check if the form is valid
@@ -203,12 +160,10 @@ export class OrderItemComponent implements OnInit {
     const userEnrollNumber = this.response.enroll_no;
     // Prepare the payload
     const orderData: any = {
-      // orderNumber: this.addpayNow.value.orderNumber || this.orderNumber, // auto/given
       dayId: dayId,
       rgenId: currentUser?.account_id || this.addpayNow.value.rgenId,
       userId: currentUser?.user_name || this.addpayNow.value.userId,
       userType: currentUser?.usertype || this.addpayNow.value.userType,
-      //userName: this.addpayNow.value.userName,
       userName: userName,
       userMobileNo: userMobileNumber,
       enrollNo: userEnrollNumber,
@@ -238,7 +193,6 @@ export class OrderItemComponent implements OnInit {
         // CLEAR BILLING SUMMARY
         this.filteredItems = [];  // empties the table
         this.grandTotal = 0;      // resets the total amount
-        //this.orderNumber = '';    // optional: reset order number
         this.getGridData();
         this.cdr.detectChanges();
       },

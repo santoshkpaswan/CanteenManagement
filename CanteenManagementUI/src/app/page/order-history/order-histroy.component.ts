@@ -43,9 +43,10 @@ export class OrderHistoryComponent implements OnInit {
   statusFilter: string = '';
   selectedOrderDetails: any[] = [];
   selectedOrder: any;
-  qrImageUrl: string =  'assets/images/CanteenPaymentGooglePayQR.jpg';
+  //qrImageUrl: string =  'assets/images/CanteenPaymentGooglePayQR.jpg';
+  qrImageUrl: string = 'assets/images/CanteenPaymentPaytmQR.jpg';
 
-  displayedColumns: string[] = ['sno', 'ordernumber', 'oderDate', 'totalamount', 'status', 'paymenttype', 'paymentstatus','transtionId', 'delete'];
+  displayedColumns: string[] = ['sno', 'ordernumber', 'oderDate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'transtionId', 'delete'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;
@@ -200,7 +201,7 @@ export class OrderHistoryComponent implements OnInit {
 
   }
   saveTransaction() {
-    debugger
+
     if (this.savePaymentTransactionCanteenOrderForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
@@ -217,6 +218,14 @@ export class OrderHistoryComponent implements OnInit {
       this.savePaymentTransactionCanteenOrderForm.enable();
     })
 
+  }
+
+  isCancelButtonDisable(element: any): boolean {
+    const orderStatus = this.getOrderStatusLabel(element.status)?.label?.toLowerCase();
+    const paymentStatus = this.getPaymentStatusLabel(element.paymentStatus)?.label?.toLowerCase();
+
+    // Disable button if order is completed OR cancelled OR payment is paid
+    return ((orderStatus === 'completed') && paymentStatus === 'paid');
   }
 
   deleteCanteenOrder(element: any) {
@@ -294,7 +303,7 @@ export class OrderHistoryComponent implements OnInit {
     return this.paymentTypesArray.find(x => x.value === value)?.paymenttypelabel || '';
   }
   getPaymentStatusLabel(value: number): { label: string, cssClass: string } {
-    debugger
+
     const label = this.paymentStatusArray.find(x => x.value === value)?.paymentstatuslabel || '';
     const lower = label.toLowerCase();
 
@@ -354,7 +363,7 @@ export class OrderHistoryComponent implements OnInit {
 
   // paymentQR mode
   isPaymentAllowed(element: any): boolean {
-    debugger
+
     const orderStatus = this.getOrderStatusLabel(element.status).label.toLowerCase();
     const paymentTypeValue = element.paymentType;
     const paymentStatus = this.getPaymentStatusLabel(element.paymentStatus).label.toLowerCase();

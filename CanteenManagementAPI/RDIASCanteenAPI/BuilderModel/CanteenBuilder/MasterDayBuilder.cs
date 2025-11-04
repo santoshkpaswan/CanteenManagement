@@ -225,7 +225,6 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
 
         public async Task<List<FoodMenuItemGetModelView>> GetFoodMenuItemPrice()
         {
-            //return await _context.foodMenuItemPriceModels.Where(x => x.IsActive == true).OrderByDescending(x =>x.FoodMenuItemPriceId).ToListAsync();
             var result = await (from fp in _context.foodMenuItemPriceModels
                                 join fm in _context.foodMenuItemModels on fp.FoodMenuItemId equals fm.FoodMenuItemId
                                 where fp.IsActive && fm.IsActive
@@ -318,8 +317,6 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #region Day Wise Food Menu Item
         public async Task<List<FoodDayGetModelView>> GetDayWiseFoodMenuItem()
         {
-            //return await _context.dayWiseFoodMenuItemModels.Where(x => x.IsActive == true).OrderByDescending(x => x.DayWiseFoodMenuItemId).ToListAsync();
-
             var result = await (from d in _context.dayWiseFoodMenuItemModels
                                 join f in _context.masterDaysModels on d.DayId equals f.DayId
                                 join fm in _context.foodMenuItemModels on d.FoodMenuItemId equals fm.FoodMenuItemId
@@ -407,7 +404,6 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #region Order
         public async Task<List<OrderListGetModelView>> GetOrder(int rgenId, bool isAdmin)
         {
-            //return await _context.orderModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
             var query = from o in _context.orderModels
                         join d in _context.masterDaysModels on o.DayId equals d.DayId
                         where o.IsActive == true && d.IsActive == true //&& o.RgenId == rgenId
@@ -567,81 +563,6 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
 
 
         }
-        // public async Task<OrderSaveModelView> SaveOrder(OrderSaveModelView orderSaveModelView)
-        // {
-        //     if (orderSaveModelView.DayId <= 0)
-        //     {
-        //         throw new ArgumentException("Day is required.", nameof(orderSaveModelView.DayId));
-        //     }
-        //     if (orderSaveModelView.TotalAmount <= 0)
-        //     {
-        //         throw new ArgumentException("Total Amount must be greater than 0.", nameof(orderSaveModelView.TotalAmount));
-        //     }
-        //     if (string.IsNullOrWhiteSpace(orderSaveModelView.UserName))
-        //     {
-        //         throw new ArgumentException("User Name is required.", nameof(orderSaveModelView.UserName));
-        //     }
-        //     if (string.IsNullOrWhiteSpace(orderSaveModelView.UserType))
-        //     {
-        //         throw new ArgumentException("User Type is required.", nameof(orderSaveModelView.UserType));
-        //     }
-
-        //     // check for Duplicate record
-        //     //bool exists = await _context.orderModels.AnyAsync(x => x.OrderNumber == orderSaveModelView.OrderNumber && x.IsActive == true);
-        //     //if (exists)
-        //     //{
-        //     //    throw new Exception("Order Number already exists.");
-        //     //}
-
-        //     tblOrder obj = new tblOrder
-        //     {
-        //         OrderNumber = orderSaveModelView.OrderNumber,
-        //         DayId = orderSaveModelView.DayId,
-        //         RgenId = orderSaveModelView.RgenId,
-        //         UserName = orderSaveModelView.UserName,
-        //         UserId = orderSaveModelView.UserId,
-        //         UserType = orderSaveModelView.UserType,
-        //         TotalAmount = orderSaveModelView.TotalAmount,
-        //         PaymentType = orderSaveModelView.PaymentType,
-        //         PaymentStatus = orderSaveModelView.PaymentStatus,
-        //         Status = orderSaveModelView.Status,
-        //         Remark = orderSaveModelView.Remark,
-        //         IsActive = true,
-        //         CreatedBy = orderSaveModelView.RgenId,
-        //         CreatedDate = DateTime.Now,
-        //         OrderItems = orderSaveModelView.OrderItems.Select(s => new tblOrderItem()
-        //         {
-        //             ItemNo = s.ItemNo,
-        //             FoodMenuItemId = s.FoodMenuItemId,
-        //             TotalAmount = s.TotalAmount,
-        //             IsActive = true,
-        //             CreatedDate = DateTime.Now,
-        //             CreatedBy = orderSaveModelView.RgenId ?? 0
-        //         }).ToList()
-        //     };
-        //     _context.orderModels.Add(obj);
-        //     _context.Entry(obj).State = EntityState.Added;
-        //     await _context.SaveChangesAsync();
-
-        //     //// after saving to get OrderId
-        //     //var today = DateTime.Now.Date;
-        //     //// count existing orders for today
-        //     //int todayCount = await _context.orderModels.CountAsync(o => o.CreatedDate.Date == today);
-        //     //// +1 for new order
-        //     //int sequence = todayCount;
-        //     //// Order number format: RDIAS0001, RDIAS0002, ...
-        //     //obj.OrderNumber = $"RDIAS{sequence:D4}";
-        //     ////obj.OrderNumber = $"ORD-{DateTime.Now:yyyyMMdd}-{obj.OrderId:D4}";
-        //     //// update and save again
-        //     //await _context.SaveChangesAsync();
-
-        //     ////orderSaveModelView.OrderNumber = obj.OrderNumber;
-
-        //     return orderSaveModelView;
-
-
-
-        // }
         public async Task<OrderUpdateModelView> UpdateOrder(OrderUpdateModelView orderUpdateModelView)
         {
             if (orderUpdateModelView.DayId <= 0)
@@ -712,7 +633,6 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #region Order Item
         public async Task<List<OrderItemListGetModelView>> GetOrderItem()
         {
-            //return await _context.orderItemModels.Where(x => x.IsActive == true).OrderByDescending(x => x.OrderId).ToListAsync();
             var todayName = DateTime.Now.DayOfWeek.ToString();
 
             var result = await (

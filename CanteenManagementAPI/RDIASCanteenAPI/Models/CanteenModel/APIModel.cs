@@ -148,9 +148,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string UserId { get; set; }
         public string UserType { get; set; }
         public decimal TotalAmount { get; set; }
-        //public int PaymentType { get; set; }
         public OrderPaymentType PaymentType { get; set; }
-        //public int PaymentStatus { get; set; }
         public OrderPaymentStatus PaymentStatus { get; set; }
         public OrderStatus Status { get; set; }
         public string Remark { get; set; }

@@ -108,7 +108,7 @@
         <th mat-header-cell *matHeaderCellDef> Cancel </th>
         <td mat-cell *matCellDef="let element">
           <mat-dialog-actions>
-            <button class="btn btn-sm" style="color: red;" (click)="deleteCanteenOrder(element)">
+            <button class="btn btn-sm" style="color: red;" [disabled]="isCancelButtonDisable(element)" (click)="deleteCanteenOrder(element)">
               <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete"></mat-icon>
             </button>
           </mat-dialog-actions>
@@ -344,7 +344,7 @@
           <!--QR Image -->
           <div class="mb-3">
             <img [src]="qrImageUrl" alt="UPI QR"
-              class="img-fluid rounded" style="max-width: 200px;" />
+              class="img-fluid rounded" style="max-width: 250px;" />
           </div>
 
           <!--Transaction ID -->
