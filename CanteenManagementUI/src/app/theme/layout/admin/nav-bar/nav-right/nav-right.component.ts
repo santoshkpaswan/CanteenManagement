@@ -127,11 +127,14 @@ export class NavRightComponent {
           newCount = response.count;
         }
         // Play sound & show toast if new notification
-        if (this.previousNotificationCount !== null && newCount > this.previousNotificationCount) {
-          this.playNotificationSound();
-          this.showToast('🔔 New Order!');
+        if (this.userName?.trim().toLowerCase() === 'admin') {
+          if (this.previousNotificationCount !== null && newCount > this.previousNotificationCount) {
+            this.playNotificationSound();
+            this.showToast('🔔 New Order!');
+            //this.refreshTableGrid();
+            this.getGridData();
+          }
         }
-
         this.previousNotificationCount = newCount;
         this.notificationCount = newCount;
       },
@@ -143,6 +146,11 @@ export class NavRightComponent {
     this.audio.currentTime = 0;
     this.audio.play().catch(err => console.warn('Audio play blocked or failed:', err));
   }
+
+   refreshTableGrid() {
+     this.getGridData(); // reload Angular table
+     setTimeout(() => {window.location.reload();}, 1500); // full page reload after short delay
+   }
 
   // Simple toast popup (vanilla JS)
   showToast(message: string) {
