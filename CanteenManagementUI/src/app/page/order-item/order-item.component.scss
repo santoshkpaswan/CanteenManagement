@@ -23,3 +23,10 @@
 .card-body h5 {
   margin-top: 10px;
 }
+
+.billing-summary-card {
+  position: sticky;
+  top: 80px; /* adjust depending on your header height */
+  z-index: 10;
+}
+
