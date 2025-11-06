@@ -3,12 +3,24 @@
   "WorkspaceRootPath": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|d:\\canteenapi_angular\\angular_project\\canteenmanagement\\canteenmanagementapi\\rdiascanteenapi\\controllers\\canteencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|solutionrelative:rdiascanteenapi\\controllers\\canteencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|d:\\canteenapi_angular\\angular_project\\canteenmanagement\\canteenmanagementapi\\rdiascanteenapi\\buildermodel\\canteenbuilder\\masterdaybuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|solutionrelative:rdiascanteenapi\\buildermodel\\canteenbuilder\\masterdaybuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|d:\\canteenapi_angular\\angular_project\\canteenmanagement\\canteenmanagementapi\\rdiascanteenapi\\models\\canteenmodel\\apimodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|solutionrelative:rdiascanteenapi\\models\\canteenmodel\\apimodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|d:\\canteenapi_angular\\angular_project\\canteenmanagement\\canteenmanagementapi\\rdiascanteenapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|solutionrelative:rdiascanteenapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|d:\\canteenapi_angular\\angular_project\\canteenmanagement\\canteenmanagementapi\\rdiascanteenapi\\buildermodel\\canteenbuilder\\notificationhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|solutionrelative:rdiascanteenapi\\buildermodel\\canteenbuilder\\notificationhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|d:\\canteenapi_angular\\angular_project\\canteenmanagement\\canteenmanagementapi\\rdiascanteenapi\\controllers\\canteencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|solutionrelative:rdiascanteenapi\\controllers\\canteencontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|d:\\canteenapi_angular\\angular_project\\canteenmanagement\\canteenmanagementapi\\rdiascanteenapi\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,10 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|d:\\canteenapi_angular\\angular_project\\canteenmanagement\\canteenmanagementapi\\rdiascanteenapi\\interface\\canteeninterface\\masterdayinterface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|solutionrelative:rdiascanteenapi\\interface\\canteeninterface\\masterdayinterface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|d:\\canteenapi_angular\\angular_project\\canteenmanagement\\canteenmanagementapi\\rdiascanteenapi\\models\\canteenmodel\\apimodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FBB0CFFD-9A80-44A8-9D5C-5C5955B9F9D6}|RDIASCanteenAPI\\RDIASCanteenAPI.csproj|solutionrelative:rdiascanteenapi\\models\\canteenmodel\\apimodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,11 +38,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\Data\\AppDbContext.cs",
               "RelativeDocumentMoniker": "RDIASCanteenAPI\\Data\\AppDbContext.cs",
@@ -43,58 +51,82 @@
               "ViewState": "AgIAAHMAAAAAAAAAAAAWwIoAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-03T05:04:06.578Z",
-              "IsPinned": true,
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "NotificationHub.cs",
+              "DocumentMoniker": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\BuilderModel\\CanteenBuilder\\NotificationHub.cs",
+              "RelativeDocumentMoniker": "RDIASCanteenAPI\\BuilderModel\\CanteenBuilder\\NotificationHub.cs",
+              "ToolTip": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\BuilderModel\\CanteenBuilder\\NotificationHub.cs",
+              "RelativeToolTip": "RDIASCanteenAPI\\BuilderModel\\CanteenBuilder\\NotificationHub.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-04T12:20:24.038Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\Program.cs",
+              "RelativeDocumentMoniker": "RDIASCanteenAPI\\Program.cs",
+              "ToolTip": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\Program.cs",
+              "RelativeToolTip": "RDIASCanteenAPI\\Program.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAADcAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-04T12:12:30.108Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "MasterDayBuilder.cs",
               "DocumentMoniker": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\BuilderModel\\CanteenBuilder\\MasterDayBuilder.cs",
               "RelativeDocumentMoniker": "RDIASCanteenAPI\\BuilderModel\\CanteenBuilder\\MasterDayBuilder.cs",
               "ToolTip": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\BuilderModel\\CanteenBuilder\\MasterDayBuilder.cs",
               "RelativeToolTip": "RDIASCanteenAPI\\BuilderModel\\CanteenBuilder\\MasterDayBuilder.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAIAwwJgBAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAKoBAAAAAAAAAAAowMoBAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-01T12:02:58.38Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "MasterDayInterface.cs",
               "DocumentMoniker": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\Interface\\CanteenInterface\\MasterDayInterface.cs",
               "RelativeDocumentMoniker": "RDIASCanteenAPI\\Interface\\CanteenInterface\\MasterDayInterface.cs",
               "ToolTip": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\Interface\\CanteenInterface\\MasterDayInterface.cs",
               "RelativeToolTip": "RDIASCanteenAPI\\Interface\\CanteenInterface\\MasterDayInterface.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAlwD4AAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAAlwD0AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-04T10:15:13.907Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "APIModel.cs",
               "DocumentMoniker": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\Models\\CanteenModel\\APIModel.cs",
               "RelativeDocumentMoniker": "RDIASCanteenAPI\\Models\\CanteenModel\\APIModel.cs",
               "ToolTip": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\Models\\CanteenModel\\APIModel.cs",
               "RelativeToolTip": "RDIASCanteenAPI\\Models\\CanteenModel\\APIModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwHUAAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAWwHkAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T04:38:07.933Z"
+              "WhenOpened": "2025-10-01T04:38:07.933Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "CanteenController.cs",
               "DocumentMoniker": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\Controllers\\CanteenController.cs",
               "RelativeDocumentMoniker": "RDIASCanteenAPI\\Controllers\\CanteenController.cs",
               "ToolTip": "D:\\CanteenAPI_Angular\\Angular_Project\\CanteenManagement\\CanteenManagementAPI\\RDIASCanteenAPI\\Controllers\\CanteenController.cs",
               "RelativeToolTip": "RDIASCanteenAPI\\Controllers\\CanteenController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADABAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAEIBAAAAAAAAAAAwwDABAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T04:32:22.435Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T04:32:22.435Z"
             }
           ]
         }

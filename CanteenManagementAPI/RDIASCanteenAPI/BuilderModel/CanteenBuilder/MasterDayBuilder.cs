@@ -454,7 +454,10 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 // Convert DateTime formatted string
                 OrderDate = Convert.ToDateTime(Convert.ToString(o.CreatedDate)).ToString("dd/MM/yyyy"),
                 UserMobileNo = o.UserMobileNo,
-                transtionId = o.transtionId
+                transtionId = o.transtionId,
+                // Only time (24-hour format)
+                OrderTime = Convert.ToDateTime(o.CreatedDate).ToString("HH:mm"),
+
             }).ToList();
             return result;
         }

@@ -85,6 +85,10 @@
         <td mat-cell *matCellDef="let element"> {{element.orderNumber}} </td>
       </ng-container>
 
+       <ng-container matColumnDef="orderTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Order Time </th>
+        <td mat-cell *matCellDef="let element">{{element.orderTime}}</td>
+      </ng-container>
 
       <ng-container matColumnDef="username">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> User Name </th>
