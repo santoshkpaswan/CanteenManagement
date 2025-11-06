@@ -137,8 +137,10 @@ export class OrderItemComponent implements OnInit {
   removeItem(item: OrderItem) {
     if (item.count > 0) {
       item.count--;
-      this.calculateGrandTotal();
     }
+    this.calculateGrandTotal();
+    // If count reaches 0, remove it from the filtered list
+    if (item.count === 0) {this.filteredItems = this.filteredItems.filter((x) => x.foodMenuItemId !== item.foodMenuItemId);}
   }
 
   calculateGrandTotal() {
