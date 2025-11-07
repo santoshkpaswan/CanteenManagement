@@ -24,7 +24,7 @@
         <label class="form-label fw-semibold">User Name</label>
         <select class="form-control" [(ngModel)]="userNameFilter">
           <option value="">All</option>
-          <option *ngFor="let user of userNameList" [value]="user.userName">{{ user.userName }}</option>
+          <option *ngFor="let user of userNameList" [value]="user.userName" >{{ user.userName }}</option>
         </select>
       </div>
 
