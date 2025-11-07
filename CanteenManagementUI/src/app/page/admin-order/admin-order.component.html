@@ -19,6 +19,15 @@
         <input type="date" class="form-control" [(ngModel)]="orderDateFilter">
       </div>
 
+      <!-- User Name Filter -->
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">User Name</label>
+        <select class="form-control" [(ngModel)]="userNameFilter">
+          <option value="">All</option>
+          <option *ngFor="let user of userNameList" [value]="user.userName">{{ user.userName }}</option>
+        </select>
+      </div>
+
       <!-- Buttons -->
       <div class="col-md-3 d-flex justify-content-start mt-3 mt-md-0">
         <button type="button" class="btn btn-primary me-2 px-4" (click)="orderSearchFilter()">
@@ -85,7 +94,7 @@
         <td mat-cell *matCellDef="let element"> {{element.orderNumber}} </td>
       </ng-container>
 
-       <ng-container matColumnDef="orderTime">
+      <ng-container matColumnDef="orderTime">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Order Time </th>
         <td mat-cell *matCellDef="let element">{{element.orderTime}}</td>
       </ng-container>

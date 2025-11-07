@@ -42,6 +42,8 @@ export class AdminOrderComponent {
   selectedOrder: any;
   statusFilter: string = '';
   orderDateFilter: string = '';
+  userNameFilter: string='';
+  userNameList: any[] = [];
   selectedOrderDetails: any[] = [];
 
   displayedColumns: string[] = ['checkbox', 'sno', 'ordernumber','orderTime', 'username', 'usertype', 'userMobileNo', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus','transtionId'];
@@ -49,6 +51,7 @@ export class AdminOrderComponent {
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;
   orderStatus = OrderStatus;
+
 
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
@@ -117,12 +120,17 @@ export class AdminOrderComponent {
 
       // Set filter predicate once
 
+      // Populate userNameList automatically
+    this.userNameList = Array.from(new Set(response.data.map((item: any) => item.userName))).map(userName => ({ userName }));
+
+
       this.dataSource.filterPredicate = (data: any, filter: any) => {
         const filters = JSON.parse(filter);
         const statusMatch = filters.status ? data.status === +filters.status : true;
         const dateMatch = filters.orderDate ? new Date(data.orderDate.replaceAll("/", "-").split('-')[2] + "-" + data.orderDate.replaceAll("/", "-").split('-')[1] + "-" + data.orderDate.replaceAll("/", "-").split('-')[0]).toDateString() === new Date(filters.orderDate).toDateString() : true;
+        const userNameMatch = filters.userName? data.userName && data.userName.toLowerCase().includes(filters.userName): true;
 
-        return statusMatch && dateMatch;
+        return statusMatch && dateMatch && userNameMatch;
       };
     });
   }
@@ -384,6 +392,7 @@ export class AdminOrderComponent {
 
     const filterObj = {
       status: this.statusFilter.trim().toLowerCase(),
+      userName: this.userNameFilter.trim().toLowerCase(),
       orderDate: this.orderDateFilter
     };
 
@@ -396,6 +405,7 @@ export class AdminOrderComponent {
   resetOrderSearchFilter() {
     this.statusFilter = '';
     this.orderDateFilter = '';
+    this.userNameFilter='';
     this.dataSource.filter = '';
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
