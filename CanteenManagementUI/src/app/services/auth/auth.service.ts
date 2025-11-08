@@ -5,23 +5,25 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AuthUtils } from 'src/app/services/auth/auth.utils';
 import { BehaviorSubject } from 'rxjs';
+import { SecureStorageService } from 'src/app/services/secure-storage.service';
+
 
 @Injectable()
 export class AuthService {
   private _authenticated: boolean = false;
   isLoggedIn = new BehaviorSubject<boolean>(false);
-  constructor(private _httpClient: HttpClient) {
+  constructor(private _httpClient: HttpClient,private secureStore: SecureStorageService) {
     // Restore login state from localStorage if available
-    const savedUser = localStorage.getItem('user');
+    const savedUser = this.secureStore.getItem<any>('user');
     if (savedUser) this._authenticated = true;
   }
 
   set authenticated(key: string) {
-    localStorage.setItem('authenticated', key);
+    this.secureStore.setItem('authenticated', key);
   }
 
   get authenticated(): string {
-    return localStorage.getItem('authenticated') ?? 'false';
+    return this.secureStore.getItem<any>('authenticated') ?? 'false';
   }
 
 
@@ -59,7 +61,7 @@ export class AuthService {
             usertype: response.account_type_name ,
             isAdmin:response.account_type_name.toLocaleLowerCase()==="admin"
           };
-          localStorage.setItem('user', JSON.stringify(userData));
+          this.secureStore.setItem('user', JSON.stringify(userData));
         }
         return of(response);
       })
@@ -68,7 +70,7 @@ export class AuthService {
 
   getUser(): { account_id: number; user_name: string; usertype:string; } {
     debugger
-    const savedUser = localStorage.getItem('user');
+    const savedUser = this.secureStore.getItem<any>('user');
     if (savedUser) {
       return JSON.parse(savedUser);
     }
@@ -81,14 +83,14 @@ export class AuthService {
    */
   signOut(): Observable<any> {
     // Remove the access token from the local storage
-    localStorage.removeItem('orderCounts');
-    localStorage.removeItem('user');
+    this.secureStore.removeItem('orderCounts');
+    this.secureStore.removeItem('user');
     return of(true);
   }
 
   removeToken() {
-    localStorage.removeItem('orderCounts');
-    localStorage.removeItem('user');
+    this.secureStore.removeItem('orderCounts');
+    this.secureStore.removeItem('user');
     this.isLoggedIn.next(false);
   }
 

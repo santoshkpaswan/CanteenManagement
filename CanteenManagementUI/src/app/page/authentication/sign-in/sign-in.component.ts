@@ -8,7 +8,9 @@ import { JwksValidationHandler, OAuthService } from 'angular-oauth2-oidc';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { CoreService } from 'src/app/services/core.service';
+import { SecureStorageService } from 'src/app/services/secure-storage.service';
 // import { CanteenService } from 'src/app/services/canteen/canteen-service';
+
 
 @Component({
   selector: 'app-sign-in',
@@ -31,6 +33,7 @@ export class SignInComponent implements OnInit {
     private _router: Router,
     private _httpClient: HttpClient,
     private _coreService: CoreService,
+    private secureStore: SecureStorageService
 
   ) {
 
@@ -64,7 +67,7 @@ export class SignInComponent implements OnInit {
         if (response.success) {
 debugger
           this._coreService.openSnackBar('Login successful!', 'Ok');
-          const userData = localStorage.getItem("user")!;
+          const userData = this.secureStore.getItem<any>("user")!;
           const user: any = JSON.parse(userData);
           if ((!user.isAdmin) && (user.usertype?.toLocaleLowerCase() == "staff" || user.usertype?.toLocaleLowerCase() == "student")) {
             this._router.navigate(['/canteen/order-item']);

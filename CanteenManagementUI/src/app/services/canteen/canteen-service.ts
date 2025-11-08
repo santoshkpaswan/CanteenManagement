@@ -3,18 +3,19 @@ import { Injectable } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
+import { SecureStorageService } from 'src/app/services/secure-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CanteenService {
   private _refresh$ = new Subject<void>();
-  constructor(private _httpClient: HttpClient) { }
+  constructor(private _httpClient: HttpClient,private secureStore: SecureStorageService) { }
 
   //  Helper to get RgenID as a number from localStorage
   private get loginUserId(): number {
 
-    const userStr = localStorage.getItem('user');
+    const userStr = this.secureStore.getItem<any>('user');
     if (!userStr) {
       console.error('User not found in localStorage');
       return 0;
@@ -29,7 +30,7 @@ export class CanteenService {
   }
   private get loginIsAdmin(): boolean {
 
-    const userStr = localStorage.getItem('user');
+    const userStr = this.secureStore.getItem<any>('user');
     if (!userStr) {
       console.error('User not found in localStorage');
       return false;
@@ -43,7 +44,7 @@ export class CanteenService {
     }
   }
   private get loginUserType(): string {
-    const userStr = localStorage.getItem('user');
+    const userStr = this.secureStore.getItem<any>('user');
     if (!userStr) {
       console.error('User type not found in localStorage');
       return '';
@@ -58,7 +59,7 @@ export class CanteenService {
   }
 
   private get loginUserName(): string {
-    const userStr = localStorage.getItem('user');
+    const userStr = this.secureStore.getItem<any>('user');
     if (!userStr) {
       console.error('User type not found in localStorage');
       return '';
@@ -326,7 +327,7 @@ export class CanteenService {
             usertype: response.account_type_name,
             isAdmin: response.account_type_name.toLocaleLowerCase() === "admin"
           };
-          localStorage.setItem('user', JSON.stringify(userData));
+          this.secureStore.setItem('user', JSON.stringify(userData));
         }
         return of(response);
       })

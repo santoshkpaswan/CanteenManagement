@@ -10,6 +10,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 // bootstrap
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SecureStorageService } from 'src/app/services/secure-storage.service';
 
 @Component({
   selector: 'app-nav-right',
@@ -60,11 +61,11 @@ export class NavRightComponent {
     private router: Router,
     private _authService: AuthService,
     private _canteenService: CanteenService,
-
+    private secureStore: SecureStorageService
   ) {
     this.visibleUserList = false;
     this.chatMessage = false;
-    this.emailid = localStorage.getItem("emailid");
+    this.emailid = this.secureStore.getItem<any>("emailid");
   }
 
   // public method
@@ -75,7 +76,7 @@ export class NavRightComponent {
 
   ngOnInit(): void {
     debugger
-    const userData = localStorage.getItem("user");
+    const userData = this.secureStore.getItem<any>("user");
     if (userData) {
       const user: any = JSON.parse(userData);
       const userName = user.user_name?.toLowerCase(); // normalize case
@@ -147,10 +148,10 @@ export class NavRightComponent {
     this.audio.play().catch(err => console.warn('Audio play blocked or failed:', err));
   }
 
-   refreshTableGrid() {
-     this.getGridData(); // reload Angular table
-     setTimeout(() => {window.location.reload();}, 1500); // full page reload after short delay
-   }
+  refreshTableGrid() {
+    this.getGridData(); // reload Angular table
+    setTimeout(() => { window.location.reload(); }, 1500); // full page reload after short delay
+  }
 
   // Simple toast popup (vanilla JS)
   showToast(message: string) {

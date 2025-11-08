@@ -3,6 +3,7 @@ import { NavigationItem, NavigationItems } from '../navigation';
 import { Location, LocationStrategy } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { Router, RouterModule } from '@angular/router';
+import { SecureStorageService } from 'src/app/services/secure-storage.service';
 
 @Component({
   selector: 'app-nav-content',
@@ -25,6 +26,7 @@ export class NavContentComponent implements OnInit {
     private location: Location,
     private _router: Router,
     private locationStrategy: LocationStrategy,
+    private secureStore: SecureStorageService
   ) {
     this.windowWidth = window.innerWidth;
 
@@ -35,7 +37,7 @@ export class NavContentComponent implements OnInit {
   ngOnInit() {
     var navigationList = this.navigations;
     var indicesToRemove: number[];
-    const userData = localStorage.getItem("user")!;
+    const userData = this.secureStore.getItem<any>("user")!;
     debugger
     if (userData != null) {
       const user: any = JSON.parse(userData);
