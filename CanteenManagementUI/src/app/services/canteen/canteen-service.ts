@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CanteenService {
-
+  private _refresh$ = new Subject<void>();
   constructor(private _httpClient: HttpClient) { }
 
   //  Helper to get RgenID as a number from localStorage
@@ -26,7 +27,7 @@ export class CanteenService {
       return 0;
     }
   }
- private get loginIsAdmin(): boolean {
+  private get loginIsAdmin(): boolean {
 
     const userStr = localStorage.getItem('user');
     if (!userStr) {
@@ -50,7 +51,7 @@ export class CanteenService {
     try {
       const user = JSON.parse(userStr);
       return user.usertype || ''; // returns 'Staff', 'Admin', etc.
-    } catch(e) {
+    } catch (e) {
       console.error('Error parsing user type JSON from localStorage', e);
       return '';
     }
@@ -65,7 +66,7 @@ export class CanteenService {
     try {
       const user = JSON.parse(userStr);
       return user.user_name || ''; // returns 'Staff', 'Admin', etc.
-    } catch(e) {
+    } catch (e) {
       console.error('Error parsing user type JSON from localStorage', e);
       return '';
     }
@@ -221,8 +222,8 @@ export class CanteenService {
     //const rgenId = localStorage.getItem('RgenID');
     const rgenId = this.loginUserId;
     const userType = this.loginUserType;
-    const username =  this.loginUserName
-    const isAdmin =  this.loginIsAdmin
+    const username = this.loginUserName
+    const isAdmin = this.loginIsAdmin
     return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrder?rgenId=${rgenId} &isAdmin=${isAdmin}`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -294,7 +295,7 @@ export class CanteenService {
   }
 
 
- getNotification(): Observable<any> {
+  getNotification(): Observable<any> {
     return this._httpClient.get(`${environment.apiUrl}/Canteen/Notifications`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -304,7 +305,7 @@ export class CanteenService {
 
 
   signIns(model: any): Observable<any> {
-debugger
+    debugger
     // Throw error, if the user is already logged in
     //if (this._authenticated) {
     //  return throwError('User is already logged in.');
@@ -317,13 +318,13 @@ debugger
 
         if (response.success) {
           // Set the authenticated flag to true
-         // this._authenticated = true;
+          // this._authenticated = true;
           // Save user info in localStorage
           const userData = {
             account_id: response.account_id,
             user_name: model.username,
-            usertype: response.account_type_name ,
-            isAdmin:response.account_type_name.toLocaleLowerCase()==="admin"
+            usertype: response.account_type_name,
+            isAdmin: response.account_type_name.toLocaleLowerCase() === "admin"
           };
           localStorage.setItem('user', JSON.stringify(userData));
         }
@@ -338,6 +339,15 @@ debugger
         return of(response);
       })
     );
+  }
+
+  get refresh$() {
+    return this._refresh$.asObservable();
+  }
+
+  // Call this when you get a new notification
+  notifyRefresh() {
+    this._refresh$.next();
   }
 
 

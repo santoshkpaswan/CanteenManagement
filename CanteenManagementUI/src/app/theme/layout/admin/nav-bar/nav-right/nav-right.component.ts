@@ -132,7 +132,7 @@ export class NavRightComponent {
             this.playNotificationSound();
             this.showToast('🔔 New Order!');
             //this.refreshTableGrid();
-            this.getGridData();
+            this._canteenService.notifyRefresh();
           }
         }
         this.previousNotificationCount = newCount;

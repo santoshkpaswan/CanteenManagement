@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatButtonModule, MatButton } from '@angular/material/button';
@@ -21,6 +21,8 @@ import { ConfirmationDialogService } from 'src/app/confirmation-dialog/confirmat
 import * as XLSX from 'xlsx';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OrderPaymentType, OrderPaymentStatus, OrderStatus } from 'src/app/shared/enums/enums.ts';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -31,7 +33,8 @@ import { OrderPaymentType, OrderPaymentStatus, OrderStatus } from 'src/app/share
   templateUrl: './admin-order.component.html',
   styleUrl: './admin-order.component.scss'
 })
-export class AdminOrderComponent {
+export class AdminOrderComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   addCanteenOrderForm: FormGroup;
   editCanteenOrderForm: FormGroup;
   editCanteenOrderStatusForm: FormGroup;
@@ -108,7 +111,17 @@ export class AdminOrderComponent {
   }
   ngOnInit(): void {
     this.getGridData();
+    this._canteenService.refresh$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        console.log('♻️ Refreshing grid on new notification...');
+        this.getGridData();
+      });
     this.getDayNameData();
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   getGridData() {
     this._canteenService.getOrder().subscribe((response) => {
