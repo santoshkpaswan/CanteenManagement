@@ -476,10 +476,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
 
   // Add blank row and Grand Total row
   exportData.push({});
-  exportData.push({
-    'Order Date': 'Grand Total',
-    'Total Amount': grandTotal.toFixed(2)
-  });
+  exportData.push({'Order Date': 'Grand Total','Total Amount': grandTotal.toFixed(2)});
 
   // Create worksheet and workbook
   const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
@@ -507,7 +504,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
   // Export as Excel
   const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
   const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
-  saveAs(data, `Filtered_Orders_${new Date().toISOString().slice(0,10)}.xlsx`);
+  saveAs(data, `Orders_Details_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
 
 

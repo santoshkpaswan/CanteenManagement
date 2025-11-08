@@ -527,7 +527,7 @@ namespace RDIASCanteenAPI.Controllers
                     string json = await response.Content.ReadAsStringAsync();
 
                     // Convert to C# object
-                    objUser = JsonSerializer.Deserialize<UserModel>(json);fdgs
+                    objUser = JsonSerializer.Deserialize<UserModel>(json);
                     if (objUser.response_id == 1)
                         return Ok(new { Success = true, objUser.account_id, objUser.account_type_name, objUser.account_type });
                     else
