@@ -300,12 +300,12 @@ namespace RDIASCanteenAPI.Controllers
         #endregion
 
         #region Order
-        [HttpGet("ListOrder")]
-        public async Task<IActionResult> GetOrder(int rgenId, bool isAdmin)
+        [HttpPost("ListOrder")]
+        public async Task<IActionResult> GetOrder(int rgenId, bool isAdmin,SearchOrderAdmin? modal)
         {
             try
             {
-                var Objlist = await _masterDayInterface.GetOrder(rgenId, isAdmin);
+                var Objlist = await _masterDayInterface.GetOrder(rgenId, isAdmin, modal);
                 return Ok(new { Success = true, Data = Objlist });
             }
             catch (Exception ex)

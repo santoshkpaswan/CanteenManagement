@@ -402,7 +402,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #endregion
 
         #region Order
-        public async Task<List<OrderListGetModelView>> GetOrder(int rgenId, bool isAdmin)
+        public async Task<List<OrderListGetModelView>> GetOrder(int rgenId, bool isAdmin, SearchOrderAdmin? modal)
         {
             var query = from o in _context.orderModels
                         join d in _context.masterDaysModels on o.DayId equals d.DayId
@@ -432,6 +432,46 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             {
                 query = query.Where(o => o.RgenId == rgenId);
             }
+
+            // // UserName filter (case-insensitive)
+            if (modal != null)
+            {
+                if (!string.IsNullOrEmpty(modal.UserName))
+                {
+                    query = query.Where(o => o.RgenId == Convert.ToInt32(modal.UserName));
+                }
+
+                if (modal.OrderStatus != null)
+                {
+                    query = query.Where(o => o.Status == (OrderStatus)modal.OrderStatus);
+                }
+            }
+
+            // // Status filter
+            // if (status.HasValue && status.Value > 0)
+            // {
+            //     query = query.Where(o => o.Status == (OrderStatus)status.Value);
+            // }
+
+            // //  Date Range filter (parse safely)
+            // if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+            // {
+            //     if (DateTime.TryParse(startDate, out DateTime sDate) && DateTime.TryParse(endDate, out DateTime eDate))
+            //     {
+            //         DateTime endDateInclusive = eDate.Date.AddDays(1).AddTicks(-1);
+            //         query = query.Where(o => o.CreatedDate >= sDate && o.CreatedDate <= endDateInclusive);
+            //     }
+            // }
+            // else if (!string.IsNullOrEmpty(startDate) && DateTime.TryParse(startDate, out DateTime sDateOnly))
+            // {
+            //     query = query.Where(o => o.CreatedDate >= sDateOnly);
+            // }
+            // else if (!string.IsNullOrEmpty(endDate) && DateTime.TryParse(endDate, out DateTime eDateOnly))
+            // {
+            //     DateTime endDateInclusive = eDateOnly.Date.AddDays(1).AddTicks(-1);
+            //     query = query.Where(o => o.CreatedDate <= endDateInclusive);
+            // }
+
             // Order descending
             query = query.OrderByDescending(o => o.OrderId);
             var data = await query.ToListAsync();

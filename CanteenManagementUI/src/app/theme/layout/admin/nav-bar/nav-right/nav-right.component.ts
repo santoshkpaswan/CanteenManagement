@@ -94,7 +94,7 @@ export class NavRightComponent {
   }
 
   getGridData() {
-    this._canteenService.getOrder().subscribe((response) => {
+    this._canteenService.getOrder(null).subscribe((response) => {
 
       //this.dataSource = response.data;
       this.orderList = response.data;

@@ -259,5 +259,15 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public DateTime TranstionDate { get; set; }
 
     }
+
+    public class SearchOrderAdmin
+    {
+        public int? OrderStatus { get; set; }
+        public int? PaymentStatus { get; set; }
+        public string? UserName { get; set; }
+        public string? OrderFromDate { get; set; }
+        public string? OrderToDate { get; set; }
+
+    }
     #endregion
 }

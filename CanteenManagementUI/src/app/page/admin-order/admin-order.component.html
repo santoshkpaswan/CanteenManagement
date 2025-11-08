@@ -4,7 +4,7 @@
     <div class="row g-3 align-items-end">
 
       <!-- Status Filter -->
-      <div class="col-md-3">
+      <div class="col-md-2">
         <label class="form-label fw-semibold">Status</label>
         <!-- <input type="text" class="form-control" placeholder="Search by Status" [(ngModel)]="statusFilter"> -->
         <select class="form-control" [(ngModel)]="statusFilter">
@@ -13,23 +13,28 @@
         </select>
       </div>
 
-      <!-- Order Date Filter -->
-      <div class="col-md-3">
-        <label class="form-label fw-semibold">Order Date</label>
-        <input type="date" class="form-control" [(ngModel)]="orderDateFilter">
+      <!-- Start Date Filter -->
+      <div class="col-md-2">
+        <label class="form-label fw-semibold">Start Date</label>
+        <input type="date" class="form-control" [(ngModel)]="orderFromDateFilter">
+      </div>
+      <!--End Date Filter-->
+      <div class="col-md-2">
+        <label class="form-label fw-semibold">End Date</label>
+        <input type="date" class="form-control" [(ngModel)]="orderToDateFilter">
       </div>
 
       <!-- User Name Filter -->
-      <div class="col-md-3">
+      <div class="col-md-2">
         <label class="form-label fw-semibold">User Name</label>
         <select class="form-control" [(ngModel)]="userNameFilter">
           <option value="">All</option>
-          <option *ngFor="let user of userNameList" [value]="user.userName">{{ user.userName }}</option>
+          <option *ngFor="let user of userNameList" [value]="user.rgenId">{{ user.userName }}</option>
         </select>
       </div>
 
       <!-- Buttons -->
-      <div class="col-md-3 d-flex justify-content-start mt-3 mt-md-0">
+      <div class="col-md-2 d-flex justify-content-start mt-3 mt-md-0">
         <button type="button" class="btn btn-primary me-2 px-4" (click)="orderSearchFilter()">
           <i class="bi bi-search me-1"></i> Search
         </button>

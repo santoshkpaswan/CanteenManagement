@@ -117,7 +117,7 @@ export class OrderHistoryComponent implements OnInit {
     this.getDayNameData();
   }
   getGridData() {
-    this._canteenService.getOrder().subscribe((response) => {
+    this._canteenService.getOrder(null).subscribe((response) => {
       this.orderList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;

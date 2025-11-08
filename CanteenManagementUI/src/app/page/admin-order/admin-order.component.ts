@@ -47,7 +47,8 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
   dayName: any = [];
   selectedOrder: any;
   statusFilter: string = '';
-  orderDateFilter: string = '';
+  orderFromDateFilter: string = '';
+  orderToDateFilter: string = '';
   userNameFilter: string = '';
   userNameList: any[] = [];
   selectedOrderDetails: any[] = [];
@@ -69,6 +70,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
 
   @Inject(MAT_DIALOG_DATA) public data: any
   private modalService = inject(NgbModal);
+  sendObj!: any;
   constructor(
     private _formBuilder: FormBuilder,
     private _authService: AuthService,
@@ -127,27 +129,47 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
   getGridData() {
-    this._canteenService.getOrder().subscribe((response) => {
+
+    // this.sendObj = {
+    //   orderStatus: this.statusFilter.trim().toLowerCase(),
+    //   paymentStatus: this.statusFilter.trim().toLowerCase(),
+    //   userName: this.userNameFilter.trim().toLowerCase(),
+    //   orderFromDate: this.orderFromDateFilter,
+    //   orderToDate: this.orderToDateFilter,
+    // };
+
+
+    this._canteenService.getOrder(null).subscribe((response) => {
       //this.dataSource = response.data;
       this.orderList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
 
-      // Set filter predicate once
+      // // Set filter predicate once
 
-      // Populate userNameList automatically
-      this.userNameList = Array.from(new Set(response.data.map((item: any) => item.userName))).map(userName => ({ userName }));
+      // // Populate userNameList automatically
+      //  this.userNameList = Array.from(new Set(response.data.map((item: any) => {
+      //   userName:item.userName,
+      //   rgenId:item.rgenId
+      // }))).map(userName => ({ userName }));
+
+      this.userNameList = Array.from(
+        new Map(
+          response.data.map((item: any) => [item.userName, { userName: item.userName, rgenId: item.rgenId }])
+        ).values()
+      );
 
 
-      this.dataSource.filterPredicate = (data: any, filter: any) => {
-        const filters = JSON.parse(filter);
-        const statusMatch = filters.status ? data.status === +filters.status : true;
-        const dateMatch = filters.orderDate ? new Date(data.orderDate.replaceAll("/", "-").split('-')[2] + "-" + data.orderDate.replaceAll("/", "-").split('-')[1] + "-" + data.orderDate.replaceAll("/", "-").split('-')[0]).toDateString() === new Date(filters.orderDate).toDateString() : true;
-        const userNameMatch = filters.userName ? data.userName && data.userName.toLowerCase().includes(filters.userName) : true;
 
-        return statusMatch && dateMatch && userNameMatch;
-      };
+      // this.dataSource.filterPredicate = (data: any, filter: any) => {
+      //   const filters = JSON.parse(filter);
+      //   const statusMatch = filters.status ? data.status === +filters.status : true;
+      //   const dateMatch = filters.orderDate ? new Date(data.orderDate.replaceAll("/", "-").split('-')[2] + "-" + data.orderDate.replaceAll("/", "-").split('-')[1] + "-" + data.orderDate.replaceAll("/", "-").split('-')[0]).toDateString() === new Date(filters.orderDate).toDateString() : true;
+      //   const userNameMatch = filters.userName ? data.userName && data.userName.toLowerCase().includes(filters.userName) : true;
+
+      //   return statusMatch && dateMatch && userNameMatch;
+      // };
     });
   }
 
@@ -406,21 +428,53 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
   }
   orderSearchFilter() {
 
-    const filterObj = {
-      status: this.statusFilter.trim().toLowerCase(),
+    // const filterObj = {
+    //   status: this.statusFilter.trim().toLowerCase(),
+    //   userName: this.userNameFilter.trim().toLowerCase(),
+    //   orderDate: this.orderDateFilter
+    // };
+
+    // this.dataSource.filter = JSON.stringify(filterObj);
+    // if (this.dataSource.paginator) {
+    //   this.dataSource.paginator.firstPage();
+    // }
+    this.sendObj = {
+      orderStatus: this.statusFilter.trim().toLowerCase(),
+      paymentStatus: this.statusFilter.trim().toLowerCase(),
       userName: this.userNameFilter.trim().toLowerCase(),
-      orderDate: this.orderDateFilter
+      orderFromDate: this.orderFromDateFilter,
+      orderToDate: this.orderToDateFilter,
     };
 
-    this.dataSource.filter = JSON.stringify(filterObj);
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+
+    this._canteenService.getOrder(this.sendObj).subscribe((response) => {
+      //this.dataSource = response.data;
+      this.orderList = response.data;
+      this.dataSource = new MatTableDataSource<any>(response.data);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+
+      // // Set filter predicate once
+
+      // // Populate userNameList automatically
+      // this.userNameList = Array.from(new Set(response.data.map((item: any) => item.userName))).map(userName => ({ userName }));
+
+
+      // this.dataSource.filterPredicate = (data: any, filter: any) => {
+      //   const filters = JSON.parse(filter);
+      //   const statusMatch = filters.status ? data.status === +filters.status : true;
+      //   const dateMatch = filters.orderDate ? new Date(data.orderDate.replaceAll("/", "-").split('-')[2] + "-" + data.orderDate.replaceAll("/", "-").split('-')[1] + "-" + data.orderDate.replaceAll("/", "-").split('-')[0]).toDateString() === new Date(filters.orderDate).toDateString() : true;
+      //   const userNameMatch = filters.userName ? data.userName && data.userName.toLowerCase().includes(filters.userName) : true;
+
+      //   return statusMatch && dateMatch && userNameMatch;
+      // };
+    });
   }
 
   resetOrderSearchFilter() {
     this.statusFilter = '';
-    this.orderDateFilter = '';
+    this.orderFromDateFilter = '';
+    this.orderToDateFilter = '';
     this.userNameFilter = '';
     this.dataSource.filter = '';
     if (this.dataSource.paginator) {
@@ -452,60 +506,60 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
 
   // Excel Export
   exportToExcel(): void {
-  // Use filtered data if available
-  const filteredData = this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.orderList;
+    // Use filtered data if available
+    const filteredData = this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.orderList;
 
-  // Calculate Grand Total
-  const grandTotal = filteredData.reduce((sum: number, item: any) => sum + Number(item.totalAmount || 0), 0);
+    // Calculate Grand Total
+    const grandTotal = filteredData.reduce((sum: number, item: any) => sum + Number(item.totalAmount || 0), 0);
 
-  // Prepare export data
-  const exportData = filteredData.map((item: any, index: number) => ({
-    'S.No': index + 1,
-    'Order Number': item.orderNumber,
-    'Order Time': item.orderTime,
-    'User Name': item.userName,
-    'User Type': item.userType,
-    'Mobile No': item.userMobileNo,
-    'Order Date': item.orderDate,
-    'Total Amount': Number(item.totalAmount).toFixed(2),
-    'Status': this.getOrderStatusLabel(item.status).label,
-    'Payment Type': this.getPaymentTypeLabel(item.paymentType),
-    'Payment Status': this.getPaymentStatusLabel(item.paymentStatus).label,
-    'Transaction ID': item.transtionId
-  }));
+    // Prepare export data
+    const exportData = filteredData.map((item: any, index: number) => ({
+      'S.No': index + 1,
+      'Order Number': item.orderNumber,
+      'Order Time': item.orderTime,
+      'User Name': item.userName,
+      'User Type': item.userType,
+      'Mobile No': item.userMobileNo,
+      'Order Date': item.orderDate,
+      'Total Amount': Number(item.totalAmount).toFixed(2),
+      'Status': this.getOrderStatusLabel(item.status).label,
+      'Payment Type': this.getPaymentTypeLabel(item.paymentType),
+      'Payment Status': this.getPaymentStatusLabel(item.paymentStatus).label,
+      'Transaction ID': item.transtionId
+    }));
 
-  // Add blank row and Grand Total row
-  exportData.push({});
-  exportData.push({'Order Date': 'Grand Total','Total Amount': grandTotal.toFixed(2)});
+    // Add blank row and Grand Total row
+    exportData.push({});
+    exportData.push({ 'Order Date': 'Grand Total', 'Total Amount': grandTotal.toFixed(2) });
 
-  // Create worksheet and workbook
-  const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
+    // Create worksheet and workbook
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
 
-  // Adjust column widths
-  const columnWidths = [
-    { wch: 6 },  // S.No
-    { wch: 20 }, // Order Number
-    { wch: 10 }, // Time
-    { wch: 20 }, // User Name
-    { wch: 15 }, // User Type
-    { wch: 15 }, // Mobile No
-    { wch: 15 }, // Date
-    { wch: 15 }, // Total Amount
-    { wch: 15 }, // Status
-    { wch: 15 }, // Payment Type
-    { wch: 15 }, // Payment Status
-    { wch: 25 }  // Transaction ID
-  ];
-  worksheet['!cols'] = columnWidths;
+    // Adjust column widths
+    const columnWidths = [
+      { wch: 6 },  // S.No
+      { wch: 20 }, // Order Number
+      { wch: 10 }, // Time
+      { wch: 20 }, // User Name
+      { wch: 15 }, // User Type
+      { wch: 15 }, // Mobile No
+      { wch: 15 }, // Date
+      { wch: 15 }, // Total Amount
+      { wch: 15 }, // Status
+      { wch: 15 }, // Payment Type
+      { wch: 15 }, // Payment Status
+      { wch: 25 }  // Transaction ID
+    ];
+    worksheet['!cols'] = columnWidths;
 
-  // Create workbook
-  const workbook: XLSX.WorkBook = { Sheets: { 'Orders': worksheet }, SheetNames: ['Orders'] };
+    // Create workbook
+    const workbook: XLSX.WorkBook = { Sheets: { 'Orders': worksheet }, SheetNames: ['Orders'] };
 
-  // Export as Excel
-  const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-  const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
-  saveAs(data, `Orders_Details_${new Date().toISOString().slice(0,10)}.xlsx`);
-}
+    // Export as Excel
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    saveAs(data, `Orders_Details_${new Date().toISOString().slice(0, 10)}.xlsx`);
+  }
 
 
   // PDF Export
@@ -538,7 +592,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     ]));
 
     // Add a blank row + Grand Total row at the bottom
-    exportData.push(['','','','','','','Grand Total', + grandTotal]);
+    exportData.push(['', '', '', '', '', '', 'Grand Total', + grandTotal]);
 
 
     autoTable(doc, {
@@ -547,14 +601,14 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
       startY: 50,
       styles: { fontSize: 8 },
       headStyles: { fillColor: [63, 81, 181] },
-      columnStyles: {7: { halign: 'right' }}, // align Amount column to right
+      columnStyles: { 7: { halign: 'right' } }, // align Amount column to right
       didParseCell: (data) => {
-      // Make "Grand Total" row bold
-      if (data.row.index === exportData.length - 1) {
-        data.cell.styles.fontStyle = 'bold';
-        data.cell.styles.fillColor = [255, 255, 200];
+        // Make "Grand Total" row bold
+        if (data.row.index === exportData.length - 1) {
+          data.cell.styles.fontStyle = 'bold';
+          data.cell.styles.fillColor = [255, 255, 200];
+        }
       }
-    }
 
     });
 
