@@ -451,67 +451,118 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
   }
 
   // Excel Export
-   exportToExcel(): void {
+  exportToExcel(): void {
   // Use filtered data if available
-  const exportData = (this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.orderList)
-    .map((item: any, index: number) => ({
-      'S.No': index + 1,
-      'Order Number': item.orderNumber,
-      'Order Time': item.orderTime,
-      'User Name': item.userName,
-      'User Type': item.userType,
-      'Mobile No': item.userMobileNo,
-      'Order Date': item.orderDate,
-      'Total Amount': item.totalAmount,
-      'Status': this.getOrderStatusLabel(item.status).label,
-      'Payment Type': this.getPaymentTypeLabel(item.paymentType),
-      'Payment Status': this.getPaymentStatusLabel(item.paymentStatus).label,
-      'Transaction ID': item.transtionId
-    }));
-
-  const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
-  const workbook: XLSX.WorkBook = { Sheets: { 'Orders': worksheet }, SheetNames: ['Orders'] };
-  const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-  const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
-  saveAs(data, `Orders_Billing_${new Date().toISOString().slice(0,10)}.xlsx`);
-}
-
-
-// PDF Export
-
- exportToPDF(): void {
-  const doc = new jsPDF('l', 'pt', 'a4');
-  doc.text('User Order Billing History', 350, 30, { align: 'center' });
-
-  //  Use filtered data if available
   const filteredData = this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.orderList;
 
-  const exportData = filteredData.map((item: any, index: number) => ([
-    index + 1,
-    item.orderNumber,
-    item.orderTime,
-    item.userName,
-    item.userType,
-    item.userMobileNo,
-    item.orderDate,
-    '₹ ' + item.totalAmount,
-    //'₹ ' + Number(item.totalAmount).toFixed(2),  // Clean numeric formatting
-    this.getOrderStatusLabel(item.status).label,
-    this.getPaymentTypeLabel(item.paymentType),
-    this.getPaymentStatusLabel(item.paymentStatus).label,
-    item.transtionId
-  ]));
+  // Calculate Grand Total
+  const grandTotal = filteredData.reduce((sum: number, item: any) => sum + Number(item.totalAmount || 0), 0);
 
-  autoTable(doc, {
-    head: [['S.No', 'Order No', 'Time', 'User Name', 'User Type', 'Mobile', 'Date', 'Amount', 'Status', 'Pay Type', 'Pay Status', 'Txn ID']],
-    body: exportData,
-    startY: 50,
-    styles: { fontSize: 8 },
-    headStyles: { fillColor: [63, 81, 181] }
+  // Prepare export data
+  const exportData = filteredData.map((item: any, index: number) => ({
+    'S.No': index + 1,
+    'Order Number': item.orderNumber,
+    'Order Time': item.orderTime,
+    'User Name': item.userName,
+    'User Type': item.userType,
+    'Mobile No': item.userMobileNo,
+    'Order Date': item.orderDate,
+    'Total Amount': Number(item.totalAmount).toFixed(2),
+    'Status': this.getOrderStatusLabel(item.status).label,
+    'Payment Type': this.getPaymentTypeLabel(item.paymentType),
+    'Payment Status': this.getPaymentStatusLabel(item.paymentStatus).label,
+    'Transaction ID': item.transtionId
+  }));
+
+  // Add blank row and Grand Total row
+  exportData.push({});
+  exportData.push({
+    'Order Date': 'Grand Total',
+    'Total Amount': grandTotal.toFixed(2)
   });
 
-  doc.save(`Orders_Billing_${new Date().toISOString().slice(0,10)}.pdf`);
+  // Create worksheet and workbook
+  const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
+
+  // Adjust column widths
+  const columnWidths = [
+    { wch: 6 },  // S.No
+    { wch: 20 }, // Order Number
+    { wch: 10 }, // Time
+    { wch: 20 }, // User Name
+    { wch: 15 }, // User Type
+    { wch: 15 }, // Mobile No
+    { wch: 15 }, // Date
+    { wch: 15 }, // Total Amount
+    { wch: 15 }, // Status
+    { wch: 15 }, // Payment Type
+    { wch: 15 }, // Payment Status
+    { wch: 25 }  // Transaction ID
+  ];
+  worksheet['!cols'] = columnWidths;
+
+  // Create workbook
+  const workbook: XLSX.WorkBook = { Sheets: { 'Orders': worksheet }, SheetNames: ['Orders'] };
+
+  // Export as Excel
+  const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+  saveAs(data, `Filtered_Orders_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
+
+
+  // PDF Export
+
+  exportToPDF(): void {
+    const doc = new jsPDF('l', 'pt', 'a4');
+    doc.text('User Order History', 350, 30, { align: 'center' });
+
+    //  Use filtered data if available
+    const filteredData = this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.orderList;
+
+    // Calculate Grand Total
+    const grandTotal = filteredData.reduce((sum: number, item: any) => sum + Number(item.totalAmount || 0), 0);
+
+    const exportData = filteredData.map((item: any, index: number) => ([
+      index + 1,
+      item.orderNumber,
+      item.orderTime,
+      item.userName,
+      item.userType,
+      item.userMobileNo,
+      item.orderDate,
+      item.totalAmount,
+      //'₹ ' + item.totalAmount,
+      //'₹ ' + Number(item.totalAmount).toFixed(2),  // Clean numeric formatting
+      this.getOrderStatusLabel(item.status).label,
+      this.getPaymentTypeLabel(item.paymentType),
+      this.getPaymentStatusLabel(item.paymentStatus).label,
+      item.transtionId
+    ]));
+
+    // Add a blank row + Grand Total row at the bottom
+    exportData.push(['','','','','','','Grand Total', + grandTotal]);
+
+
+    autoTable(doc, {
+      head: [['S.No', 'Order No', 'Time', 'User Name', 'User Type', 'Mobile', 'Date', 'Amount', 'Status', 'Pay Type', 'Pay Status', 'Txn ID']],
+      body: exportData,
+      startY: 50,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [63, 81, 181] },
+      columnStyles: {7: { halign: 'right' }}, // align Amount column to right
+      didParseCell: (data) => {
+      // Make "Grand Total" row bold
+      if (data.row.index === exportData.length - 1) {
+        data.cell.styles.fontStyle = 'bold';
+        data.cell.styles.fillColor = [255, 255, 200];
+      }
+    }
+
+    });
+
+    doc.save(`Orders_Details_${new Date().toISOString().slice(0, 10)}.pdf`);
+  }
 
 
 }

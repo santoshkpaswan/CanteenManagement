@@ -528,7 +528,11 @@ namespace RDIASCanteenAPI.Controllers
 
                     // Convert to C# object
                     objUser = JsonSerializer.Deserialize<UserModel>(json);
-                    return Ok(new { Success = true, objUser.account_id, objUser.account_type_name, objUser.account_type });
+                    if (objUser.response_id == 1)
+                        return Ok(new { Success = true, objUser.account_id, objUser.account_type_name, objUser.account_type });
+                    else
+                        return Ok(new { Success = false, objUser.account_id, objUser.account_type_name, objUser.account_type, Message = response });
+
 
                 }
             }
@@ -541,11 +545,11 @@ namespace RDIASCanteenAPI.Controllers
                 return Ok(new { Success = false, Message = ex.Message });
             }
         }
-         
+
         #endregion
-    
-    #region Payment QR Transtion 
-    [HttpPost("PaymentQRTranstion")]
+
+        #region Payment QR Transtion 
+        [HttpPost("PaymentQRTranstion")]
         public async Task<IActionResult> PaymentQRTranstion([FromBody] PaymentQRTranstion paymentQRTranstion)
         {
             if (!ModelState.IsValid)
@@ -564,10 +568,10 @@ namespace RDIASCanteenAPI.Controllers
             {
                 return Ok(new { Success = false, Message = ex.Message });
             }
-        } 
+        }
 
-    #endregion
-    
+        #endregion
+
     }
 }
 
