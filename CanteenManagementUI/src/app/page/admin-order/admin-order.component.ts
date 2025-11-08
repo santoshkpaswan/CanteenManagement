@@ -23,6 +23,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { OrderPaymentType, OrderPaymentStatus, OrderStatus } from 'src/app/shared/enums/enums.ts';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { saveAs } from 'file-saver';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable'
 
 
 @Component({
@@ -45,11 +48,11 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
   selectedOrder: any;
   statusFilter: string = '';
   orderDateFilter: string = '';
-  userNameFilter: string='';
+  userNameFilter: string = '';
   userNameList: any[] = [];
   selectedOrderDetails: any[] = [];
 
-  displayedColumns: string[] = ['checkbox', 'sno', 'ordernumber','orderTime', 'username', 'usertype', 'userMobileNo', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus','transtionId'];
+  displayedColumns: string[] = ['checkbox', 'sno', 'ordernumber', 'orderTime', 'username', 'usertype', 'userMobileNo', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'transtionId'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;
@@ -134,14 +137,14 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
       // Set filter predicate once
 
       // Populate userNameList automatically
-    this.userNameList = Array.from(new Set(response.data.map((item: any) => item.userName))).map(userName => ({ userName }));
+      this.userNameList = Array.from(new Set(response.data.map((item: any) => item.userName))).map(userName => ({ userName }));
 
 
       this.dataSource.filterPredicate = (data: any, filter: any) => {
         const filters = JSON.parse(filter);
         const statusMatch = filters.status ? data.status === +filters.status : true;
         const dateMatch = filters.orderDate ? new Date(data.orderDate.replaceAll("/", "-").split('-')[2] + "-" + data.orderDate.replaceAll("/", "-").split('-')[1] + "-" + data.orderDate.replaceAll("/", "-").split('-')[0]).toDateString() === new Date(filters.orderDate).toDateString() : true;
-        const userNameMatch = filters.userName? data.userName && data.userName.toLowerCase().includes(filters.userName): true;
+        const userNameMatch = filters.userName ? data.userName && data.userName.toLowerCase().includes(filters.userName) : true;
 
         return statusMatch && dateMatch && userNameMatch;
       };
@@ -418,7 +421,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
   resetOrderSearchFilter() {
     this.statusFilter = '';
     this.orderDateFilter = '';
-    this.userNameFilter='';
+    this.userNameFilter = '';
     this.dataSource.filter = '';
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -447,6 +450,68 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     return this.selectedOrderDetails?.reduce((sum, x) => sum + (x.totalAmount || 0), 0) || 0;
   }
 
+  // Excel Export
+   exportToExcel(): void {
+  // Use filtered data if available
+  const exportData = (this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.orderList)
+    .map((item: any, index: number) => ({
+      'S.No': index + 1,
+      'Order Number': item.orderNumber,
+      'Order Time': item.orderTime,
+      'User Name': item.userName,
+      'User Type': item.userType,
+      'Mobile No': item.userMobileNo,
+      'Order Date': item.orderDate,
+      'Total Amount': item.totalAmount,
+      'Status': this.getOrderStatusLabel(item.status).label,
+      'Payment Type': this.getPaymentTypeLabel(item.paymentType),
+      'Payment Status': this.getPaymentStatusLabel(item.paymentStatus).label,
+      'Transaction ID': item.transtionId
+    }));
+
+  const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
+  const workbook: XLSX.WorkBook = { Sheets: { 'Orders': worksheet }, SheetNames: ['Orders'] };
+  const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+  saveAs(data, `Orders_Billing_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+
+// PDF Export
+
+ exportToPDF(): void {
+  const doc = new jsPDF('l', 'pt', 'a4');
+  doc.text('User Order Billing History', 350, 30, { align: 'center' });
+
+  //  Use filtered data if available
+  const filteredData = this.dataSource.filteredData?.length ? this.dataSource.filteredData : this.orderList;
+
+  const exportData = filteredData.map((item: any, index: number) => ([
+    index + 1,
+    item.orderNumber,
+    item.orderTime,
+    item.userName,
+    item.userType,
+    item.userMobileNo,
+    item.orderDate,
+    '₹ ' + item.totalAmount,
+    //'₹ ' + Number(item.totalAmount).toFixed(2),  // Clean numeric formatting
+    this.getOrderStatusLabel(item.status).label,
+    this.getPaymentTypeLabel(item.paymentType),
+    this.getPaymentStatusLabel(item.paymentStatus).label,
+    item.transtionId
+  ]));
+
+  autoTable(doc, {
+    head: [['S.No', 'Order No', 'Time', 'User Name', 'User Type', 'Mobile', 'Date', 'Amount', 'Status', 'Pay Type', 'Pay Status', 'Txn ID']],
+    body: exportData,
+    startY: 50,
+    styles: { fontSize: 8 },
+    headStyles: { fillColor: [63, 81, 181] }
+  });
+
+  doc.save(`Orders_Billing_${new Date().toISOString().slice(0,10)}.pdf`);
+}
 
 
 }
