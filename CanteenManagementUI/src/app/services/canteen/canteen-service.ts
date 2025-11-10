@@ -219,7 +219,7 @@ export class CanteenService {
   }
 
   getOrder(modal:any): Observable<any> {
-
+debugger
     //const rgenId = localStorage.getItem('RgenID');
     const rgenId = this.loginUserId;
     const userType = this.loginUserType;
@@ -231,6 +231,7 @@ export class CanteenService {
       })
     );
   }
+
   addOrder(model: any): Observable<any> {
 
     return this._httpClient.post(`${environment.apiUrl}/Canteen/SaveOrder`, model).pipe(

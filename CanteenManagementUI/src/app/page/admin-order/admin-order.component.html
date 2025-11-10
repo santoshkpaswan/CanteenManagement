@@ -5,11 +5,19 @@
 
       <!-- Status Filter -->
       <div class="col-md-2">
-        <label class="form-label fw-semibold">Status</label>
+        <label class="form-label fw-semibold">Order Status</label>
         <!-- <input type="text" class="form-control" placeholder="Search by Status" [(ngModel)]="statusFilter"> -->
         <select class="form-control" [(ngModel)]="statusFilter">
           <option value="">All</option>
           <option *ngFor="let status of statusArray" [value]="status.value">{{ status.statuslabel }}</option>
+        </select>
+      </div>
+      <!-- Payment Status Filter -->
+      <div class="col-md-2">
+        <label class="form-label fw-semibold">Payment Status</label>
+        <select class="form-control" [(ngModel)]="paymentStatusFilter">
+          <option value="">All</option>
+          <option *ngFor="let paymentStatus of paymentStatusArray" [value]="paymentStatus.value">{{ paymentStatus.paymentstatuslabel }}</option>
         </select>
       </div>
 
@@ -373,13 +381,13 @@
         </div>
 
         <!-- Payment Type -->
-        <div class="col-md-6 mb-2">
+        <!-- <div class="col-md-6 mb-2">
           <label>Payment Type <strong class="text-danger">*</strong></label>
           <select class="form-control" formControlName="paymentType">
             <option *ngFor="let pytype of paymentTypesArray" [value]="pytype.value">{{ pytype.paymenttypelabel }}
             </option>
           </select>
-        </div>
+        </div> -->
 
 
 
@@ -393,7 +401,7 @@
 
         <!-- Remark -->
         <div class="col-md-6 mb-2">
-          <label>Remark <strong class="text-danger">*</strong></label>
+          <label>Remark</label>
           <input type="hidden" [formControlName]="'orderId'" class="form-control" required>
           <textarea class="form-control" rows="3" formControlName="remark"></textarea>
         </div>

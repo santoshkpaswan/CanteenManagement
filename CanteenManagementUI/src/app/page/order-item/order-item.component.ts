@@ -52,6 +52,7 @@ export class OrderItemComponent implements OnInit {
   grandTotal: number = 0;
   //orderNumber: string = '';
   filteredItems: any[] = [];
+  selectedPaymentType: number | null = null;
 
 
   imageUrl: any = environment.imageUrl;
@@ -148,6 +149,13 @@ export class OrderItemComponent implements OnInit {
   }
 
   orderPlace() {
+    debugger
+    // Step 1: Validate payment selection
+    if (!this.selectedPaymentType) {
+      this._coreService.openSnackBar('Please select a payment type.', 'Ok');
+      return;
+    }
+
     // Check if the form is valid
     if (this.addpayNow.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
@@ -170,7 +178,8 @@ export class OrderItemComponent implements OnInit {
       userMobileNo: userMobileNumber,
       enrollNo: userEnrollNumber,
       totalAmount: this.grandTotal,//Number(this.addpayNow.value.totalAmount),
-      paymentType: Number(this.addpayNow.value.paymentType),
+      //paymentType: Number(this.addpayNow.value.paymentType),
+      paymentType: Number(this.selectedPaymentType),
       paymentStatus: Number(this.addpayNow.value.paymentStatus),
       status: Number(this.addpayNow.value.status),
       createdDate: new Date(),

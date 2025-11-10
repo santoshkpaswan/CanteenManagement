@@ -331,6 +331,9 @@ export class OrderHistoryComponent implements OnInit {
     if (['orderplace'].includes(lower)) {
       cssClass = 'status-yellow';   // Order Placed
     }
+    else if (['accepted'].includes(lower)) {
+      cssClass = 'status-blue';   // accepted
+    }
     else if (['inprogress', 'in progress'].includes(lower)) {
       cssClass = 'status-orange';   // In Progress
     }
@@ -367,7 +370,7 @@ export class OrderHistoryComponent implements OnInit {
     const orderStatus = this.getOrderStatusLabel(element.status).label.toLowerCase();
     const paymentTypeValue = element.paymentType;
     const paymentStatus = this.getPaymentStatusLabel(element.paymentStatus).label.toLowerCase();
-    return ((orderStatus === 'orderplace' || orderStatus === 'inprogress') && paymentTypeValue === 2 && paymentStatus === 'pending');
+    return ((orderStatus === 'orderplace' || orderStatus === 'accepted') && paymentTypeValue === 3 && paymentStatus === 'pending');
   }
 
   // paymentQR mode Pop page open

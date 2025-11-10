@@ -1,7 +1,7 @@
 export enum OrderPaymentType {
-  Cash = 0,
-  Card = 1,
-  UPI = 2
+  Cash = 1,
+  //Card = 2,
+  UPI = 3
 }
 
 export enum OrderPaymentStatus {
@@ -9,12 +9,14 @@ export enum OrderPaymentStatus {
   Paid = 1,
   //Failed = 2,
   //Refunded = 3,
-   //Cancelled = 4
+  //Cancelled = 4
 }
 
 export enum OrderStatus {
   OrderPlace = 0,
+  Accepted = 4,
   InProgress = 1,
   Completed = 2,
   Cancelled = 3
+
 }

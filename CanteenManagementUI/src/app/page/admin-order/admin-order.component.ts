@@ -47,6 +47,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
   dayName: any = [];
   selectedOrder: any;
   statusFilter: string = '';
+  paymentStatusFilter: string = '';
   orderFromDateFilter: string = '';
   orderToDateFilter: string = '';
   userNameFilter: string = '';
@@ -107,10 +108,10 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     });
 
     this.editCanteenOrderStatusForm = _formBuilder.group({
-      paymentType: ['', Validators.required],
+      //paymentType: ['', Validators.required],
       paymentStatus: ['', Validators.required],
       status: ['', Validators.required],
-      remark: ['', Validators.required],
+      remark: [''],
       orderId: ['', Validators.required]
     });
   }
@@ -325,6 +326,9 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     if (['orderplace'].includes(lower)) {
       cssClass = 'status-yellow';   // Order Placed
     }
+    else if (['accepted'].includes(lower)) {
+      cssClass = 'status-blue';   // accepted
+    }
     else if (['inprogress', 'in progress'].includes(lower)) {
       cssClass = 'status-orange';   // In Progress
     }
@@ -358,10 +362,10 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
       return;
     }
     this.editCanteenOrderStatusForm = this._formBuilder.group({
-      paymentType: [element.paymentType, Validators.required],
+      //paymentType: [element.paymentType, Validators.required],
       paymentStatus: [element.paymentStatus, Validators.required],
       status: [element.status, Validators.required],
-      remark: [element.remark, Validators.required],
+      remark: [element.remark],
       orderId: [element.orderId, Validators.required],
     });
 
@@ -375,12 +379,15 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
       return;
     }
     const currentUser = this._authService.getUser();
-    const { orderId, paymentType, paymentStatus, status, remark } = this.editCanteenOrderStatusForm.value;
+    const {
+      orderId,
+      //paymentType,
+       paymentStatus, status, remark } = this.editCanteenOrderStatusForm.value;
 
     const updateStatusPayload = {
       orderId,
       rgenId: Number(currentUser?.account_id || 0),
-      paymentType: Number(paymentType),
+      //paymentType: Number(paymentType),
       paymentStatus: Number(paymentStatus),
       status: Number(status),
       remark
@@ -427,7 +434,6 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     });
   }
   orderSearchFilter() {
-
     // const filterObj = {
     //   status: this.statusFilter.trim().toLowerCase(),
     //   userName: this.userNameFilter.trim().toLowerCase(),
@@ -439,8 +445,9 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     //   this.dataSource.paginator.firstPage();
     // }
     this.sendObj = {
+
       orderStatus: this.statusFilter.trim().toLowerCase(),
-      paymentStatus: this.statusFilter.trim().toLowerCase(),
+      paymentStatus: this.paymentStatusFilter.trim().toLowerCase(),
       userName: this.userNameFilter.trim().toLowerCase(),
       orderFromDate: this.orderFromDateFilter,
       orderToDate: this.orderToDateFilter,
@@ -473,6 +480,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
 
   resetOrderSearchFilter() {
     this.statusFilter = '';
+    this.paymentStatusFilter='';
     this.orderFromDateFilter = '';
     this.orderToDateFilter = '';
     this.userNameFilter = '';

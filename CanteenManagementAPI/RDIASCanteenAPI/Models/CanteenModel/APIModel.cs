@@ -162,13 +162,13 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public OrderPaymentType PaymentType { get; set; }
         public OrderPaymentStatus PaymentStatus { get; set; }
         public OrderStatus Status { get; set; }
-        public string Remark { get; set; }
+        public string? Remark { get; set; }
     }
     public enum OrderPaymentType
     {
-        Cash = 0,
-        Card = 1,
-        UPI = 2
+        Cash = 1,
+        //Card = 2,
+        UPI = 3
     }
     public enum OrderPaymentStatus
     {
@@ -182,9 +182,12 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     public enum OrderStatus
     {
         OrderPlace = 0,
+        Accepted = 4,
         InProgress = 1,
         Completed = 2,
         Cancelled = 3
+
+
     }
 
     #endregion
@@ -229,7 +232,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public int? OrderId { get; set; }
         public int? RgenId { get; set; }
         public int? Status { get; set; }
-        
+
     }
 
     #endregion

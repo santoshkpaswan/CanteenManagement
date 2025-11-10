@@ -445,32 +445,33 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 {
                     query = query.Where(o => o.Status == (OrderStatus)modal.OrderStatus);
                 }
+
+
+                if (modal.PaymentStatus != null)
+                {
+                    query = query.Where(o => o.PaymentStatus == (OrderPaymentStatus)modal.PaymentStatus);
+                }
+
+                //  Date Range filter (parse safely)
+                if (!string.IsNullOrEmpty(modal.OrderFromDate) && !string.IsNullOrEmpty(modal.OrderToDate))
+                {
+                    if (DateTime.TryParse(modal.OrderFromDate, out DateTime sDate) && DateTime.TryParse(modal.OrderToDate, out DateTime eDate))
+                    {
+                        DateTime endDateInclusive = eDate.Date.AddDays(1).AddTicks(-1);
+                        query = query.Where(o => o.CreatedDate >= sDate && o.CreatedDate <= endDateInclusive);
+                    }
+                }
+                else if (!string.IsNullOrEmpty(modal.OrderFromDate) && DateTime.TryParse(modal.OrderFromDate, out DateTime sDateOnly))
+                {
+                    query = query.Where(o => o.CreatedDate >= sDateOnly);
+                }
+                else if (!string.IsNullOrEmpty(modal.OrderToDate) && DateTime.TryParse(modal.OrderToDate, out DateTime eDateOnly))
+                {
+                    DateTime endDateInclusive = eDateOnly.Date.AddDays(1).AddTicks(-1);
+                    query = query.Where(o => o.CreatedDate <= endDateInclusive);
+                }
+
             }
-
-            // // Status filter
-            // if (status.HasValue && status.Value > 0)
-            // {
-            //     query = query.Where(o => o.Status == (OrderStatus)status.Value);
-            // }
-
-            // //  Date Range filter (parse safely)
-            // if (!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
-            // {
-            //     if (DateTime.TryParse(startDate, out DateTime sDate) && DateTime.TryParse(endDate, out DateTime eDate))
-            //     {
-            //         DateTime endDateInclusive = eDate.Date.AddDays(1).AddTicks(-1);
-            //         query = query.Where(o => o.CreatedDate >= sDate && o.CreatedDate <= endDateInclusive);
-            //     }
-            // }
-            // else if (!string.IsNullOrEmpty(startDate) && DateTime.TryParse(startDate, out DateTime sDateOnly))
-            // {
-            //     query = query.Where(o => o.CreatedDate >= sDateOnly);
-            // }
-            // else if (!string.IsNullOrEmpty(endDate) && DateTime.TryParse(endDate, out DateTime eDateOnly))
-            // {
-            //     DateTime endDateInclusive = eDateOnly.Date.AddDays(1).AddTicks(-1);
-            //     query = query.Where(o => o.CreatedDate <= endDateInclusive);
-            // }
 
             // Order descending
             query = query.OrderByDescending(o => o.OrderId);
@@ -648,7 +649,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             {
                 throw new Exception("Record not found.");
             }
-            existing.PaymentType = orderStatusUpdateModelView.PaymentType;
+            //existing.PaymentType = orderStatusUpdateModelView.PaymentType;
             existing.PaymentStatus = orderStatusUpdateModelView.PaymentStatus;
             existing.Status = orderStatusUpdateModelView.Status;
             existing.Remark = orderStatusUpdateModelView.Remark;
