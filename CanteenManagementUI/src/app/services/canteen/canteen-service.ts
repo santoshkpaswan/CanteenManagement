@@ -222,14 +222,12 @@ export class CanteenService {
 debugger
     //const rgenId = localStorage.getItem('RgenID');
     const rgenId = this.loginUserId;
-    const userType = this.loginUserType;
-    const username = this.loginUserName
+    //const userType = this.loginUserType;
+    //const username = this.loginUserName
     const isAdmin = this.loginIsAdmin
-    return this._httpClient.post(`${environment.apiUrl}/Canteen/ListOrder?rgenId=${rgenId} &isAdmin=${isAdmin}`, modal).pipe(
-      switchMap((response: any) => {
-        return of(response);
-      })
-    );
+    return this._httpClient.post(`${environment.apiUrl}/Canteen/ListOrder?rgenId=${rgenId} &isAdmin=${isAdmin}`, modal)
+    .pipe(switchMap((response: any) => {return of(response);}));
+
   }
 
   addOrder(model: any): Observable<any> {

@@ -225,7 +225,7 @@ export class OrderHistoryComponent implements OnInit {
     const paymentStatus = this.getPaymentStatusLabel(element.paymentStatus)?.label?.toLowerCase();
 
     // Disable button if order is completed OR cancelled OR payment is paid
-    return ((orderStatus === 'completed' || orderStatus === 'inprogress') && paymentStatus === 'paid');
+    return ((orderStatus === 'completed' || orderStatus === 'accepted' || orderStatus === 'inprogress') || paymentStatus === 'paid');
   }
 
   deleteCanteenOrder(element: any) {

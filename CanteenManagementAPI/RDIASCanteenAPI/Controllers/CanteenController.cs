@@ -301,7 +301,7 @@ namespace RDIASCanteenAPI.Controllers
 
         #region Order
         [HttpPost("ListOrder")]
-        public async Task<IActionResult> GetOrder(int rgenId, bool isAdmin,SearchOrderAdmin? modal)
+        public async Task<IActionResult> GetOrder(int rgenId, bool isAdmin, [FromBody] SearchOrderAdmin? modal)
         {
             try
             {

@@ -382,7 +382,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     const {
       orderId,
       //paymentType,
-       paymentStatus, status, remark } = this.editCanteenOrderStatusForm.value;
+      paymentStatus, status, remark } = this.editCanteenOrderStatusForm.value;
 
     const updateStatusPayload = {
       orderId,
@@ -434,60 +434,52 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     });
   }
   orderSearchFilter() {
-    // const filterObj = {
-    //   status: this.statusFilter.trim().toLowerCase(),
-    //   userName: this.userNameFilter.trim().toLowerCase(),
-    //   orderDate: this.orderDateFilter
-    // };
-
-    // this.dataSource.filter = JSON.stringify(filterObj);
-    // if (this.dataSource.paginator) {
-    //   this.dataSource.paginator.firstPage();
-    // }
-    this.sendObj = {
-
-      orderStatus: this.statusFilter.trim().toLowerCase(),
-      paymentStatus: this.paymentStatusFilter.trim().toLowerCase(),
-      userName: this.userNameFilter.trim().toLowerCase(),
-      orderFromDate: this.orderFromDateFilter,
-      orderToDate: this.orderToDateFilter,
+    const sendObj = {
+      OrderStatus: this.statusFilter ? this.statusFilter : null,
+      PaymentStatus: this.paymentStatusFilter ? this.paymentStatusFilter : null,
+      UserName: this.userNameFilter ? this.userNameFilter : null,
+      OrderFromDate: this.orderFromDateFilter ? this.orderFromDateFilter : null,
+      OrderToDate: this.orderToDateFilter ? this.orderToDateFilter : null,
     };
 
-
-    this._canteenService.getOrder(this.sendObj).subscribe((response) => {
-      //this.dataSource = response.data;
-      this.orderList = response.data;
-      this.dataSource = new MatTableDataSource<any>(response.data);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-
-      // // Set filter predicate once
-
-      // // Populate userNameList automatically
-      // this.userNameList = Array.from(new Set(response.data.map((item: any) => item.userName))).map(userName => ({ userName }));
-
-
-      // this.dataSource.filterPredicate = (data: any, filter: any) => {
-      //   const filters = JSON.parse(filter);
-      //   const statusMatch = filters.status ? data.status === +filters.status : true;
-      //   const dateMatch = filters.orderDate ? new Date(data.orderDate.replaceAll("/", "-").split('-')[2] + "-" + data.orderDate.replaceAll("/", "-").split('-')[1] + "-" + data.orderDate.replaceAll("/", "-").split('-')[0]).toDateString() === new Date(filters.orderDate).toDateString() : true;
-      //   const userNameMatch = filters.userName ? data.userName && data.userName.toLowerCase().includes(filters.userName) : true;
-
-      //   return statusMatch && dateMatch && userNameMatch;
-      // };
+    this._canteenService.getOrder(sendObj).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.orderList = response.data;
+          this.dataSource = new MatTableDataSource<any>(response.data);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+      },
+      error: (err) => console.error(err)
     });
   }
-
   resetOrderSearchFilter() {
+    // Clear all filters
     this.statusFilter = '';
-    this.paymentStatusFilter='';
+    this.paymentStatusFilter = '';
     this.orderFromDateFilter = '';
     this.orderToDateFilter = '';
     this.userNameFilter = '';
+
+    // Reset the table
     this.dataSource.filter = '';
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+
+    // Reload the full order list from API
+    this._canteenService.getOrder({}).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.orderList = response.data;
+          this.dataSource = new MatTableDataSource<any>(response.data);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+      },
+      error: (err) => console.error('Error while resetting filters:', err)
+    });
   }
 
   // Get OrderDetails View

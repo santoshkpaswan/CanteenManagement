@@ -433,44 +433,37 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 query = query.Where(o => o.RgenId == rgenId);
             }
 
-            // // UserName filter (case-insensitive)
+             // UserName filter (case-insensitive)
             if (modal != null)
             {
                 if (!string.IsNullOrEmpty(modal.UserName))
                 {
-                    query = query.Where(o => o.RgenId == Convert.ToInt32(modal.UserName));
+                    int userId = Convert.ToInt32(modal.UserName);
+                    query = query.Where(o => o.RgenId == userId);
+                }
+                // Order Status Filter
+                if (modal.OrderStatus.HasValue)
+                {
+                    query = query.Where(o => (int)o.Status == modal.OrderStatus.Value);
                 }
 
-                if (modal.OrderStatus != null)
+                // Payment Status Filter
+                if (modal.PaymentStatus.HasValue)
                 {
-                    query = query.Where(o => o.Status == (OrderStatus)modal.OrderStatus);
+                    query = query.Where(o => (int)o.PaymentStatus == modal.PaymentStatus.Value);
                 }
 
-
-                if (modal.PaymentStatus != null)
+                // Date Filters
+                if (!string.IsNullOrEmpty(modal.OrderFromDate) && DateTime.TryParse(modal.OrderFromDate, out var fromDate))
                 {
-                    query = query.Where(o => o.PaymentStatus == (OrderPaymentStatus)modal.PaymentStatus);
+                    query = query.Where(o => o.CreatedDate >= fromDate);
                 }
 
-                //  Date Range filter (parse safely)
-                if (!string.IsNullOrEmpty(modal.OrderFromDate) && !string.IsNullOrEmpty(modal.OrderToDate))
+                if (!string.IsNullOrEmpty(modal.OrderToDate) && DateTime.TryParse(modal.OrderToDate, out var toDate))
                 {
-                    if (DateTime.TryParse(modal.OrderFromDate, out DateTime sDate) && DateTime.TryParse(modal.OrderToDate, out DateTime eDate))
-                    {
-                        DateTime endDateInclusive = eDate.Date.AddDays(1).AddTicks(-1);
-                        query = query.Where(o => o.CreatedDate >= sDate && o.CreatedDate <= endDateInclusive);
-                    }
+                    var endDate = toDate.Date.AddDays(1).AddTicks(-1);
+                    query = query.Where(o => o.CreatedDate <= endDate);
                 }
-                else if (!string.IsNullOrEmpty(modal.OrderFromDate) && DateTime.TryParse(modal.OrderFromDate, out DateTime sDateOnly))
-                {
-                    query = query.Where(o => o.CreatedDate >= sDateOnly);
-                }
-                else if (!string.IsNullOrEmpty(modal.OrderToDate) && DateTime.TryParse(modal.OrderToDate, out DateTime eDateOnly))
-                {
-                    DateTime endDateInclusive = eDateOnly.Date.AddDays(1).AddTicks(-1);
-                    query = query.Where(o => o.CreatedDate <= endDateInclusive);
-                }
-
             }
 
             // Order descending
