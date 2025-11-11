@@ -53,6 +53,13 @@ export const NavigationItems: NavigationItem[] = [
         url: '/canteen/day-wise-food-menu-item',
         icon: 'feather icon-file-text'
       },
+      {
+        id: 'canteennotice',
+        title: 'canteen notice',
+        type: 'item',
+        url: '/canteen/canteen-notice',
+        icon: 'feather icon-file-text'
+      },
        {
         id: 'orderitem',
         title: 'order item',

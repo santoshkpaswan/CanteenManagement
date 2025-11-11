@@ -16,6 +16,7 @@ namespace RDIASCanteenAPI.Data
         public DbSet<tblOrder> orderModels { get; set; }
         public DbSet<tblOrderItem> orderItemModels { get; set; }
         public DbSet<tblUsers> users { get; set; }
+        public DbSet<tblCanteenNotice> canteenNotices { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -136,8 +137,8 @@ namespace RDIASCanteenAPI.Data
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string? UserMobileNo { get; set; }
-        public string? transtionId {  get; set; }
-        public DateTime? transtionDate {  get; set; }
+        public string? transtionId { get; set; }
+        public DateTime? transtionDate { get; set; }
     }
     #endregion
 
@@ -184,5 +185,24 @@ namespace RDIASCanteenAPI.Data
 
     }
     #endregion
+
+    #region Canteen Notice
+    [Table("tblCanteenNotice")]  // Maps to yuor SQL Table
+    public class tblCanteenNotice
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
+        public int CanteenNoticeId { get; set; }
+        public string? Notice { get; set; }
+        public bool IsActive { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public int? ModifiedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+
+
+    }
+    #endregion
+
 }
 

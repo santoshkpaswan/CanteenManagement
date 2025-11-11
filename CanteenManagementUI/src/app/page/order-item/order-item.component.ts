@@ -53,6 +53,7 @@ export class OrderItemComponent implements OnInit {
   //orderNumber: string = '';
   filteredItems: any[] = [];
   selectedPaymentType: number | null = null;
+  notice: any = [];
 
 
   imageUrl: any = environment.imageUrl;
@@ -101,6 +102,7 @@ export class OrderItemComponent implements OnInit {
   ngOnInit(): void {
 
     this.getGridData();
+    this.getCanteenNoticeGridData();
     this.getLoginUserNameGridData();
     // Generate order number
   }
@@ -112,6 +114,14 @@ export class OrderItemComponent implements OnInit {
       //this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+    });
+  }
+
+  getCanteenNoticeGridData() {
+    debugger
+    this._canteenService.getCanteenNotice().subscribe((response) => {
+      this.notice = response.data;
+
     });
   }
 

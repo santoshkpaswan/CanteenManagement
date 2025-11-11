@@ -828,6 +828,14 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         }
 
         #endregion
+
+        #region canteen notice
+        public List<tblCanteenNotice> GetAllCanteenNotice()
+        {
+            return _context.canteenNotices.Where(x => x.IsActive == true).OrderByDescending(x => x.CanteenNoticeId).ToList();
+        }
+        #endregion
+
     }
 }
 

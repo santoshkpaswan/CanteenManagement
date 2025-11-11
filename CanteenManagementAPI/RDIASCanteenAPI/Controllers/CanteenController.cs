@@ -572,6 +572,25 @@ namespace RDIASCanteenAPI.Controllers
 
         #endregion
 
+
+         
+        #region Canteen Notice
+        [HttpGet("ListNotice")]
+        public IActionResult GetNotice()
+        {
+            try
+            {
+                var objlist = _masterDayInterface.GetAllCanteenNotice();
+                return Ok(new { Success = true, Data = objlist });
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { Success = false, Message = ex.Message });
+            }
+        }
+        #endregion
+
     }
 }
 

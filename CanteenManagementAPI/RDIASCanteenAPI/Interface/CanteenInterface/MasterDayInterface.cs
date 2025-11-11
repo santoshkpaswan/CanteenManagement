@@ -63,6 +63,9 @@ namespace RDIASCanteenAPI.Interface.CanteenInterface
         Task<PaymentQRTranstion> PaymentQRTranstion(PaymentQRTranstion paymentQRTranstion);
         #endregion
 
+        #region Canteen Notice
+        List<tblCanteenNotice> GetAllCanteenNotice();
 
+        #endregion
     }
 }

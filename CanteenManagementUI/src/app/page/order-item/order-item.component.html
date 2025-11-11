@@ -4,6 +4,13 @@
     <div class="card text-center">
       <div class="card-header">
         <h6 class="card-title fw-bold">Order Item List</h6>
+
+        <div class="marquee-container  ">
+        <marquee behavior="scroll" direction="left" scrollamount="5">
+          🔔 Welcome to the Order List! Enjoy 20% off today • New items added every hour • Check out our trending dishes!
+        </marquee>
+      </div>
+
       </div>
       <div class="row p-3">
         <div class="col-md-4 col-sm-6 mb-4" *ngFor="let element of itemList; let i = index">

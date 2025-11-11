@@ -273,4 +273,14 @@ namespace RDIASCanteenAPI.Models.CanteenModel
 
     }
     #endregion
+
+    #region Canteen Notice
+
+    //public class CanteenNoticeModal: tblCanteenNotice
+    //{
+    //    public string? Notice { get; set; }
+    //}
+
+    #endregion
+
 }

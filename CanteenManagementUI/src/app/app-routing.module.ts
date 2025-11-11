@@ -19,6 +19,7 @@ import {DayWiseFoodMenuItemComponent} from 'src/app/page//day-wise-food-menu-ite
 import {OrderHistoryComponent} from 'src/app/page/order-history/order-histroy.component'
 import { OrderItemComponent } from 'src/app/page/order-item/order-item.component';
 import {AdminOrderComponent} from 'src/app/page/admin-order/admin-order.component'
+import {CanteenNoticeComponent} from 'src/app/page/canteen-notice/canteen-notice.component'
 
 
 
@@ -57,6 +58,10 @@ const routes: Routes = [
       {
         path: 'canteen/day-wise-food-menu-item',
         component: DayWiseFoodMenuItemComponent
+      },
+      {
+        path: 'canteen/canteen-notice',
+        component: CanteenNoticeComponent
       },
       {
         path: 'canteen/order-history',
