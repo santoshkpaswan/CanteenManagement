@@ -65,6 +65,7 @@ namespace RDIASCanteenAPI.Interface.CanteenInterface
 
         #region Canteen Notice
         List<tblCanteenNotice> GetAllCanteenNotice();
+        Task<CanteenNoticeUpdateModelView> SaveNotice(CanteenNoticeUpdateModelView modelView);
 
         #endregion
     }

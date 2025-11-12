@@ -53,7 +53,9 @@ export class OrderItemComponent implements OnInit {
   //orderNumber: string = '';
   filteredItems: any[] = [];
   selectedPaymentType: number | null = null;
-  notice: any = [];
+  noticeList: any = [];
+  isNoticeActive: boolean = false;
+
 
 
   imageUrl: any = environment.imageUrl;
@@ -119,8 +121,16 @@ export class OrderItemComponent implements OnInit {
 
   getCanteenNoticeGridData() {
     debugger
-    this._canteenService.getCanteenNotice().subscribe((response) => {
-      this.notice = response.data;
+    this._canteenService.getCanteenNotice().subscribe({next:(response) => {
+      if (response && response.data && response.data.length > 0) {
+        const noticeData = response.data[0];
+        this.noticeList = noticeData.notice;
+        this.isNoticeActive = noticeData.isActive === true; // ensure boolean
+      } else {
+        this.noticeList = '';
+        this.isNoticeActive = false;
+      }
+    }
 
     });
   }

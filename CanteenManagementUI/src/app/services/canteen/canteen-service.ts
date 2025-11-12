@@ -359,5 +359,13 @@ debugger
     this._refresh$.next();
   }
 
+   updateNotice(model: any): Observable<any> {
+    return this._httpClient.post(`${environment.apiUrl}/Canteen/SaveNotice`, model).pipe(
+      switchMap((response: any) => {
+        return of(response);
+      })
+    );
+  }
+
 
 }

@@ -5,11 +5,11 @@
       <div class="card-header">
         <h6 class="card-title fw-bold">Order Item List</h6>
 
-        <div class="marquee-container  ">
-        <marquee behavior="scroll" direction="left" scrollamount="5">
-          🔔 Welcome to the Order List! Enjoy 20% off today • New items added every hour • Check out our trending dishes!
-        </marquee>
-      </div>
+        <div class="marquee-container" *ngIf="isNoticeActive">
+          <marquee behavior="scroll" direction="left" scrollamount="5">
+            {{ noticeList }}
+          </marquee>
+        </div>
 
       </div>
       <div class="row p-3">
@@ -73,12 +73,14 @@
           <div class="d-flex align-items-center flex-wrap">
             <label class="fw-semibold me-2 mb-0"> Payment Type <span class="text-danger">*</span></label>
             <div class="form-check form-check-inline mb-0">
-              <input type="radio" class="form-check-input" id="cash" name="paymentType" [(ngModel)]="selectedPaymentType" [value]="1" />
+              <input type="radio" class="form-check-input" id="cash" name="paymentType"
+                [(ngModel)]="selectedPaymentType" [value]="1" />
               <label class="form-check-label" for="cash">Cash</label>
             </div>
 
             <div class="form-check form-check-inline mb-0">
-              <input type="radio" class="form-check-input" id="upi" name="paymentType" [(ngModel)]="selectedPaymentType" [value]="3" />
+              <input type="radio" class="form-check-input" id="upi" name="paymentType" [(ngModel)]="selectedPaymentType"
+                [value]="3" />
               <label class="form-check-label" for="upi">UPI</label>
             </div>
           </div>

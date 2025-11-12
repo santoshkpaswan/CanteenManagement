@@ -589,6 +589,27 @@ namespace RDIASCanteenAPI.Controllers
                 return Ok(new { Success = false, Message = ex.Message });
             }
         }
+
+        [HttpPost("SaveNotice")]
+        public async Task<IActionResult> SaveNotice([FromBody] CanteenNoticeUpdateModelView modelView)
+        {
+            if (!ModelState.IsValid)
+                return Ok(new { Success = false, Message = "Validation failed", Errors = ModelState });
+
+            try
+            {
+                var result = await _masterDayInterface.SaveNotice(modelView);
+                return Ok(new { Success = true, Message = "Updated successfully" });
+            }
+            catch (ArgumentException ex)
+            {
+                return Ok(new { Success = false, Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { Success = false, Message = ex.Message });
+            }
+        }
         #endregion
 
     }

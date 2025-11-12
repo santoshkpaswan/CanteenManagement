@@ -276,10 +276,12 @@ namespace RDIASCanteenAPI.Models.CanteenModel
 
     #region Canteen Notice
 
-    //public class CanteenNoticeModal: tblCanteenNotice
-    //{
-    //    public string? Notice { get; set; }
-    //}
+    public class CanteenNoticeUpdateModelView
+    {
+        public int CanteenNoticeId { get; set; }
+        public string? Notice { get; set; }
+        public bool IsActive { get; set; }
+    }
 
     #endregion
 

@@ -34,8 +34,9 @@ export class CanteenNoticeComponent implements OnInit {
   currentPage: any = 0;
   pageSize: any = 10;
   noticeList: any = [];
+  editCanteenNoticeForm: FormGroup;
 
-  displayedColumns: string[] = ['sno', 'notice', 'edit', 'delete'];
+  displayedColumns: string[] = ['sno', 'notice', 'edit'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
@@ -54,6 +55,12 @@ export class CanteenNoticeComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private _coreService: CoreService) {
 
+      this.editCanteenNoticeForm = _formBuilder.group({
+      notice: ['', Validators.required],
+      canteenNoticeId: ['', Validators.required],
+      isActive: [false, Validators.required]
+    });
+
   }
 
   ngOnInit(): void {
@@ -61,13 +68,48 @@ export class CanteenNoticeComponent implements OnInit {
   }
 
   getGridData() {
-    this._canteenService.getCanteenNotice().subscribe((response) => {
-      this.dataSource = response.data;
-      this.noticeList = response.data;
+    debugger
+    this._canteenService.getCanteenNotice().subscribe({next:(response) => {
+      this.dataSource = response.data.notice;
+      this.noticeList = response.data.notice;
       this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+    },
     });
+
+  }
+
+  updateNotice() {
+    if (this.editCanteenNoticeForm.invalid) {
+      this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
+      return;
+    }
+    const payload = this.editCanteenNoticeForm.value;
+    this.editCanteenNoticeForm.disable();
+
+    this._canteenService.updateNotice(payload).subscribe((data) => {
+      this._coreService.openSnackBar(data.message, 'Ok');
+      this.modalService.dismissAll();
+      this.editCanteenNoticeForm.enable();
+      this.editCanteenNoticeForm.reset();
+      this.getGridData();
+    })
+
+  }
+  toggleIsActive() {
+  const current = this.editCanteenNoticeForm.get('isActive')?.value;
+  this.editCanteenNoticeForm.patchValue({ isActive: !current });
+}
+
+  openEditCanteenNoticeTemplate(element: any, content: TemplateRef<any>) {
+
+    this.editCanteenNoticeForm = this._formBuilder.group({
+      notice: [element.notice, Validators.required],
+      canteenNoticeId: [element.canteenNoticeId, Validators.required],
+      isActive: [element.isActive, Validators.required]
+    });
+    this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }
 
 }

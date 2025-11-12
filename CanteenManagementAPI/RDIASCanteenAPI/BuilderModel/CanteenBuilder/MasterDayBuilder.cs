@@ -830,9 +830,28 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #endregion
 
         #region canteen notice
-        public List<tblCanteenNotice> GetAllCanteenNotice()
+        public List<tblCanteenNotice?> GetAllCanteenNotice()
         {
-            return _context.canteenNotices.Where(x => x.IsActive == true).OrderByDescending(x => x.CanteenNoticeId).ToList();
+            return  _context.canteenNotices.Where(x => x.IsActive == true || x.IsActive == false).OrderByDescending(x => x.CanteenNoticeId).ToList();
+        }
+        public async Task<CanteenNoticeUpdateModelView> SaveNotice(CanteenNoticeUpdateModelView modelView)
+        {
+            if (string.IsNullOrWhiteSpace(modelView.Notice) || modelView.Notice.Trim().ToLower() == "string" || modelView.Notice.Trim().ToLower() == "null")
+            {
+                throw new ArgumentException("Day Name is required.", nameof(modelView.Notice));
+            }
+            // UPDATE only
+            var existing = await _context.canteenNotices.FirstOrDefaultAsync(x => x.CanteenNoticeId == modelView.CanteenNoticeId);
+            if (existing == null)
+            {
+                throw new Exception("Record not found.");
+            }
+            existing.Notice = modelView.Notice;
+            existing.IsActive = modelView.IsActive;
+            existing.ModifiedDate = DateTime.Now;  // optional
+            existing.ModifiedBy = 1; // optional if you track users
+            await _context.SaveChangesAsync();
+            return modelView;
         }
         #endregion
 
