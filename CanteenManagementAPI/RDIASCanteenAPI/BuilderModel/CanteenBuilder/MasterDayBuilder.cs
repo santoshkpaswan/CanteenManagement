@@ -356,6 +356,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                     FoodMenuItemId = foodItemId,
                     DayId = dayWiseFoodMenuItemSaveModelView.DayId,
                     Time = dayWiseFoodMenuItemSaveModelView.Time,
+                    CloseTime = dayWiseFoodMenuItemSaveModelView.CloseTime,
                     IsActive = true,
                     CreatedBy = 0,
                     CreatedDate = DateTime.Now,
@@ -381,6 +382,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             existing.DayId = wiseFoodMenuItemUpdateModelView.DayId;
             existing.FoodMenuItemId = wiseFoodMenuItemUpdateModelView.FoodMenuItemId;
             existing.Time = wiseFoodMenuItemUpdateModelView.Time;
+            existing.CloseTime = wiseFoodMenuItemUpdateModelView.CloseTime;
             existing.IsActive = true;
             existing.ModifiedDate = DateTime.Now;  // optional
             existing.ModifiedBy = 0; // optional if you track users

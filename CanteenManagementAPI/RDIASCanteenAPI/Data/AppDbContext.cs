@@ -100,6 +100,7 @@ namespace RDIASCanteenAPI.Data
         public int FoodMenuItemId { get; set; }
         public int DayId { get; set; }
         public int Time { get; set; }
+        public TimeOnly? CloseTime {  get; set; }
         public bool IsActive { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
