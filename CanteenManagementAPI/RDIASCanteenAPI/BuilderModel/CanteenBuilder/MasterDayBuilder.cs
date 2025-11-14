@@ -329,7 +329,8 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                                     ItemName = fm.ItemName,   //getting name from foodmenuitem
                                     DayId = f.DayId,
                                     DaysName = f.DaysName,    // getting name from masterDaysModels
-                                    Time = d.Time
+                                    Time = d.Time,
+                                    CloseTime = d.CloseTime
                                 }).ToListAsync();
             return result;
 
@@ -435,7 +436,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 query = query.Where(o => o.RgenId == rgenId);
             }
 
-             // UserName filter (case-insensitive)
+            // UserName filter (case-insensitive)
             if (modal != null)
             {
                 if (!string.IsNullOrEmpty(modal.UserName))
@@ -834,7 +835,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #region canteen notice
         public List<tblCanteenNotice?> GetAllCanteenNotice()
         {
-            return  _context.canteenNotices.Where(x => x.IsActive == true || x.IsActive == false).OrderByDescending(x => x.CanteenNoticeId).ToList();
+            return _context.canteenNotices.Where(x => x.IsActive == true || x.IsActive == false).OrderByDescending(x => x.CanteenNoticeId).ToList();
         }
         public async Task<CanteenNoticeUpdateModelView> SaveNotice(CanteenNoticeUpdateModelView modelView)
         {

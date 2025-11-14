@@ -192,7 +192,6 @@ export class CanteenService {
   }
 
   addDayWiseFoodItem(model: any): Observable<any> {
-
     return this._httpClient.post(`${environment.apiUrl}/Canteen/SaveDayWiseFoodMenuItem`, model).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -219,7 +218,6 @@ export class CanteenService {
   }
 
   getOrder(modal:any): Observable<any> {
-debugger
     //const rgenId = localStorage.getItem('RgenID');
     const rgenId = this.loginUserId;
     //const userType = this.loginUserType;
@@ -267,7 +265,6 @@ debugger
   }
 
    getCanteenNotice(): Observable<any> {
-debugger
     return this._httpClient.get(`${environment.apiUrl}/Canteen/ListNotice`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -314,7 +311,6 @@ debugger
 
 
   signIns(model: any): Observable<any> {
-    debugger
     // Throw error, if the user is already logged in
     //if (this._authenticated) {
     //  return throwError('User is already logged in.');

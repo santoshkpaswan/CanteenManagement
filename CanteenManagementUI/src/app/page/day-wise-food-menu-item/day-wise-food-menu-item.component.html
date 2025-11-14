@@ -38,6 +38,11 @@
         <td mat-cell *matCellDef="let element"> {{element.time}} </td>
       </ng-container>
 
+      <ng-container matColumnDef="closeTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Close Time </th>
+        <td mat-cell *matCellDef="let element"> {{element.closeTime}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef> Edit </th>
         <td mat-cell *matCellDef="let element">
@@ -108,6 +113,14 @@
               placeholder="Enter Time">
           </div>
         </div>
+
+        <div class="col-md-6 mb-2">
+          <label>CloseTime<strong style="color: red;">*</strong></label>
+          <div class="input-group">
+            <input type="time" [formControlName]="'closeTime'" class="form-control" required
+              placeholder="Enter Close Time">
+          </div>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
@@ -157,6 +170,16 @@
               placeholder="Enter Time">
           </div>
         </div>
+
+        <div class="col-md-6 mb-2">
+          <label>Close Time<strong style="color: red;">*</strong></label>
+          <div class="input-group">
+             <input type="time" [formControlName]="'closeTime'" class="form-control" required
+              placeholder="Enter Close Time">
+          </div>
+        </div>
+
+
       </div>
     </div>
     <div class="modal-footer">

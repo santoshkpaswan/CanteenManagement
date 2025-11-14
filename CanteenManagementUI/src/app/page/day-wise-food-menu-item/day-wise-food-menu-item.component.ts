@@ -44,7 +44,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   dayName: any = [];
   dropdownSettings: any;
 
-  displayedColumns: string[] = ['sno', 'dayname', 'itemname', 'time', 'edit', 'delete'];
+  displayedColumns: string[] = ['sno', 'dayname', 'itemname', 'time', 'closeTime', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
@@ -66,13 +66,15 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     this.addCanteenDayWiseItemForm = _formBuilder.group({
       foodMenuItemId: ['', Validators.required],
       dayId: ['', Validators.required],
-      time: ['', Validators.required]
+      time: ['', Validators.required],
+      closeTime: ['', Validators.required]
     });
 
     this.editCanteenDayWiseItemForm = _formBuilder.group({
       foodMenuItemId: ['', Validators.required],
       dayId: ['', Validators.required],
       time: ['', Validators.required],
+      closeTime: ['', Validators.required],
       dayWiseFoodMenuItemId: ['', Validators.required]
     });
   }
@@ -118,15 +120,17 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   }
 
   addNewCanteenDayWiseItem() {
-
     if (this.addCanteenDayWiseItemForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
     }
     this.addCanteenDayWiseItemForm.disable();
     const formValue = this.addCanteenDayWiseItemForm.value;
+    // Fix 2: Add seconds for C# TimeOnly parsing (HH:mm:ss)
+    const closeTimeValue = formValue.closeTime ? formValue.closeTime + ":00" : null;
     const payload = {
-      ...formValue, foodMenuItemId: formValue.foodMenuItemId.map((item: any) => item.foodMenuItemId)
+      ...formValue, foodMenuItemId: formValue.foodMenuItemId.map((item: any) => item.foodMenuItemId),
+      closeTime: closeTimeValue
     };
 
     this._canteenService.addDayWiseFoodItem(payload).subscribe((data) => {
@@ -146,8 +150,12 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       return;
     }
     this.editCanteenDayWiseItemForm.disable();
+    const formValue = this.editCanteenDayWiseItemForm.value;
+    // Convert closeTime
+    const closeTimeValue = formValue.closeTime ? formValue.closeTime + ":00" : null;
+    const payload = { ...formValue, closeTime: closeTimeValue };
 
-    this._canteenService.updateDayWiseItem(this.editCanteenDayWiseItemForm.value).subscribe((data) => {
+    this._canteenService.updateDayWiseItem(payload).subscribe((data) => {
       this._coreService.openSnackBar(data.message, 'Ok');
       this.modalService.dismissAll();
       this.editCanteenDayWiseItemForm.enable();
@@ -174,10 +182,15 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   }
 
   openEditCanteenDayWiseItemTemplate(element: any, content: TemplateRef<any>) {
+
+    // Convert "HH:mm:ss" → "HH:mm"
+    const formattedCloseTime = element.closeTime ? element.closeTime.substring(0, 5) : null;
+
     this.editCanteenDayWiseItemForm = this._formBuilder.group({
       foodMenuItemId: [element.foodMenuItemId, Validators.required],
       dayId: [element.dayId, Validators.required],
       time: [element.time, Validators.required],
+      closeTime: [formattedCloseTime, Validators.required],
       dayWiseFoodMenuItemId: [element.dayWiseFoodMenuItemId, Validators.required]
 
     });
