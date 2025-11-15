@@ -330,7 +330,8 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                                     DayId = f.DayId,
                                     DaysName = f.DaysName,    // getting name from masterDaysModels
                                     Time = d.Time,
-                                    CloseTime = d.CloseTime
+                                    CloseTime = d.CloseTime,
+                                    //PlaceOrderIsActive = d.PlaceOrderIsActive,
                                 }).ToListAsync();
             return result;
 
@@ -358,6 +359,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                     DayId = dayWiseFoodMenuItemSaveModelView.DayId,
                     Time = dayWiseFoodMenuItemSaveModelView.Time,
                     CloseTime = dayWiseFoodMenuItemSaveModelView.CloseTime,
+                    //PlaceOrderIsActive = dayWiseFoodMenuItemSaveModelView.PlaceOrderIsActive,
                     IsActive = true,
                     CreatedBy = 0,
                     CreatedDate = DateTime.Now,
@@ -384,6 +386,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             existing.FoodMenuItemId = wiseFoodMenuItemUpdateModelView.FoodMenuItemId;
             existing.Time = wiseFoodMenuItemUpdateModelView.Time;
             existing.CloseTime = wiseFoodMenuItemUpdateModelView.CloseTime;
+            //existing.PlaceOrderIsActive = wiseFoodMenuItemUpdateModelView.PlaceOrderIsActive;
             existing.IsActive = true;
             existing.ModifiedDate = DateTime.Now;  // optional
             existing.ModifiedBy = 0; // optional if you track users
@@ -513,6 +516,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                     FoodMenuItemId = om.FoodMenuItemId,
                     ItemName = fm.ItemName,
                     TotalAmount = om.TotalAmount,
+
                     OrderId = orderId,
                 }
             ).ToListAsync();
@@ -694,7 +698,10 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                     ImageUrl = g.First().fm.ItemURL,
                     ItemPrice = g.First().fp.ItemPrice,
                     ItemName = g.First().fm.ItemName,
-                    ItemPriceDescriptin = g.First().fp.ItemPriceDescriptin
+                    PlaceOrderIsActive = _context.canteenNotices.Any(x => x.IsActive == true && x.PlaceOrderIsActive == true),
+
+                    ItemPriceDescriptin = g.First().fp.ItemPriceDescriptin,
+                    CloseTime = g.First().dm.CloseTime,
                 }
             )
             .OrderByDescending(x => x.FoodMenuItemId)
@@ -841,7 +848,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         {
             if (string.IsNullOrWhiteSpace(modelView.Notice) || modelView.Notice.Trim().ToLower() == "string" || modelView.Notice.Trim().ToLower() == "null")
             {
-                throw new ArgumentException("Day Name is required.", nameof(modelView.Notice));
+                throw new ArgumentException("Notice Name is required.", nameof(modelView.Notice));
             }
             // UPDATE only
             var existing = await _context.canteenNotices.FirstOrDefaultAsync(x => x.CanteenNoticeId == modelView.CanteenNoticeId);
@@ -851,6 +858,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             }
             existing.Notice = modelView.Notice;
             existing.IsActive = modelView.IsActive;
+            existing.PlaceOrderIsActive = modelView.PlaceOrderIsActive;
             existing.ModifiedDate = DateTime.Now;  // optional
             existing.ModifiedBy = 1; // optional if you track users
             await _context.SaveChangesAsync();

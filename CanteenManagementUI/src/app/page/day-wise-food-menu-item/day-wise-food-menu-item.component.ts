@@ -43,6 +43,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   //foodItems: any[] = [];
   dayName: any = [];
   dropdownSettings: any;
+  orderPlaceNotice: any =[];
 
   displayedColumns: string[] = ['sno', 'dayname', 'itemname', 'time', 'closeTime', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
@@ -68,6 +69,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       dayId: ['', Validators.required],
       time: ['', Validators.required],
       closeTime: ['', Validators.required]
+      //placeOrderIsActive:[true,Validators.required]
     });
 
     this.editCanteenDayWiseItemForm = _formBuilder.group({
@@ -75,6 +77,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       dayId: ['', Validators.required],
       time: ['', Validators.required],
       closeTime: ['', Validators.required],
+      //placeOrderIsActive:[true,Validators.required],
       dayWiseFoodMenuItemId: ['', Validators.required]
     });
   }
@@ -99,6 +102,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     this._canteenService.getDayWiseFoodItem().subscribe((response) => {
       this.dataSource = response.data;
       this.dayWiseitemNameList = response.data;
+      //this.orderPlaceNotice =response.data.placeOrderIsActive;
       this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -128,6 +132,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     const formValue = this.addCanteenDayWiseItemForm.value;
     // Fix 2: Add seconds for C# TimeOnly parsing (HH:mm:ss)
     const closeTimeValue = formValue.closeTime ? formValue.closeTime + ":00" : null;
+
     const payload = {
       ...formValue, foodMenuItemId: formValue.foodMenuItemId.map((item: any) => item.foodMenuItemId),
       closeTime: closeTimeValue
@@ -166,6 +171,12 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   }
 
 
+//   toggleOrderPlaceStatus() {
+//    const current = this.editCanteenDayWiseItemForm.get('placeOrderIsActive')?.value;
+//    this.editCanteenDayWiseItemForm.patchValue({ placeOrderIsActive: !current });
+//  }
+
+
   deleteCanteenDayWiseItem(element: any) {
     this._confirmation.confirm('Are you sure?', 'Do you really want to delete this day wise food menu item?')
       .then((confirmed) => {
@@ -191,6 +202,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       dayId: [element.dayId, Validators.required],
       time: [element.time, Validators.required],
       closeTime: [formattedCloseTime, Validators.required],
+      //placeOrderIsActive:[element.placeOrderIsActive, Validators.required],
       dayWiseFoodMenuItemId: [element.dayWiseFoodMenuItemId, Validators.required]
 
     });

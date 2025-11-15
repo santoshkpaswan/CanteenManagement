@@ -55,6 +55,7 @@ export class OrderItemComponent implements OnInit {
   selectedPaymentType: number | null = null;
   noticeList: any = [];
   isNoticeActive: boolean = false;
+  placeOrderIsActiveList: boolean = false;
 
 
 
@@ -113,6 +114,9 @@ export class OrderItemComponent implements OnInit {
     this._canteenService.getOrderItem().subscribe((response) => {
       this.dataSource = response.data;
       this.itemList = response.data;
+      if (response.data && response.data.length > 0) {
+      this.placeOrderIsActiveList = response.data[0].placeOrderIsActive;
+    }
       //this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -120,17 +124,17 @@ export class OrderItemComponent implements OnInit {
   }
 
   getCanteenNoticeGridData() {
-    debugger
-    this._canteenService.getCanteenNotice().subscribe({next:(response) => {
-      if (response && response.data && response.data.length > 0) {
-        const noticeData = response.data[0];
-        this.noticeList = noticeData.notice;
-        this.isNoticeActive = noticeData.isActive === true; // ensure boolean
-      } else {
-        this.noticeList = '';
-        this.isNoticeActive = false;
+    this._canteenService.getCanteenNotice().subscribe({
+      next: (response) => {
+        if (response && response.data && response.data.length > 0) {
+          const noticeData = response.data[0];
+          this.noticeList = noticeData.notice;
+          this.isNoticeActive = noticeData.isActive === true; // ensure boolean
+        } else {
+          this.noticeList = '';
+          this.isNoticeActive = false;
+        }
       }
-    }
 
     });
   }
@@ -161,7 +165,7 @@ export class OrderItemComponent implements OnInit {
     }
     this.calculateGrandTotal();
     // If count reaches 0, remove it from the filtered list
-    if (item.count === 0) {this.filteredItems = this.filteredItems.filter((x) => x.foodMenuItemId !== item.foodMenuItemId);}
+    if (item.count === 0) { this.filteredItems = this.filteredItems.filter((x) => x.foodMenuItemId !== item.foodMenuItemId); }
   }
 
   calculateGrandTotal() {
@@ -169,8 +173,12 @@ export class OrderItemComponent implements OnInit {
   }
 
   orderPlace() {
-    debugger
-    // Step 1: Validate payment selection
+    // Validate closetime orderPlace Disable
+    //   if (!this.isOrderingAllowed()) {
+    //   this._coreService.openSnackBar('Ordering time is over!', 'Ok');
+    //   return;
+    // }
+    // Validate payment selection
     if (!this.selectedPaymentType) {
       this._coreService.openSnackBar('Please select a payment type.', 'Ok');
       return;
@@ -234,4 +242,18 @@ export class OrderItemComponent implements OnInit {
       }
     });
   }
+
+  isOrderingAllowed(): boolean {
+    return this.placeOrderIsActiveList;
+  }
+
+  isItemOrderingAllowed(item: any): boolean {
+    if (!item.closeTime) return true;  // If item has no closeTime → allow
+    const now = new Date();
+    const parts = item.closeTime.split(':');
+    const itemCloseTime = new Date();
+    itemCloseTime.setHours(+parts[0], +parts[1], +parts[2] || 0, 0);
+    return now <= itemCloseTime;
+  }
+
 }

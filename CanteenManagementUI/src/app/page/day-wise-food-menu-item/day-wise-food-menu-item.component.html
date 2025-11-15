@@ -121,6 +121,18 @@
               placeholder="Enter Close Time">
           </div>
         </div>
+        <!-- <div class="col-6" style="margin-top: 11px;">
+          <label class="me-2 fw-semibold" style="margin-left: -18px;">Order Place Status<strong
+              style="color: red;">*</strong></label>
+          <button type="button" class="btn btn-sm"
+            [ngClass]="addCanteenDayWiseItemForm.get('placeOrderIsActive')?.value? 'btn-success': 'btn-danger'"
+            (click)="toggleOrderPlaceStatus()">
+            {{addCanteenDayWiseItemForm.get('placeOrderIsActive')?.value? 'Active': 'Inactive'}}
+          </button>
+
+        </div> -->
+
+
       </div>
     </div>
     <div class="modal-footer">
@@ -174,10 +186,20 @@
         <div class="col-md-6 mb-2">
           <label>Close Time<strong style="color: red;">*</strong></label>
           <div class="input-group">
-             <input type="time" [formControlName]="'closeTime'" class="form-control" required
+            <input type="time" [formControlName]="'closeTime'" class="form-control" required
               placeholder="Enter Close Time">
           </div>
         </div>
+        <!-- <div class="col-6" style="margin-top: 11px;">
+          <label class="me-2 fw-semibold" style="margin-left: -18px;">Order Place Status<strong
+              style="color: red;">*</strong></label>
+          <button type="button" class="btn btn-sm"
+            [ngClass]="editCanteenDayWiseItemForm.get('placeOrderIsActive')?.value? 'btn-success': 'btn-danger'"
+            (click)="toggleOrderPlaceStatus()">
+            {{editCanteenDayWiseItemForm.get('placeOrderIsActive')?.value? 'Active': 'Inactive'}}
+          </button>
+
+        </div> -->
 
 
       </div>

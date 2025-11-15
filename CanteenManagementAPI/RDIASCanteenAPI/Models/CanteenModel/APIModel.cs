@@ -87,6 +87,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public int DayId { get; set; }
         public int Time { get; set; }
         public TimeOnly? CloseTime { get; set; }
+        //public bool? PlaceOrderIsActive { get; set; }
     }
     public class DayWiseFoodMenuItemUpdateModelView
     {
@@ -95,6 +96,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public int DayId { get; set; }
         public int Time { get; set; }
         public TimeOnly? CloseTime { get; set; }
+        //public bool? PlaceOrderIsActive { get; set; }
 
     }
     #endregion
@@ -189,6 +191,8 @@ namespace RDIASCanteenAPI.Models.CanteenModel
 
         public decimal ItemPrice { get; set; }
         public string ItemPriceDescriptin { get; set; }
+        public TimeOnly? CloseTime { get; set; }
+        public bool? PlaceOrderIsActive { get; set; }
 
     }
     public class OrderItemSaveModelView
@@ -267,6 +271,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public int CanteenNoticeId { get; set; }
         public string? Notice { get; set; }
         public bool IsActive { get; set; }
+        public bool? PlaceOrderIsActive {  get; set; }
     }
 
     #endregion

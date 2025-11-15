@@ -34,6 +34,7 @@ export class CanteenNoticeComponent implements OnInit {
   currentPage: any = 0;
   pageSize: any = 10;
   noticeList: any = [];
+  orderPlaceNoticeList: any =[];
   editCanteenNoticeForm: FormGroup;
 
   displayedColumns: string[] = ['sno', 'notice', 'edit'];
@@ -58,7 +59,8 @@ export class CanteenNoticeComponent implements OnInit {
       this.editCanteenNoticeForm = _formBuilder.group({
       notice: ['', Validators.required],
       canteenNoticeId: ['', Validators.required],
-      isActive: [false, Validators.required]
+      isActive: [false, Validators.required],
+      placeOrderIsActive:[false,Validators.required]
     });
 
   }
@@ -72,6 +74,7 @@ export class CanteenNoticeComponent implements OnInit {
     this._canteenService.getCanteenNotice().subscribe({next:(response) => {
       this.dataSource = response.data.notice;
       this.noticeList = response.data.notice;
+      this.orderPlaceNoticeList =response.data.placeOrderIsActive;
       this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -100,6 +103,11 @@ export class CanteenNoticeComponent implements OnInit {
   toggleIsActive() {
   const current = this.editCanteenNoticeForm.get('isActive')?.value;
   this.editCanteenNoticeForm.patchValue({ isActive: !current });
+
+}
+toggleOrderPlaceStatus() {
+  const currentOrder = this.editCanteenNoticeForm.get('placeOrderIsActive')?.value;
+  this.editCanteenNoticeForm.patchValue({ placeOrderIsActive: !currentOrder });
 }
 
   openEditCanteenNoticeTemplate(element: any, content: TemplateRef<any>) {
@@ -107,7 +115,8 @@ export class CanteenNoticeComponent implements OnInit {
     this.editCanteenNoticeForm = this._formBuilder.group({
       notice: [element.notice, Validators.required],
       canteenNoticeId: [element.canteenNoticeId, Validators.required],
-      isActive: [element.isActive, Validators.required]
+      isActive: [element.isActive, Validators.required],
+      placeOrderIsActive:[element.placeOrderIsActive, Validators.required]
     });
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
   }

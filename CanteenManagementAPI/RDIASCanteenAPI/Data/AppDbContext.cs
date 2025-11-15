@@ -101,6 +101,7 @@ namespace RDIASCanteenAPI.Data
         public int DayId { get; set; }
         public int Time { get; set; }
         public TimeOnly? CloseTime {  get; set; }
+        //public bool? PlaceOrderIsActive { get; set; }
         public bool IsActive { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
@@ -196,6 +197,7 @@ namespace RDIASCanteenAPI.Data
         public int CanteenNoticeId { get; set; }
         public string? Notice { get; set; }
         public bool IsActive { get; set; }
+        public bool? PlaceOrderIsActive {  get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public int? ModifiedBy { get; set; }

@@ -256,7 +256,6 @@ export class CanteenService {
   }
 
   getOrderItem(): Observable<any> {
-
     return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrderItem`, {}).pipe(
       switchMap((response: any) => {
         return of(response);

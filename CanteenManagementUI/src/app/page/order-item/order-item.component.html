@@ -28,7 +28,7 @@
               <button class="btn btn-sm btn-danger" (click)="removeItem(element)"
                 [disabled]="element.count === 0">-</button>
               <span class="fw-bold">Qty:{{ element.count || 0 }}</span>
-              <button class="btn btn-sm btn-primary" (click)="addItem(element)">+</button>
+              <button class="btn btn-sm btn-primary" (click)="addItem(element)" [disabled]="!isItemOrderingAllowed(element)">+</button>
             </div>
           </div>
         </div>
@@ -85,7 +85,7 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-success mt-2" (click)="orderPlace()">Order Place</button>
+        <button class="btn btn-success mt-2" (click)="orderPlace()" [disabled]="!isOrderingAllowed()">Order Place</button> <!--[disabled]="!isOrderingAllowed()"-->
       </div>
     </div>
   </div>
