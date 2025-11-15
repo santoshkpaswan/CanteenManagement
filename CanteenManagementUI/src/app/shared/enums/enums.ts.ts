@@ -1,7 +1,9 @@
 export enum OrderPaymentType {
   Cash = 1,
   //Card = 2,
-  UPI = 3
+  UPI = 3,
+  PayLetter = 4
+
 }
 
 export enum OrderPaymentStatus {

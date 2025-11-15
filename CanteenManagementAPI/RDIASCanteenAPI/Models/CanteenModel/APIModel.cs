@@ -156,7 +156,8 @@ namespace RDIASCanteenAPI.Models.CanteenModel
     {
         Cash = 1,
         //Card = 2,
-        UPI = 3
+        UPI = 3,
+        PayLetter = 4
     }
     public enum OrderPaymentStatus
     {

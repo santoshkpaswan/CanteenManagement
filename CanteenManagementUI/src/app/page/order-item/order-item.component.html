@@ -3,14 +3,12 @@
   <div class="col-md-8">
     <div class="card text-center">
       <div class="card-header">
-        <h6 class="card-title fw-bold">Order Item List</h6>
-
         <div class="marquee-container" *ngIf="isNoticeActive">
           <marquee behavior="scroll" direction="left" scrollamount="5">
             {{ noticeList }}
           </marquee>
         </div>
-
+        <h6 class="card-title fw-bold">Order Item List</h6>
       </div>
       <div class="row p-3">
         <div class="col-md-4 col-sm-6 mb-4" *ngFor="let element of itemList; let i = index">
@@ -28,7 +26,8 @@
               <button class="btn btn-sm btn-danger" (click)="removeItem(element)"
                 [disabled]="element.count === 0">-</button>
               <span class="fw-bold">Qty:{{ element.count || 0 }}</span>
-              <button class="btn btn-sm btn-primary" (click)="addItem(element)" [disabled]="!isItemOrderingAllowed(element)">+</button>
+              <button class="btn btn-sm btn-primary" (click)="addItem(element)"
+                [disabled]="!isItemOrderingAllowed(element)">+</button>
             </div>
           </div>
         </div>
@@ -68,24 +67,33 @@
         </table>
         <!--  Grand Total + Payment Type in One Line -->
         <div class="d-flex justify-content-between align-items-center flex-wrap border-top pt-2 pb-1">
-          <h5 class="fw-bold mb-0 text-success">Grand Total: ₹ {{ grandTotal }}</h5>
+          <h5 class="fw-bold mb-0 text-success text-end">Grand Total: ₹ {{ grandTotal }}</h5><br><br><br><br>
 
           <div class="d-flex align-items-center flex-wrap">
             <label class="fw-semibold me-2 mb-0"> Payment Type <span class="text-danger">*</span></label>
             <div class="form-check form-check-inline mb-0">
-              <input type="radio" class="form-check-input" id="cash" name="paymentType"
+              <input type="radio" style="border-color: black;" class="form-check-input" id="cash" name="paymentType"
                 [(ngModel)]="selectedPaymentType" [value]="1" />
               <label class="form-check-label" for="cash">Cash</label>
             </div>
 
             <div class="form-check form-check-inline mb-0">
-              <input type="radio" class="form-check-input" id="upi" name="paymentType" [(ngModel)]="selectedPaymentType"
+              <input type="radio" style="border-color: black;" class="form-check-input" id="upi" name="paymentType" [(ngModel)]="selectedPaymentType"
                 [value]="3" />
               <label class="form-check-label" for="upi">UPI</label>
             </div>
+
+
+            <div class="form-check form-check-inline mb-0" *ngIf="userType === 'Staff'">
+              <input type="radio" style="border-color: black;" class="form-check-input" id="payLetter" name="paymentType"
+                [(ngModel)]="selectedPaymentType" [value]="4" />
+              <label class="form-check-label" for="payLetter">PayLetter</label>
+            </div>
+
           </div>
         </div>
-        <button class="btn btn-success mt-2" (click)="orderPlace()" [disabled]="!isOrderingAllowed()">Order Place</button> <!--[disabled]="!isOrderingAllowed()"-->
+        <button class="btn btn-success mt-2" (click)="orderPlace()" [disabled]="!isOrderingAllowed()">Order
+          Place</button> <!--[disabled]="!isOrderingAllowed()"-->
       </div>
     </div>
   </div>

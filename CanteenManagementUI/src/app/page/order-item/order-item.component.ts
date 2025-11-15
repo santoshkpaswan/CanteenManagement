@@ -56,6 +56,7 @@ export class OrderItemComponent implements OnInit {
   noticeList: any = [];
   isNoticeActive: boolean = false;
   placeOrderIsActiveList: boolean = false;
+  userType: string = '';
 
 
 
@@ -86,6 +87,8 @@ export class OrderItemComponent implements OnInit {
     const rgenId = currentUser.account_id;   // always a number
     const userId = currentUser.user_name;  // always a string
     const userType = currentUser.usertype;  // always a string
+    this.userType = userType;   // <-- ADD THIS LINE
+
     this.addpayNow = _formBuilder.group({
       //orderNumber: [''],
       dayId: [0,],
@@ -115,8 +118,8 @@ export class OrderItemComponent implements OnInit {
       this.dataSource = response.data;
       this.itemList = response.data;
       if (response.data && response.data.length > 0) {
-      this.placeOrderIsActiveList = response.data[0].placeOrderIsActive;
-    }
+        this.placeOrderIsActiveList = response.data[0].placeOrderIsActive;
+      }
       //this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;

@@ -300,6 +300,7 @@ export class OrderHistoryComponent implements OnInit {
 
   // Helper functions for table display
   getPaymentTypeLabel(value: number): string {
+    debugger
     return this.paymentTypesArray.find(x => x.value === value)?.paymenttypelabel || '';
   }
   getPaymentStatusLabel(value: number): { label: string, cssClass: string } {

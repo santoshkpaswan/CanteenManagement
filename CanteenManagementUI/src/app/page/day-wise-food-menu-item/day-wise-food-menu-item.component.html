@@ -34,7 +34,7 @@
 
 
       <ng-container matColumnDef="time">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Deliver Time </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Making Time </th>
         <td mat-cell *matCellDef="let element"> {{element.time}} </td>
       </ng-container>
 
@@ -107,7 +107,7 @@
         </div>
 
         <div class="col-md-6 mb-2">
-          <label>Time<strong style="color: red;">*</strong></label>
+          <label>Making Time<strong style="color: red;">*</strong></label>
           <div class="input-group">
             <input type="number" min="0" [formControlName]="'time'" class="form-control" required
               placeholder="Enter Time">
@@ -176,7 +176,7 @@
 
 
         <div class="col-md-6 mb-2">
-          <label>Time<strong style="color: red;">*</strong></label>
+          <label>Making Time<strong style="color: red;">*</strong></label>
           <div class="input-group">
             <input type="number" min="0" [formControlName]="'time'" class="form-control" required
               placeholder="Enter Time">

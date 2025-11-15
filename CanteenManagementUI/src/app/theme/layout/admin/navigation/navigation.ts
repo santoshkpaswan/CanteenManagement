@@ -21,7 +21,7 @@ export interface NavigationItem {
 export const NavigationItems: NavigationItem[] = [
    {
     id: 'canteen',
-    title: 'Canteen',
+    title: 'CANTEEN MANAGEMENT',
     type: 'group',
     icon: 'icon-group',
     children: [
@@ -72,7 +72,7 @@ export const NavigationItems: NavigationItem[] = [
         title: 'order history',
         type: 'item',
         url: '/canteen/order-history',
-        icon: 'feather icon-shopping-cart'
+        icon: 'feather icon-archive'
       },
       {
         id: 'adminorder',
