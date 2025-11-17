@@ -1,6 +1,6 @@
 <div class="row mt-4">
   <!-- ***** Left Side - Order Item List ***** -->
-  <div class="col-md-8">
+  <!-- <div class="col-md-8">
     <div class="card text-center">
       <div class="card-header">
         <div class="marquee-container" *ngIf="isNoticeActive">
@@ -33,7 +33,52 @@
         </div>
       </div>
     </div>
+  </div> -->
+  <div class="col-md-8">
+    <div class="card text-center">
+      <div class="card-header">
+        <div class="marquee-container" *ngIf="isNoticeActive">
+          <marquee behavior="scroll" direction="left" scrollamount="5">
+            {{ noticeList }}
+          </marquee>
+        </div>
+        <h6 class="card-title fw-bold">Order Item List</h6>
+      </div>
+
+      <div class="row p-3">
+        <div class="col-md-4 col-sm-6 mb-4" *ngFor="let element of itemList; let i = index">
+
+          <!-- CARD START -->
+          <div class="card h-100 shadow-sm position-relative" [class.out-of-stock]="!isItemOrderingAllowed(element)">
+
+            <!-- PRODUCT IMAGE -->
+            <img [src]="imageUrl + element.imageUrl" class="card-img-top" alt="{{ element.itemName }}"
+              style="height: 180px; object-fit: cover" />
+
+            <!-- OUT OF STOCK OVERLAY -->
+            <div class="out-of-stock-overlay" *ngIf="!isItemOrderingAllowed(element)">
+              OUT OF STOCK
+            </div>
+            <div class="card-body text-center">
+              <h6 class="fw-bold">{{ element.itemName }}</h6>
+              <p class="text-muted mt-2">{{ element.itemPriceDescriptin }}</p>
+              <h5 class="text-success fw-bold">₹{{ element.itemPrice }}</h5>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+              <button class="btn btn-sm btn-danger" (click)="removeItem(element)"
+                [disabled]="element.count === 0">-</button>
+              <span class="fw-bold">Qty:{{ element.count || 0 }}</span>
+              <button class="btn btn-sm btn-primary" (click)="addItem(element)"
+                [disabled]="!isItemOrderingAllowed(element)">+</button>
+            </div>
+          </div>
+          <!-- CARD END -->
+
+        </div>
+      </div>
+    </div>
   </div>
+
 
 
 
@@ -78,15 +123,15 @@
             </div>
 
             <div class="form-check form-check-inline mb-0">
-              <input type="radio" style="border-color: black;" class="form-check-input" id="upi" name="paymentType" [(ngModel)]="selectedPaymentType"
-                [value]="3" />
+              <input type="radio" style="border-color: black;" class="form-check-input" id="upi" name="paymentType"
+                [(ngModel)]="selectedPaymentType" [value]="3" />
               <label class="form-check-label" for="upi">UPI</label>
             </div>
 
 
             <div class="form-check form-check-inline mb-0" *ngIf="userType === 'Staff'">
-              <input type="radio" style="border-color: black;" class="form-check-input" id="payLetter" name="paymentType"
-                [(ngModel)]="selectedPaymentType" [value]="4" />
+              <input type="radio" style="border-color: black;" class="form-check-input" id="payLetter"
+                name="paymentType" [(ngModel)]="selectedPaymentType" [value]="4" />
               <label class="form-check-label" for="payLetter">PayLetter</label>
             </div>
 

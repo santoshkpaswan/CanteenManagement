@@ -35,14 +35,74 @@
 .marquee-container {
   overflow: hidden;
   white-space: nowrap;
-  background: linear-gradient(90deg, #f80404be);
-  color: white;
+  //background: linear-gradient(90deg, #f80404be);
+  background: rgba(220, 0, 0, 0.85);
+  color: #fff;
   border-radius: 10px;
   padding: 3px 10px;
   font-size: 13px;
   font-weight: bold;
 }
 
+
+
 .text-end{
 margin-left: 279px;
+}
+
+
+
+/* Full card disabled blur */
+.card.out-of-stock img {
+  filter: blur(3px);
+  opacity: 0.4;
+}
+
+/* Disable click interactions for out-of-stock card */
+.card.out-of-stock {
+  pointer-events: none;
+}
+
+/* Overlay text on out-of-stock */
+.out-of-stock-overlay {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(220, 0, 0, 0.85);
+  color: #fff;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 6px;
+  z-index: 10;
+  letter-spacing: 1px;
+}
+
+/* Optional: Add fade animation */
+.out-of-stock-overlay {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -40%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* Tablet screens (width 768px to 1024px) */
+@media (max-width: 1024px) {
+  .out-of-stock-overlay {
+    top: 30%;
+    font-size: 13px;
+    padding: 8px 18px;
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 576px) {
+  .out-of-stock-overlay {
+    top: 25%;
+    font-size: 12px;
+    padding: 6px 16px;
+  }
 }
