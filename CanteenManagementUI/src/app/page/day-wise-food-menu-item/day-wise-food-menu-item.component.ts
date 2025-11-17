@@ -43,7 +43,9 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   //foodItems: any[] = [];
   dayName: any = [];
   dropdownSettings: any;
-  orderPlaceNotice: any =[];
+  orderPlaceNotice: any = [];
+  dayNameFilter: string = '';
+  uniqueDayName: string[] = [];   // cleaned unique list
 
   displayedColumns: string[] = ['sno', 'dayname', 'itemname', 'time', 'closeTime', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
@@ -98,14 +100,22 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   }
 
   getGridData() {
-
+    debugger
     this._canteenService.getDayWiseFoodItem().subscribe((response) => {
-      this.dataSource = response.data;
+      //this.dataSource = response.data;
+      this.dataSource = new MatTableDataSource<any>(response.data);
       this.dayWiseitemNameList = response.data;
       //this.orderPlaceNotice =response.data.placeOrderIsActive;
-      this.dataSource = new MatTableDataSource<any>(response.data);
+
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+
+      // Filter predicate for search
+      this.dataSource.filterPredicate = (data: any, filter: string) => {
+        const filters = JSON.parse(filter);
+        return (!filters.daysName || data.daysName?.toLowerCase() === filters.daysName);
+      };
+
     });
   }
   getFoodItemData() {
@@ -115,13 +125,22 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     });
   }
 
-  getDayNameData() {
 
-    this._canteenService.getFoodDays().subscribe((response) => {
-      this.dayName = response.data;
 
-    });
-  }
+  // getDayNameData() {
+  //   this._canteenService.getFoodDays().subscribe((response) => {
+  //     this.dayName = response.data;
+  //   });
+  // }
+
+   getDayNameData() {
+  this._canteenService.getFoodDays().subscribe((response: any) => {
+    this.dayName = response.data || [];
+    this.uniqueDayName = Array.from(
+      new Set((this.dayName as Array<{ daysName?: string }>).map((x) => String(x.daysName ?? '').trim()).filter((x) => x !== ''))
+    );
+  });
+}
 
   addNewCanteenDayWiseItem() {
     if (this.addCanteenDayWiseItemForm.invalid) {
@@ -171,10 +190,10 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   }
 
 
-//   toggleOrderPlaceStatus() {
-//    const current = this.editCanteenDayWiseItemForm.get('placeOrderIsActive')?.value;
-//    this.editCanteenDayWiseItemForm.patchValue({ placeOrderIsActive: !current });
-//  }
+  //   toggleOrderPlaceStatus() {
+  //    const current = this.editCanteenDayWiseItemForm.get('placeOrderIsActive')?.value;
+  //    this.editCanteenDayWiseItemForm.patchValue({ placeOrderIsActive: !current });
+  //  }
 
 
   deleteCanteenDayWiseItem(element: any) {
@@ -216,6 +235,22 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   pageChanged(event: PageEvent) {
     this.currentPage = event.pageIndex;
     this.pageSize = event.pageSize;
+  }
+
+
+  /** ------------------- SEARCH FILTER ------------------- */
+  priceSearchFilter() {
+    const filterObj = {
+      daysName: this.dayNameFilter.trim().toLowerCase(),
+    };
+    this.dataSource.filter = JSON.stringify(filterObj);
+    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
+  }
+
+  resetPriceSearchFilter() {
+    this.dayNameFilter = '';
+    this.dataSource.filter = JSON.stringify({ daysName: '' });
+    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
   }
 
 }
