@@ -65,15 +65,6 @@
 
       <div class="col-sm-6 d-flex flex-column flex-sm-row justify-content-sm-end">
 
-        <button type="button" class="btn btn-outline-primary btn-md" style="margin-left: 10px;"
-          (click)="exportToExcel()">
-          <mat-icon fontIcon="file_download"></mat-icon> Export Excel
-        </button>
-
-        <button type="button" class="btn btn-outline-danger btn-md" style="margin-left: 10px;" (click)="exportToPDF()">
-          <mat-icon fontIcon="picture_as_pdf"></mat-icon> Export PDF
-        </button>
-
         <!-- <button type="button" style="margin-left: 10px;" class="btn btn-md btn-warning" [disabled]="!selectedOrder"
           (click)="openEditCanteenOrderStatusTemplate(selectedOrder, aanteenOrderStatusEdit)">
           Order Status</button> -->
@@ -85,6 +76,19 @@
         <button type="button" style="margin-left: 10px;" class="btn btn-md btn-danger" [disabled]="!selectedOrder"
           (click)="deleteSelectedOrder()">
           Order Cancel
+        </button>
+
+         <button type="button" class="btn btn-outline-primary btn-md" style="margin-left: 10px;"
+          (click)="exportToExcel()">
+          <!-- <mat-icon fontIcon="file_download"></mat-icon> -->
+          <mat-icon fontSet="fa" fontIcon="fa-file-excel" style="color: green; margin-right: 10px;"></mat-icon>
+
+          <!-- Export Excel -->
+        </button>
+
+        <button type="button" class="btn btn-outline-danger btn-md" style="margin-left: 10px;" (click)="exportToPDF()">
+          <mat-icon fontIcon="picture_as_pdf"></mat-icon>
+          <!-- Export PDF -->
         </button>
       </div>
 
