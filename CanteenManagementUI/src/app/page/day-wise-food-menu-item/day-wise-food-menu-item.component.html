@@ -3,14 +3,22 @@
   <div class="card-body">
     <div class="row g-3 align-items-end">
 
-      <!-- Status Filter -->
+      <!-- Status Search Filter -->
       <div class="col-md-3">
         <label class="form-label fw-semibold">Day Name</label>
         <select class="form-control" [(ngModel)]="dayNameFilter">
           <option value="">All</option>
           <option *ngFor="let dayNameList of uniqueDayName" [value]="dayNameList">{{ dayNameList }}</option>
         </select>
+      </div>
 
+      <!-- Item Name Search Filter -->
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">Item Name</label>
+        <select class="form-control" [(ngModel)]="itemNameFilter">
+          <option value="">All</option>
+          <option *ngFor="let item of foodItems" [value]="item.itemName">{{ item.itemName }}</option>
+        </select>
       </div>
 
       <!-- Buttons -->

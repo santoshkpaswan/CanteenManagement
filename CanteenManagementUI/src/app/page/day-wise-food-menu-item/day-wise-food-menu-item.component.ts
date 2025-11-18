@@ -46,6 +46,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   orderPlaceNotice: any = [];
   dayNameFilter: string = '';
   uniqueDayName: string[] = [];   // cleaned unique list
+  itemNameFilter: string = "";
 
   displayedColumns: string[] = ['sno', 'dayname', 'itemname', 'time', 'closeTime', 'edit', 'delete'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
@@ -112,8 +113,12 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
 
       // Filter predicate for search
       this.dataSource.filterPredicate = (data: any, filter: string) => {
-        const filters = JSON.parse(filter);
-        return (!filters.daysName || data.daysName?.toLowerCase() === filters.daysName);
+        const f = JSON.parse(filter);
+        const matchItem =!f.itemName || data.itemName?.toLowerCase().includes(f.itemName);
+        const matchDay =!f.daysName || data.daysName?.toLowerCase().includes(f.daysName);
+        return matchItem && matchDay;
+        //const searchName = filter.trim().toLowerCase();
+        //return ( (data.daysName.toLowerCase().includes(searchName)) || (data.itemName.toLowerCase().includes(searchName)));
       };
 
     });
@@ -241,7 +246,8 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   /** ------------------- SEARCH FILTER ------------------- */
   priceSearchFilter() {
     const filterObj = {
-      daysName: this.dayNameFilter.trim().toLowerCase(),
+      daysName: this.dayNameFilter.trim().toLowerCase() ||"",
+      itemName: this.itemNameFilter.trim().toLowerCase() ||""
     };
     this.dataSource.filter = JSON.stringify(filterObj);
     if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
@@ -249,6 +255,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
 
   resetPriceSearchFilter() {
     this.dayNameFilter = '';
+    this.itemNameFilter ='';
     this.dataSource.filter = JSON.stringify({ daysName: '' });
     if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
   }
