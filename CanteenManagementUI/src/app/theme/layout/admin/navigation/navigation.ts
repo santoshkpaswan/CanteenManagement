@@ -27,59 +27,59 @@ export const NavigationItems: NavigationItem[] = [
     children: [
       {
         id: 'foodday',
-        title: 'Food Day',
+        title: 'Day',
         type: 'item',
         url: '/canteen/food-day',
-        icon: 'feather icon-calendar'
+        icon: 'feather icon-sun'
       },
       {
         id: 'foodmenuitem',
-        title: 'food menu item',
+        title: 'Menu item',
         type: 'item',
         url: '/canteen/food-menu-item',
-        icon: 'feather icon-file-text'
+        icon: 'feather icon-users'
       },
       {
         id: 'foodmenuitemprice',
-        title: 'food menu item Price',
+        title: 'Menu item Price',
         type: 'item',
         url: '/canteen/food-menu-item-price',
-        icon: 'feather icon-file-text'
+        icon: 'feather icon-thumbs-up'
       },
       {
         id: 'daywisefoodmenuitem',
-        title: 'day wise food menu item',
+        title: 'Day wise menu item',
         type: 'item',
         url: '/canteen/day-wise-food-menu-item',
-        icon: 'feather icon-file-text'
+        icon: 'feather icon-settings'
       },
       {
         id: 'canteennotice',
-        title: 'canteen notice',
+        title: 'Notice',
         type: 'item',
         url: '/canteen/canteen-notice',
         icon: 'feather icon-file-text'
       },
        {
         id: 'orderitem',
-        title: 'order item',
+        title: 'Order item',
         type: 'item',
         url: '/canteen/order-item',
         icon: 'feather icon-shopping-cart'
       },
       {
         id: 'orderhistory',
-        title: 'order history',
+        title: 'Order history',
         type: 'item',
         url: '/canteen/order-history',
-        icon: 'feather icon-archive'
+        icon: 'feather icon-briefcase'
       },
       {
         id: 'adminorder',
-        title: 'admin order',
+        title: 'Order',
         type: 'item',
         url: '/canteen/admin-order',
-       icon: 'feather icon-file-text'
+       icon: 'feather icon-bell'
       }
     ]
   },
