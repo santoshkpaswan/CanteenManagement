@@ -125,6 +125,7 @@ export class OrderHistoryComponent implements OnInit {
       this.dataSource.filterPredicate = (data: any, filter: string) => {
         const filters = JSON.parse(filter);
         const statusMatch = filters.status ? data.status === +filters.status : true;
+        //const orderNumberMatch = filter.ordernumber? data.orderNumber === +filter.ordernumber:true;
         return statusMatch;
       };
     });

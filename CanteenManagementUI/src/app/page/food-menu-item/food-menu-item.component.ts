@@ -42,6 +42,7 @@ export class FoodMenuItemComponent implements OnInit {
   imageUrl: any = environment.imageUrl;
   previousImage: any;
   showBrowser: any = false;
+  itemNameFilter: string = "";
 
   displayedColumns: string[] = ['sno', 'itemname', 'itemurl', 'itemDescriptin', 'edit', 'delete'];
   @Input('enableBulkAction') enableBulkAction: boolean = false;
@@ -81,12 +82,21 @@ export class FoodMenuItemComponent implements OnInit {
   }
 
   getGridData() {
+    debugger
     this._canteenService.getFoodMenuItem().subscribe((response) => {
       this.dataSource = response.data;
       this.daysList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+
+      // Filter predicate for search
+      // this.dataSource.filterPredicate = (data: any, filter: string) => {
+      //   const f = JSON.parse(filter);
+      //   const itemNameFilter = (f.itemName || '').toLowerCase();
+      //   const itemName = (data.itemName || '').toLowerCase();
+      //   return itemName.includes(itemNameFilter);
+      // };
     });
   }
 
@@ -165,9 +175,9 @@ export class FoodMenuItemComponent implements OnInit {
 
     this.isInvalidFileType = true;
     this.previousImage = element.itemURL;
-    this.previousImage =  this.previousImage.split("/")[2];
-    if(this.previousImage.length>40){
-      this.previousImage=this.previousImage.substring(36);
+    this.previousImage = this.previousImage.split("/")[2];
+    if (this.previousImage.length > 40) {
+      this.previousImage = this.previousImage.substring(36);
     }
     if (element.itemURL !== "") {
       this.showBrowser = true;
@@ -217,4 +227,21 @@ export class FoodMenuItemComponent implements OnInit {
       }
     }
   }
+
+
+  /** ------------------- SEARCH FILTER ------------------- */
+  // menuItemSearchFilter() {
+  //   debugger
+  //   const filterObj = {
+  //     itemName: this.itemNameFilter.trim().toLowerCase() || ""
+  //   };
+  //   this.dataSource.filter = JSON.stringify(filterObj);
+  //   if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
+  // }
+
+  // resetmenuItemSearchFilter() {
+  //   this.itemNameFilter = '';
+  //   this.dataSource.filter = JSON.stringify({ itemName: '' });
+  //   if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
+  // }
 }
