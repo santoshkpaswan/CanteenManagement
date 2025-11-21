@@ -120,7 +120,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     this._canteenService.refresh$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        console.log('♻️ Refreshing grid on new notification...');
+        console.log('Refreshing grid on new notification...');
         this.getGridData();
       });
     this.getDayNameData();
