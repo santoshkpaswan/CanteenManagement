@@ -13,11 +13,12 @@ namespace RDIASCanteenAPI.Controllers
     public class CanteenController : ControllerBase
     {
         private readonly MasterDayInterface _masterDayInterface;
-
+        private readonly IConfiguration _configuration;
         // Constructor must be public for DI to work
-        public CanteenController(MasterDayInterface masterDayInterface)
+        public CanteenController(MasterDayInterface masterDayInterface,IConfiguration configuration)
         {
             _masterDayInterface = masterDayInterface;
+            _configuration = configuration;
         }
         #region master Day Food 
         [HttpGet("ListFoodDay")]
@@ -518,7 +519,7 @@ namespace RDIASCanteenAPI.Controllers
                 else
                 {
                     var client = new HttpClient();
-                    var request = new HttpRequestMessage(HttpMethod.Post, "http://eshaala.rdias.ac.in:89/API/Account/Autentication?APIKey=651cb656-1fde-478d-badf-33f60553f36e");
+                    var request = new HttpRequestMessage(HttpMethod.Post, _configuration.GetValue<string>("ApiUrl")/*"http://eshaala.rdias.ac.in:89/API/Account/Autentication?APIKey=651cb656-1fde-478d-badf-33f60553f36e"*/);
                     var content = new StringContent("{\r\n    \"user_name\":\"" + model.Username + "\",\r\n    \"password\":\"" + model.Password + "\"\r\n}", null, "application/json");
                     request.Content = content;
                     var response = await client.SendAsync(request);
