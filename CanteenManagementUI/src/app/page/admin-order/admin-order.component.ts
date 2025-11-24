@@ -45,7 +45,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
   pageSize: any = 10;
   orderList: any = [];
   dayName: any = [];
-  selectedOrder: any;
+  selectedOrder: any = [];
   statusFilter: string = '';
   paymentStatusFilter: string = '';
   orderFromDateFilter: string = '';
@@ -53,6 +53,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
   userNameFilter: string = '';
   userNameList: any[] = [];
   selectedOrderDetails: any[] = [];
+  totalPaidAmount: any = 0;
 
   displayedColumns: string[] = ['checkbox', 'sno', 'ordernumber', 'orderTime', 'username', 'usertype', 'userMobileNo', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'transtionId'];
   // expose enums for HTML template
@@ -140,7 +141,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     // };
 
 
-    this._canteenService.getOrder(null).subscribe((response) => {
+    this._canteenService.getOrder({}).subscribe((response) => {
       //this.dataSource = response.data;
       this.orderList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
@@ -219,12 +220,13 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
 
   }
   updateOrder() {
+    debugger
     if (this.editCanteenOrderForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
     }
-    const currentUser = this._authService.getUser();
 
+    const currentUser = this._authService.getUser();
     // Prepare payload explicitly with numeric fields
     const updatepayload: any = {
       orderId: this.editCanteenOrderForm.value.orderId,
@@ -344,20 +346,19 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
 
   /** Handle Checkbox Selection */
   onCheckboxChange(element: any, event: any) {
+    // Example: If you want to store selected items in an array
     if (event.target.checked) {
-      this.selectedOrder = element;
-      // uncheck all others
-      this.dataSource.data.forEach((row: any) => {
-        if (row.orderId !== element.orderId) row.checked = false;
-      });
+      this.selectedOrder.push(element.orderId);
+      this.totalPaidAmount = this.totalPaidAmount + element.totalAmount;
     } else {
-      this.selectedOrder = null;
+      this.selectedOrder = this.selectedOrder.filter((id: number) => id !== element.orderId);
+      this.totalPaidAmount = this.totalPaidAmount - element.totalAmount;
     }
   }
 
   /** Open Order Status Modal */
   openEditCanteenOrderStatusTemplate(element: any, content: TemplateRef<any>) {
-    if (!element) {
+    if (this.selectedOrder.length <= 0) {
       this._coreService.openSnackBar('Please select an order first.', 'Ok');
       return;
     }
@@ -366,7 +367,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
       paymentStatus: [element.paymentStatus, Validators.required],
       status: [element.status, Validators.required],
       remark: [element.remark],
-      orderId: [element.orderId, Validators.required],
+      orderId: [this.selectedOrder],
     });
 
     this.modalService.open(content, { size: 'md', backdrop: 'static' });
@@ -374,10 +375,28 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
 
   /** Update Order Status*/
   updateOrderStatus() {
-    if (this.editCanteenOrderStatusForm.invalid) {
+    debugger
+    if (this.selectedOrder.invalid) {
       this._coreService.openSnackBar('Please fill all required fields.', 'Ok');
       return;
     }
+
+
+    const formValue = this.editCanteenOrderStatusForm.value;
+    const currentStatus = Number(formValue.status);           // Completed = 2
+    const currentPaymentStatus = Number(formValue.paymentStatus); // Paid = 1
+
+    // Fetch full order objects from orderList
+    const selectedOrders = this.selectedOrder.map((orderId: number) =>
+      this.orderList.find((o: any) => o.orderId === orderId)
+    );
+
+    const upiCashPayement = selectedOrders.filter((order: any) => order?.paymentType == 1 || order?.paymentType == 3);
+    if (upiCashPayement.length > 0 && currentStatus==2 && currentPaymentStatus==0) {
+      this._coreService.openSnackBar('Please make payment status paid when you complete order', 'Ok');
+      return;
+    }
+
     const currentUser = this._authService.getUser();
     const {
       orderId,
@@ -385,7 +404,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
       paymentStatus, status, remark } = this.editCanteenOrderStatusForm.value;
 
     const updateStatusPayload = {
-      orderId,
+      orderId: this.selectedOrder,
       rgenId: Number(currentUser?.account_id || 0),
       //paymentType: Number(paymentType),
       paymentStatus: Number(paymentStatus),
@@ -394,12 +413,13 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     };
 
     this.editCanteenOrderStatusForm.disable();
-
     this._canteenService.updateOrderStatus(updateStatusPayload).subscribe({
       next: (data) => {
         this._coreService.openSnackBar(data.message, 'Ok');
         this.modalService.dismissAll();
         this.editCanteenOrderStatusForm.enable();
+        this.totalPaidAmount = 0;
+        this.selectedOrder = [];
         this.getGridData();
       },
       error: () => {
@@ -411,18 +431,33 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
 
 
   deleteSelectedOrder() {
-    if (!this.selectedOrder) {
+    if (this.selectedOrder.length <= 0) {
       this._coreService.openSnackBar('Please select an order to cancel.', 'Ok');
       return;
     }
 
-    this._confirmation.confirm('Are you sure?', `Do you really want to delete order ${this.selectedOrder.orderNumber}?`
+    debugger
+    // Fetch full order objects from orderList
+    const selectedOrders = this.selectedOrder.map((orderId: number) =>
+      this.orderList.find((o: any) => o.orderId === orderId)
+    );
+    // Validate: Only "Order Placed" status allowed to cancel (status = 0)
+    const invalidOrders = selectedOrders.filter((order: any) => order?.status !== 0);
+    if (invalidOrders.length > 0) {
+      this._coreService.openSnackBar('Only "Order Placed" status can be cancelled.', 'Ok');
+      return;
+    }
+    // Extract orderNumber for confirmation message
+    const orderNumbers = selectedOrders.map((o: any) => o?.orderNumber).join(', ');
+
+    this._confirmation.confirm('Are you sure?', `Do you really want to delete order ${orderNumbers}?`
     ).then((confirmed) => {
       if (confirmed) {
-        this._canteenService.deleteOrder(this.selectedOrder.orderNumber).subscribe({
+        this._canteenService.deleteOrder(this.selectedOrder).subscribe({
           next: (data: any) => {
             this._coreService.openSnackBar(data.message, 'Ok');
-            this.selectedOrder = null;        // Clear selection
+            this.totalPaidAmount = 0;
+            this.selectedOrder = [];        // Clear selection
             this.getGridData();               // Refresh table
           },
           error: (err) => {

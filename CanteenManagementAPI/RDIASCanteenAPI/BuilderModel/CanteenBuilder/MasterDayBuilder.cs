@@ -5,6 +5,7 @@ using RDIASCanteenAPI.Data;
 using RDIASCanteenAPI.Interface.CanteenInterface;
 using RDIASCanteenAPI.Models.CanteenModel;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Linq;
 
 namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
 {
@@ -639,38 +640,52 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
 
         public async Task<OrderStatusUpdateModelView> UpdateOrderStatus(OrderStatusUpdateModelView orderStatusUpdateModelView)
         {
-            if (orderStatusUpdateModelView.OrderId <= 0)
+            if (orderStatusUpdateModelView.OrderId.Length <= 0)
             {
                 throw new ArgumentException("Order Id is required.");
             }
-            // UPDATE only
-            var existing = await _context.orderModels.FirstOrDefaultAsync(x => x.OrderId == orderStatusUpdateModelView.OrderId && x.IsActive == true);
-            if (existing == null)
+            foreach (int orderId in orderStatusUpdateModelView.OrderId)
             {
-                throw new Exception("Record not found.");
+                var existing = await _context.orderModels
+                    .FirstOrDefaultAsync(x => x.OrderId == orderId && x.IsActive == true);
+
+                if (existing != null)
+                {
+                    existing.PaymentStatus = orderStatusUpdateModelView.PaymentStatus;
+                    existing.Status = orderStatusUpdateModelView.Status;
+                    existing.Remark = orderStatusUpdateModelView.Remark;
+                    existing.ModifiedDate = DateTime.Now;
+                    existing.ModifiedBy = orderStatusUpdateModelView.RgenId;
+                    await _context.SaveChangesAsync();
+                }
             }
-            //existing.PaymentType = orderStatusUpdateModelView.PaymentType;
-            existing.PaymentStatus = orderStatusUpdateModelView.PaymentStatus;
-            existing.Status = orderStatusUpdateModelView.Status;
-            existing.Remark = orderStatusUpdateModelView.Remark;
-            existing.IsActive = true;
-            existing.ModifiedDate = DateTime.Now;  // optional
-            existing.ModifiedBy = orderStatusUpdateModelView.RgenId;
-            await _context.SaveChangesAsync();
+
+            // 🔥 Save **once**
+            
+
             return orderStatusUpdateModelView;
+
         }
-        public async Task DeleteOrder(string OrderNumber)
+        public async Task DeleteOrder(int[] OrderNumber)
         {
-            var existing = await _context.orderModels.FirstOrDefaultAsync(x => x.OrderNumber == OrderNumber && x.IsActive == true);
-            if (existing == null)
+            if (OrderNumber.Length <= 0)
             {
-                throw new Exception("Record not found.");
+                throw new ArgumentException("Order Id is required.");
             }
-            existing.Status = OrderStatus.Cancelled; ;
-            //existing.IsActive = false;
-            existing.ModifiedBy = 0;
-            existing.ModifiedDate = DateTime.Now;
-            await _context.SaveChangesAsync();
+            foreach (int orderId in OrderNumber)
+            {
+                var existing = await _context.orderModels
+                    .FirstOrDefaultAsync(x => x.OrderId == orderId && x.IsActive == true);
+
+                if (existing != null)
+                {
+                    existing.Status = OrderStatus.Cancelled;
+                    existing.ModifiedDate = DateTime.Now;
+                    existing.ModifiedBy = 0;
+                    await _context.SaveChangesAsync();
+                }
+            }
+            
         }
         #endregion
 

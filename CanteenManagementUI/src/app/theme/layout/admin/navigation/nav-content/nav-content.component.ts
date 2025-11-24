@@ -38,7 +38,7 @@ export class NavContentComponent implements OnInit {
     var navigationList = this.navigations;
     var indicesToRemove: number[];
     const userData = this.secureStore.getItem<any>("user")!;
-    debugger
+
     if (userData != null) {
       const user: any = JSON.parse(userData);
       if ((!user.isAdmin) && (user.usertype?.toLocaleLowerCase() == "staff" || user.usertype?.toLocaleLowerCase() == "student")) {
@@ -46,11 +46,16 @@ export class NavContentComponent implements OnInit {
 
         navigationList[0].children = navigationList[0].children?.filter(x => x.id == "orderitem" || x.id == "orderhistory");
       }
-      else if (user.isAdmin) {
+      else if (user.isAdmin && user.usertype?.toLocaleLowerCase() == "admin") {
         //navigationList = navigationList.filter(u => u.id !== "navigation1");
 
         navigationList[0].children = navigationList[0].children?.filter(x => x.id != "orderhistory");
         navigationList[0].children = navigationList[0].children?.filter(x => x.id != "orderitem");
+      }
+      else if (user.usertype?.toLocaleLowerCase() == "canteen") {
+        //navigationList = navigationList.filter(u => u.id !== "navigation1");
+
+        navigationList[0].children = navigationList[0].children?.filter(x => x.id == "daywisefoodmenuitem" ||  x.id == "canteennotice" ||  x.id == "adminorder");
       }
 
     }

@@ -70,7 +70,7 @@ export class CanteenNoticeComponent implements OnInit {
   }
 
   getGridData() {
-    debugger
+
     this._canteenService.getCanteenNotice().subscribe({next:(response) => {
       this.dataSource = response.data.notice;
       this.noticeList = response.data.notice;

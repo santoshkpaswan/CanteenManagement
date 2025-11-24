@@ -75,7 +75,7 @@ export class NavRightComponent {
   }
 
   ngOnInit(): void {
-    debugger
+
     const userData = this.secureStore.getItem<any>("user");
     if (userData) {
       const user: any = JSON.parse(userData);
@@ -116,30 +116,33 @@ export class NavRightComponent {
   }
 
   getNotificationData() {
-    this._canteenService.getNotification().subscribe({
-      next: (response) => {
-        let newCount = 0;
-        if (response && Array.isArray(response.data)) {
-          newCount = response.data.length;
-          //this.notificationCount = response.data.length;
-        }
-        else if (response?.count) {
-          //this.notificationCount = response.count;
-          newCount = response.count;
-        }
-        // Play sound & show toast if new notification
-        if (this.userName?.trim().toLowerCase() === 'admin') {
-          if (this.previousNotificationCount !== null && newCount > this.previousNotificationCount) {
-            this.playNotificationSound();
-            this.showToast('🔔 New Order!');
-            //this.refreshTableGrid();
-            this._canteenService.notifyRefresh();
+
+    if (localStorage.getItem("user") != undefined && localStorage.getItem("user") != null) {
+      this._canteenService.getNotification().subscribe({
+        next: (response) => {
+          let newCount = 0;
+          if (response && Array.isArray(response.data)) {
+            newCount = response.data.length;
+            //this.notificationCount = response.data.length;
           }
-        }
-        this.previousNotificationCount = newCount;
-        this.notificationCount = newCount;
-      },
-    });
+          else if (response?.count) {
+            //this.notificationCount = response.count;
+            newCount = response.count;
+          }
+          // Play sound & show toast if new notification
+          if (this.userName?.trim().toLowerCase() === 'canteen') {
+            if (this.previousNotificationCount !== null && newCount > this.previousNotificationCount) {
+              this.playNotificationSound();
+              this.showToast('🔔 New Order!');
+              //this.refreshTableGrid();
+              this._canteenService.notifyRefresh();
+            }
+          }
+          this.previousNotificationCount = newCount;
+          this.notificationCount = newCount;
+        },
+      });
+    }
   }
 
   // Play notification sound
@@ -177,7 +180,7 @@ export class NavRightComponent {
 
   // fetch name from backend
   getLoginUserNameGridData() {
-    debugger
+
     const currentUser = this._authService.getUser();
     const rgenId = currentUser.account_id;
 

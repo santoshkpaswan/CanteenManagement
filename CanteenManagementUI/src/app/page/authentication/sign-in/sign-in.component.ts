@@ -65,7 +65,7 @@ export class SignInComponent implements OnInit {
         this.signInForm.enable();
 
         if (response.success) {
-debugger
+
           this._coreService.openSnackBar('Login successful!', 'Ok');
           const userData = this.secureStore.getItem<any>("user")!;
           const user: any = JSON.parse(userData);
@@ -73,6 +73,10 @@ debugger
             this._router.navigate(['/canteen/order-item']);
           }
           else if (user.isAdmin ){
+           //environment.isAdmin =true
+            this._router.navigate(['/canteen/admin-order']);
+          }
+          else if (user.usertype?.toLocaleLowerCase() == "canteen"){
            //environment.isAdmin =true
             this._router.navigate(['/canteen/admin-order']);
           }

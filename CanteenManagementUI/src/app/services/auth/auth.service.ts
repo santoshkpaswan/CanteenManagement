@@ -59,7 +59,7 @@ export class AuthService {
             account_id: response.account_id,
             user_name: model.username,
             usertype: response.account_type_name ,
-            isAdmin:response.account_type_name.toLocaleLowerCase()==="admin"
+            isAdmin:response.account_id===1 || model.username.toLocaleLowerCase()=='canteen'
           };
           this.secureStore.setItem('user', JSON.stringify(userData));
         }
@@ -69,7 +69,7 @@ export class AuthService {
   }
 
   getUser(): { account_id: number; user_name: string; usertype:string; } {
-    debugger
+
     const savedUser = this.secureStore.getItem<any>('user');
     if (savedUser) {
       return JSON.parse(savedUser);

@@ -145,8 +145,8 @@ namespace RDIASCanteenAPI.Models.CanteenModel
 
     public class OrderStatusUpdateModelView
     {
-        public int OrderId { get; set; }
-        public int RgenId { get; set; }
+        public int[] OrderId { get; set; }
+        public int? RgenId { get; set; }
         public OrderPaymentType PaymentType { get; set; }
         public OrderPaymentStatus PaymentStatus { get; set; }
         public OrderStatus Status { get; set; }

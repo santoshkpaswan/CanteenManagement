@@ -43,6 +43,7 @@ export class OrderHistoryComponent implements OnInit {
   statusFilter: string = '';
   selectedOrderDetails: any[] = [];
   selectedOrder: any;
+  sendOject!:any;
   //qrImageUrl: string =  'assets/images/CanteenPaymentGooglePayQR.jpg';
   qrImageUrl: string = 'assets/images/CanteenPaymentPaytmQR.jpg';
 
@@ -117,7 +118,7 @@ export class OrderHistoryComponent implements OnInit {
     this.getDayNameData();
   }
   getGridData() {
-    this._canteenService.getOrder(null).subscribe((response) => {
+    this._canteenService.getOrder({}).subscribe((response) => {
       this.orderList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
@@ -300,7 +301,7 @@ export class OrderHistoryComponent implements OnInit {
 
   // Helper functions for table display
   getPaymentTypeLabel(value: number): string {
-    debugger
+
     return this.paymentTypesArray.find(x => x.value === value)?.paymenttypelabel || '';
   }
   getPaymentStatusLabel(value: number): { label: string, cssClass: string } {

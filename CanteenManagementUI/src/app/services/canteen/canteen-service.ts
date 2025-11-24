@@ -247,8 +247,8 @@ export class CanteenService {
   }
 
   deleteOrder(id: any): Observable<any> {
-
-    return this._httpClient.post(`${environment.apiUrl}/Canteen/DeleteOrder/${id}`, {}).pipe(
+ debugger
+    return this._httpClient.post(`${environment.apiUrl}/Canteen/DeleteOrder`, id).pipe(
       switchMap((response: any) => {
         return of(response);
       })

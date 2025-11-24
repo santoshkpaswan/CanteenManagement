@@ -391,8 +391,8 @@ namespace RDIASCanteenAPI.Controllers
                 return Ok(new { Success = false, Message = ex.Message });
             }
         }
-        [HttpPost("DeleteOrder/{OrderNumber}")]
-        public async Task<IActionResult> DeleteOrder(string OrderNumber)
+        [HttpPost("DeleteOrder")]
+        public async Task<IActionResult> DeleteOrder(int[] OrderNumber)
         {
             try
             {
@@ -506,7 +506,7 @@ namespace RDIASCanteenAPI.Controllers
             try
             {
                 //.Trim().ToLower()
-                if (model.Username.Trim().ToLower() == "admin")
+                if (model.Username.Trim().ToLower() == "canteen")
                 {
                     objUser = await _masterDayInterface.GetLogin(model.Username, model.Password);
 

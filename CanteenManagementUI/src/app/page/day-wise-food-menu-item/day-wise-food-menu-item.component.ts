@@ -100,7 +100,7 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
   }
 
   getGridData() {
-    debugger
+
     this._canteenService.getDayWiseFoodItem().subscribe((response) => {
       //this.dataSource = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
