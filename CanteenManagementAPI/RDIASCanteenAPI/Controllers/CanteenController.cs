@@ -404,6 +404,20 @@ namespace RDIASCanteenAPI.Controllers
                 return Ok(new { Success = false, Message = ex.Message });
             }
         }
+
+        [HttpPost("CanceledOrder/{OrderNumber}")]
+        public async Task<IActionResult> CanceledOrder(string OrderNumber)
+        {
+            try
+            {
+                await _masterDayInterface.CanceledOrder(OrderNumber);
+                return Ok(new { Success = true, Message = "Order deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { Success = false, Message = ex.Message });
+            }
+        }
         #endregion
 
         #region Order Item 

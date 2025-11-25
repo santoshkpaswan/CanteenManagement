@@ -111,10 +111,13 @@
           </tbody>
         </table>
         <!--  Grand Total + Payment Type in One Line -->
-        <div class="d-flex justify-content-between align-items-center flex-wrap border-top pt-2 pb-1">
-          <h5 class="fw-bold mb-0 text-success text-end">Grand Total: ₹ {{ grandTotal }}</h5><br><br><br><br>
+        <div class="border-top pt-2 pb-1">
+          <div class="text-start mb-2">
+            <h5 class="fw-bold text-success">Grand Total: ₹ {{ grandTotal }}</h5>
+          </div>
+          <!-- <h5 class="fw-bold mb-0 text-success text-end">Grand Total: ₹ {{ grandTotal }}</h5> -->
 
-          <div class="d-flex align-items-center flex-wrap">
+          <div class="d-flex align-items-center flex-wrap gap-2">
             <label class="fw-semibold me-2 mb-0"> Payment Type <span class="text-danger">*</span></label>
             <div class="form-check form-check-inline mb-0">
               <input type="radio" style="border-color: black;" class="form-check-input" id="cash" name="paymentType"
@@ -132,7 +135,7 @@
             <div class="form-check form-check-inline mb-0" *ngIf="userType === 'Staff'">
               <input type="radio" style="border-color: black;" class="form-check-input" id="payLetter"
                 name="paymentType" [(ngModel)]="selectedPaymentType" [value]="4" />
-              <label class="form-check-label" for="payLetter">PayLetter</label>
+              <label class="form-check-label" for="payLetter">PayLater</label>
             </div>
 
           </div>

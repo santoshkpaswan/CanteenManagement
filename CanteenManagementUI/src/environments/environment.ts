@@ -10,8 +10,6 @@ export const environment = {
   apiUrl : 'https://localhost:7232/api',
   imageUrl : 'https://localhost:7232/files/',
   apiLoginUrl: 'http://eshaala.rdias.ac.in:89/API'
-
-
 };
 
 /*

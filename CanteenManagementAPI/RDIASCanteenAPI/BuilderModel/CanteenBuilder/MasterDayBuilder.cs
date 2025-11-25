@@ -661,7 +661,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             }
 
             // 🔥 Save **once**
-            
+
 
             return orderStatusUpdateModelView;
 
@@ -685,7 +685,20 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                     await _context.SaveChangesAsync();
                 }
             }
-            
+
+        }
+        public async Task CanceledOrder(string OrderNumber)
+        {
+            var existing = await _context.orderModels.FirstOrDefaultAsync(x => x.OrderNumber == OrderNumber && x.IsActive == true);
+            if (existing == null)
+            {
+                throw new Exception("Record not found.");
+            }
+            existing.Status = OrderStatus.Cancelled; ;
+            //existing.IsActive = false;
+            existing.ModifiedBy = 0;
+            existing.ModifiedDate = DateTime.Now;
+            await _context.SaveChangesAsync();
         }
         #endregion
 

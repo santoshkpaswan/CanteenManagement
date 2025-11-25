@@ -255,6 +255,15 @@ export class CanteenService {
     );
   }
 
+  canceledOrder(id: any): Observable<any> {
+ debugger
+    return this._httpClient.post(`${environment.apiUrl}/Canteen/CanceledOrder/${id}`, {}).pipe(
+      switchMap((response: any) => {
+        return of(response);
+      })
+    );
+  }
+
   getOrderItem(): Observable<any> {
     return this._httpClient.get(`${environment.apiUrl}/Canteen/ListOrderItem`, {}).pipe(
       switchMap((response: any) => {
