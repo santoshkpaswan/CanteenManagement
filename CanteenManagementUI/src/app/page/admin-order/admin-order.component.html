@@ -379,7 +379,7 @@
         <div class="col-md-6 mb-2">
           <label>Payment Status <strong class="text-danger">*</strong></label>
           <select class="form-control" formControlName="paymentStatus">
-            <option *ngFor="let pystatus of paymentStatusArray" [value]="pystatus.value">{{ pystatus.paymentstatuslabel
+            <option *ngFor="let pystatus of paymentStatusArray"  [value]="pystatus.value">{{ pystatus.paymentstatuslabel
               }}</option>
           </select>
         </div>
@@ -399,7 +399,7 @@
         <div class="col-md-6 mb-2">
           <label>Status <strong class="text-danger">*</strong></label>
           <select class="form-control" formControlName="status">
-            <option *ngFor="let status of statusArray" [value]="status.value">{{ status.statuslabel }}</option>
+            <option *ngFor="let status of statusArray"  [value]="status.value">{{ status.statuslabel }}</option>
           </select>
         </div>
 

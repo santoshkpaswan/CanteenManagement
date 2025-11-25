@@ -1,4 +1,4 @@
-<div class="row mt-4">
+ <div class="row mt-4">
   <!-- ***** Left Side - Order Item List ***** -->
   <!-- <div class="col-md-8">
     <div class="card text-center">
@@ -117,6 +117,11 @@
           </div>
           <!-- <h5 class="fw-bold mb-0 text-success text-end">Grand Total: ₹ {{ grandTotal }}</h5> -->
 
+          <!-- Order Description - full width -->
+          <div class="mb-6" style="display: none;">
+            <label class="fw-semibold">Order Description<strong class="text-danger">*</strong></label>
+            <textarea rows="3" formControlName="orderDescriptin" class="form-control" placeholder="Enter Order Description"></textarea>
+          </div>
           <div class="d-flex align-items-center flex-wrap gap-2">
             <label class="fw-semibold me-2 mb-0"> Payment Type <span class="text-danger">*</span></label>
             <div class="form-check form-check-inline mb-0">
@@ -137,6 +142,7 @@
                 name="paymentType" [(ngModel)]="selectedPaymentType" [value]="4" />
               <label class="form-check-label" for="payLetter">PayLater</label>
             </div>
+
 
           </div>
         </div>

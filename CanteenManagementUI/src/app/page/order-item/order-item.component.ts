@@ -57,6 +57,7 @@ export class OrderItemComponent implements OnInit {
   isNoticeActive: boolean = false;
   placeOrderIsActiveList: boolean = false;
   userType: string = '';
+ // orderDescriptin: string = '';
 
 
 
@@ -102,6 +103,7 @@ export class OrderItemComponent implements OnInit {
       paymentType: [0],
       paymentStatus: [0],
       status: [0]
+      //orderDescriptin: ['']
     });
   }
 
@@ -176,11 +178,7 @@ export class OrderItemComponent implements OnInit {
   }
 
   orderPlace() {
-    // Validate closetime orderPlace Disable
-    //   if (!this.isOrderingAllowed()) {
-    //   this._coreService.openSnackBar('Ordering time is over!', 'Ok');
-    //   return;
-    // }
+    debugger
     // Validate payment selection
     if (!this.selectedPaymentType) {
       this._coreService.openSnackBar('Please select a payment type.', 'Ok');
@@ -192,6 +190,10 @@ export class OrderItemComponent implements OnInit {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
     }
+    // if (!this.addpayNow.value.orderDescriptin?.trim()) {
+    //   this._coreService.openSnackBar('Please enter order description.', 'Ok');
+    //   return;
+    // }
 
     // Get current user info
     const currentUser = this._authService.getUser();
@@ -213,6 +215,7 @@ export class OrderItemComponent implements OnInit {
       paymentType: Number(this.selectedPaymentType),
       paymentStatus: Number(this.addpayNow.value.paymentStatus),
       status: Number(this.addpayNow.value.status),
+      //orderDescriptin: this.addpayNow.value.orderDescriptin,
       createdDate: new Date(),
       orderItems: this.filteredItems.map(item => ({
         itemNo: item.count,

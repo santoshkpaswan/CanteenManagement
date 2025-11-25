@@ -375,8 +375,8 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
 
   /** Update Order Status*/
   updateOrderStatus() {
-    debugger
-    if (this.selectedOrder.invalid) {
+
+    if (this.editCanteenOrderStatusForm.invalid) {
       this._coreService.openSnackBar('Please fill all required fields.', 'Ok');
       return;
     }
@@ -392,7 +392,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     );
 
     const upiCashPayement = selectedOrders.filter((order: any) => order?.paymentType == 1 || order?.paymentType == 3);
-    if (upiCashPayement.length > 0 && currentStatus==2 && currentPaymentStatus==0) {
+    if (upiCashPayement.length > 0 && currentStatus == 2 && currentPaymentStatus == 0) {
       this._coreService.openSnackBar('Please make payment status paid when you complete order', 'Ok');
       return;
     }

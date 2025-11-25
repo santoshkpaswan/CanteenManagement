@@ -413,8 +413,10 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         {
             var query = from o in _context.orderModels
                         join d in _context.masterDaysModels on o.DayId equals d.DayId
-                        where o.IsActive == true && d.IsActive == true //&& o.RgenId == rgenId
+                        //join fm in _context.foodMenuItemModels on d.FoodMenuItemId equals fm.FoodMenuItemId
+                        where o.IsActive == true && d.IsActive == true //&& //fm.IsActive == true //&& o.RgenId == rgenId
                                                                        //orderby o.OrderId descending
+
                         select new
                         {
                             o.OrderId,
@@ -498,6 +500,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 transtionId = o.transtionId,
                 // Only time (24-hour format)
                 OrderTime = Convert.ToDateTime(o.CreatedDate).ToString("HH:mm"),
+                //OrderDeliverTime
 
             }).ToList();
             return result;

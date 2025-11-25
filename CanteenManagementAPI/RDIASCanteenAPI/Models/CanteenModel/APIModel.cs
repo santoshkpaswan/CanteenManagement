@@ -108,6 +108,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string? DaysName { get; set; }
         public string OrderDate { get; set; }
         public string? OrderTime { get; set; }
+        public int? OrderDeliverTime { get; set; }
     }
 
     public class OrderSaveModelView
@@ -272,7 +273,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public int CanteenNoticeId { get; set; }
         public string? Notice { get; set; }
         public bool IsActive { get; set; }
-        public bool? PlaceOrderIsActive {  get; set; }
+        public bool? PlaceOrderIsActive { get; set; }
     }
 
     #endregion
