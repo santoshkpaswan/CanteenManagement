@@ -158,7 +158,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         Cash = 1,
         //Card = 2,
         UPI = 3,
-        PayLetter = 4
+        PayLater = 4  
     }
     public enum OrderPaymentStatus
     {
@@ -195,6 +195,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string ItemPriceDescriptin { get; set; }
         public TimeOnly? CloseTime { get; set; }
         public bool? PlaceOrderIsActive { get; set; }
+        public int? MakingTime { get; set; }
 
     }
     public class OrderItemSaveModelView

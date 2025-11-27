@@ -2,15 +2,19 @@
   border-radius: 8px;
   transition: transform 0.2s;
 }
+
 .card:hover {
   transform: translateY(-5px);
 }
+
 .card-body h6 {
   font-size: 16px;
 }
+
 .card-body p {
   font-size: 13px;
 }
+
 .btn-sm {
   padding: 4px 12px;
 }
@@ -26,7 +30,8 @@
 
 .billing-summary-card {
   position: sticky;
-  top: 80px; /* adjust depending on your header height */
+  top: 80px;
+  /* adjust depending on your header height */
   z-index: 10;
 }
 
@@ -46,8 +51,8 @@
 
 
 
-.text-end{
-margin-left: 279px;
+.text-end {
+  margin-left: 279px;
 }
 
 
@@ -59,14 +64,14 @@ margin-left: 279px;
 }
 
 /* Disable click interactions for out-of-stock card */
-.card.out-of-stock {
-  pointer-events: none;
-}
+// .card.out-of-stock {
+//   pointer-events: none;
+// }
 
 /* Overlay text on out-of-stock */
 .out-of-stock-overlay {
   position: absolute;
-  top: 40%;
+  top: 25%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: rgba(220, 0, 0, 0.85);
@@ -85,14 +90,21 @@ margin-left: 279px;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translate(-50%, -40%); }
-  to { opacity: 1; transform: translate(-50%, -50%); }
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }
 
 /* Tablet screens (width 768px to 1024px) */
 @media (max-width: 1024px) {
   .out-of-stock-overlay {
-    top: 30%;
+    top: 20%;
     font-size: 13px;
     padding: 8px 18px;
   }
@@ -101,7 +113,7 @@ margin-left: 279px;
 /* Mobile screens */
 @media (max-width: 576px) {
   .out-of-stock-overlay {
-    top: 25%;
+    top: 10%;
     font-size: 12px;
     padding: 6px 16px;
   }
@@ -109,10 +121,89 @@ margin-left: 279px;
 
 
 .billing-summary-card h5 {
-    text-align: left !important;
-    font-size: 1rem;
+  text-align: left !important;
+  font-size: 1rem;
+}
+
+.form-check-label {
+  font-size: 0.9rem;
+}
+
+
+/* TIME + PRICE SECTION */
+.time-price-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  font-size: 13px;
+  padding: 0 8px;
+  font-weight: 600;
+}
+
+.time-price-box h5 {
+  margin: 0;
+  font-size: 20px;
+}
+
+
+/* ---------------- TOOLTIP CSS ---------------- */
+.tooltip-box {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip-box::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%) translateY(6px);
+  background: rgba(0, 0, 0, 0.88);
+  color: #fff;
+  padding: 6px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease, transform 150ms ease;
+  z-index: 9999;
+}
+
+.tooltip-box::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 2px);
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.88) transparent transparent transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+  z-index: 9999;
+}
+
+.tooltip-box:hover::after,
+.tooltip-box:hover::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* MOBILE — tooltip neeche dikhana */
+@media (max-width: 576px) {
+  .tooltip-box::after {
+    bottom: auto;
+    top: calc(100% + 8px);
+    transform: translateX(-50%) translateY(-6px);
   }
 
-  .form-check-label {
-    font-size: 0.9rem;
+  .tooltip-box::before {
+    bottom: auto;
+    top: calc(100% + 2px);
+    border-color: transparent transparent rgba(0, 0, 0, 0.88) transparent;
   }
+}

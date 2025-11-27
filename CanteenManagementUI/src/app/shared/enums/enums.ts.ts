@@ -2,7 +2,7 @@ export enum OrderPaymentType {
   Cash = 1,
   //Card = 2,
   UPI = 3,
-  PayLetter = 4
+  PayLater = 4
 
 }
 

@@ -1,4 +1,4 @@
- <div class="row mt-4">
+<div class="row mt-4">
   <!-- ***** Left Side - Order Item List ***** -->
   <!-- <div class="col-md-8">
     <div class="card text-center">
@@ -62,7 +62,16 @@
             <div class="card-body text-center">
               <h6 class="fw-bold">{{ element.itemName }}</h6>
               <p class="text-muted mt-2">{{ element.itemPriceDescriptin }}</p>
-              <h5 class="text-success fw-bold">₹{{ element.itemPrice }}</h5>
+
+              <!-- LEFT - CENTER - RIGHT LINE -->
+              <!-- MAKING | PRICE | CLOSING -->
+              <div class="time-price-box">
+                <span class="text-muted tooltip-box" data-tooltip="Making Time">⏱ {{ element.makingTime }}</span>
+                <h5 class="text-success fw-bold">₹{{ element.itemPrice }}</h5>
+                <span class="text-muted tooltip-box" data-tooltip="Close Time">🔒 {{ element.closeTime }}</span>
+              </div>
+
+              <!-- <h5 class="text-success fw-bold">₹{{ element.itemPrice }}</h5> -->
             </div>
             <div class="card-footer d-flex justify-content-between">
               <button class="btn btn-sm btn-danger" (click)="removeItem(element)"
@@ -119,8 +128,9 @@
 
           <!-- Order Description - full width -->
           <div class="mb-6" style="display: none;">
-            <label class="fw-semibold">Order Description<strong class="text-danger">*</strong></label>
-            <textarea rows="3" formControlName="orderDescriptin" class="form-control" placeholder="Enter Order Description"></textarea>
+            <label class="fw-semibold">Order Delivery Remarks<strong class="text-danger">*</strong></label>
+            <textarea rows="3" formControlName="orderDescriptin" class="form-control"
+              placeholder="Enter Order Description"></textarea>
           </div>
           <div class="d-flex align-items-center flex-wrap gap-2">
             <label class="fw-semibold me-2 mb-0"> Payment Type <span class="text-danger">*</span></label>

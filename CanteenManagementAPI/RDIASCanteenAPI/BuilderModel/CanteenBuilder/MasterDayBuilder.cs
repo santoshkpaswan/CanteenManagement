@@ -411,31 +411,80 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #region Order
         public async Task<List<OrderListGetModelView>> GetOrder(int rgenId, bool isAdmin, SearchOrderAdmin? modal)
         {
-            var query = from o in _context.orderModels
-                        join d in _context.masterDaysModels on o.DayId equals d.DayId
-                        //join fm in _context.foodMenuItemModels on d.FoodMenuItemId equals fm.FoodMenuItemId
-                        where o.IsActive == true && d.IsActive == true //&& //fm.IsActive == true //&& o.RgenId == rgenId
-                                                                       //orderby o.OrderId descending
+            
 
-                        select new
-                        {
-                            o.OrderId,
-                            o.OrderNumber,
-                            o.DayId,
-                            d.DaysName,
-                            o.RgenId,
-                            o.UserName,
-                            o.UserId,
-                            o.UserType,
-                            o.TotalAmount,
-                            o.PaymentType,
-                            o.PaymentStatus,
-                            o.Status,
-                            o.Remark,
-                            o.CreatedDate,
-                            o.UserMobileNo,
-                            o.transtionId,
-                        };
+            // var query = from dfmi in _context.dayWiseFoodMenuItemModels
+            //             join oi in _context.orderItemModels on dfmi.FoodMenuItemId equals oi.FoodMenuItemId
+            //             join ou in _context.orderModels on oi.OrderId equals ou.OrderId
+            //             where dfmi.IsActive == true && oi.IsActive == true && ou.IsActive == true    //&& ou.RgenId == 11934
+
+            //             group new { dfmi, ou } by new
+            //             {
+            //                 ou.OrderId,
+            //                 ou.OrderNumber,
+            //                 ou.DayId,
+            //                 ou.RgenId,
+            //                 ou.UserName,
+            //                 ou.UserId,
+            //                 ou.UserType,
+            //                 ou.TotalAmount,
+            //                 ou.PaymentType,
+            //                 ou.PaymentStatus,
+            //                 ou.Status,
+            //                 ou.Remark,
+            //                 ou.CreatedDate,
+            //                 ou.UserMobileNo,
+            //                 ou.transtionId,
+            //                 ou.IsActive
+            //             } into g
+            //             select new
+            //             {
+            //                 g.Key.OrderId,
+            //                 g.Key.OrderNumber,
+            //                 g.Key.DayId,
+            //                 g.Key.RgenId,
+            //                 g.Key.UserName,
+            //                 g.Key.UserId,
+            //                 g.Key.UserType,
+            //                 g.Key.TotalAmount,
+            //                 g.Key.PaymentType,
+            //                 g.Key.PaymentStatus,
+            //                 g.Key.Status,
+            //                 g.Key.Remark,
+            //                 g.Key.CreatedDate,
+            //                 g.Key.UserMobileNo,
+            //                 g.Key.transtionId,
+            //                 g.Key.IsActive,
+            //                 Time = g.Max(x => x.dfmi.Time)   // MAX(Time)
+            //             };
+
+
+
+            var query = from o in _context.orderModels
+                        join d in _context.masterDaysModels on o.DayId equals d.DayId                  
+                       where o.IsActive == true && d.IsActive == true 
+             select new
+             {
+                 o.OrderId,
+                 o.OrderNumber,
+                 o.DayId,
+                 d.DaysName,
+                 o.RgenId,
+                 o.UserName,
+                 o.UserId,
+                 o.UserType,
+                 o.TotalAmount,
+                 o.PaymentType,
+                 o.PaymentStatus,
+                 o.Status,
+                 o.Remark,
+                 o.CreatedDate,
+                 o.UserMobileNo,
+                 o.transtionId,
+                 //fm.Time
+             };
+
+
             // Apply RgenId filter only for non-admin users
             if (!isAdmin)
             {
@@ -500,7 +549,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 transtionId = o.transtionId,
                 // Only time (24-hour format)
                 OrderTime = Convert.ToDateTime(o.CreatedDate).ToString("HH:mm"),
-                //OrderDeliverTime
+                //OrderDeliverTime = o.Time,
 
             }).ToList();
             return result;
@@ -733,6 +782,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
 
                     ItemPriceDescriptin = g.First().fp.ItemPriceDescriptin,
                     CloseTime = g.First().dm.CloseTime,
+                    MakingTime = g.Max(x => x.dm.Time),
                 }
             )
             .OrderByDescending(x => x.FoodMenuItemId)

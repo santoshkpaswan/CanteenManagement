@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatButtonModule, MatButton } from '@angular/material/button';
@@ -18,6 +18,7 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ConfirmationDialogService } from 'src/app/confirmation-dialog/confirmation-dialog.service';
+//import { Subject, takeUntil } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { OrderPaymentType, OrderPaymentStatus, OrderStatus } from 'src/app/shared/enums/enums.ts';
@@ -33,6 +34,7 @@ import { OrderPaymentType, OrderPaymentStatus, OrderStatus } from 'src/app/share
 })
 
 export class OrderHistoryComponent implements OnInit {
+  //private _destroy$ = new Subject<void>();
   addCanteenOrderForm: FormGroup;
   editCanteenOrderForm: FormGroup;
   savePaymentTransactionCanteenOrderForm: FormGroup;
@@ -43,11 +45,11 @@ export class OrderHistoryComponent implements OnInit {
   statusFilter: string = '';
   selectedOrderDetails: any[] = [];
   selectedOrder: any;
-  sendOject!:any;
+  sendOject!: any;
   //qrImageUrl: string =  'assets/images/CanteenPaymentGooglePayQR.jpg';
   qrImageUrl: string = 'assets/images/CanteenPaymentPaytmQR.jpg';
 
-  displayedColumns: string[] = ['sno', 'ordernumber','orderTime', 'oderDate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'transtionId', 'delete'];
+  displayedColumns: string[] = ['sno', 'ordernumber', 'orderTime', 'oderDate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'transtionId','remark', 'delete'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;
@@ -113,10 +115,21 @@ export class OrderHistoryComponent implements OnInit {
 
   }
 
+
   ngOnInit(): void {
+    debugger
     this.getGridData();
+    // Auto refresh listener
+    // this._canteenService.refresh$.pipe(takeUntil(this._destroy$)).subscribe(() => {
+    //   this.getGridData();
+    // });
     this.getDayNameData();
   }
+  // ngOnDestroy(): void {
+  //   this._destroy$.next();
+  //   this._destroy$.complete();
+  // }
+
   getGridData() {
     this._canteenService.getOrder({}).subscribe((response) => {
       this.orderList = response.data;

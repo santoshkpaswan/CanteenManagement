@@ -31,6 +31,8 @@ export interface OrderItem {
   itemPriceDescriptin?: string;
   foodMenuItemId?: number;
   dayId?: number;
+  makingTime?: number;
+  closeTime?: any;
 }
 
 @Component({
@@ -64,7 +66,7 @@ export class OrderItemComponent implements OnInit {
   imageUrl: any = environment.imageUrl;
 
 
-  displayedColumns: string[] = ['sno', 'itemno', 'imageurl', 'itemname', 'itemprice', 'itempricedescriptin'];
+  displayedColumns: string[] = ['sno', 'itemno', 'imageurl', 'itemname', 'itemprice', 'itempricedescriptin','makingTime','closeTime'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
@@ -91,7 +93,7 @@ export class OrderItemComponent implements OnInit {
     this.userType = userType;   // <-- ADD THIS LINE
 
     this.addpayNow = _formBuilder.group({
-      //orderNumber: [''],
+      //orderDescriptin: ['', Validators.required],
       dayId: [0,],
       rgenId: [rgenId],
       userName: [''],
@@ -103,7 +105,7 @@ export class OrderItemComponent implements OnInit {
       paymentType: [0],
       paymentStatus: [0],
       status: [0]
-      //orderDescriptin: ['']
+
     });
   }
 
