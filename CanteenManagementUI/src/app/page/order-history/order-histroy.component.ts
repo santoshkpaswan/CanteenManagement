@@ -391,12 +391,6 @@ export class OrderHistoryComponent implements OnInit {
   // paymentQR mode Pop page open
   openPaymentModal(element: any, content: TemplateRef<any>) {
     this.selectedOrder = element;
-
-    // if (element.qrImageName) {
-    //   this.qrImageUrl = `assets/qr/${element.qrImageName}`;
-    // } else {
-    //   this.qrImageUrl = 'assets/images/CanteenPaymentQR.jpg';
-    // }
     this.qrImageUrl;
     this.savePaymentTransactionCanteenOrderForm = this._formBuilder.group({
       transtionId: ['', Validators.required],
