@@ -4,11 +4,6 @@
       <div class="col-sm-6 d-flex">
         <h6 class="card-title fw-bold">Canteen Notice</h6>
       </div>
-
-      <!-- <div class="col-sm-6 d-flex flex-column flex-sm-row justify-content-sm-end">
-        <button type="button" style="margin-left: 10px;" class="btn btn-md btn-primary"
-          >New</button>
-      </div> -->
     </div>
   </div>
   <div class="card-body" style="overflow-x: scroll;">
@@ -61,16 +56,6 @@
             <input type="hidden" [formControlName]="'canteenNoticeId'" class="form-control" required>
           </div>
         </div>
-
-        <!-- <div class="col-6" style="margin-top: 11px;">
-          <label class="me-2 fw-semibold">Status<strong style="color: red;">*</strong></label>
-          <button type="button" class="btn btn-sm"
-            [ngClass]="editCanteenNoticeForm.get('isActive')?.value? 'btn-success': 'btn-danger'"
-            (click)="toggleIsActive()">
-            {{editCanteenNoticeForm.get('isActive')?.value? 'Active': 'Inactive'}}
-          </button>
-        </div>  -->
-
         <div class="col-6" style="margin-top: 11px;">
           <label class="me-2 fw-semibold">Status <strong style="color: red;">*</strong></label>
           <label class="switch ios"><input type="checkbox" formControlName="isActive" /><span
@@ -79,23 +64,6 @@
             {{ editCanteenNoticeForm.get('isActive')?.value ? 'ON' : 'OFF' }}
           </span>
         </div>
-
-
-
-
-
-        <!-- <div class="col-6" style="margin-top: 11px;">
-          <label class="me-2 fw-semibold" style="margin-left: -18px;">Order Place Status<strong
-              style="color: red;">*</strong></label>
-          <button type="button" class="btn btn-sm"
-            [ngClass]="editCanteenNoticeForm.get('placeOrderIsActive')?.value? 'btn-success': 'btn-danger'"
-            (click)="toggleOrderPlaceStatus()">
-            {{editCanteenNoticeForm.get('placeOrderIsActive')?.value? 'Active': 'Inactive'}}
-          </button>
-        </div> -->
-
-
-
         <div class="col-6" style="margin-top: 11px;">
           <label class="me-2 fw-semibold" style="margin-left: -25px;">Order Place Status <strong style="color: red;">*</strong></label>
           <label class="switch ios"><input type="checkbox" formControlName="placeOrderIsActive" /><span
@@ -104,12 +72,7 @@
             {{ editCanteenNoticeForm.get('placeOrderIsActive')?.value ? 'ON' : 'OFF' }}
           </span>
         </div>
-
-
-
-
       </div>
-
     </div>
 
     <div class="modal-footer">
