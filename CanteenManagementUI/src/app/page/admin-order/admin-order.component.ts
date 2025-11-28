@@ -631,7 +631,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
 
 
     autoTable(doc, {
-      head: [['S.No', 'Order No', 'Time', 'User Name', 'User Type', 'Mobile', 'Date', 'Amount', 'Status', 'Pay Type', 'Pay Status', 'Txn ID']],
+      head: [['S.No', 'Order No', 'Time', 'User Name', 'User Type', 'Mobile', 'Date', 'Amount', 'Status', 'Pay Type', 'Pay Status', 'Transaction ID']],
       body: exportData,
       startY: 50,
       styles: { fontSize: 8 },
