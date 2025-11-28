@@ -55,7 +55,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
   selectedOrderDetails: any[] = [];
   totalPaidAmount: any = 0;
 
-  displayedColumns: string[] = ['checkbox', 'sno', 'ordernumber', 'orderTime', 'username', 'usertype', 'userMobileNo', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'transtionId'];
+  displayedColumns: string[] = ['checkbox', 'sno', 'ordernumber', 'orderTime', 'username', 'usertype', 'userMobileNo', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'transtionId','placeOrderDescriptin'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;

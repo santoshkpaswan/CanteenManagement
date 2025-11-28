@@ -127,6 +127,7 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string? Remark { get; set; }
         public string? UserMobileNo { get; set; }
         public string? EnrollNo { get; set; }
+        public string? PlaceOrderDescriptin { get; set; }
     }
     public class OrderUpdateModelView
     {

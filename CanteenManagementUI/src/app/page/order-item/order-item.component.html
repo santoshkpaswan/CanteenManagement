@@ -1,39 +1,4 @@
 <div class="row mt-4">
-  <!-- ***** Left Side - Order Item List ***** -->
-  <!-- <div class="col-md-8">
-    <div class="card text-center">
-      <div class="card-header">
-        <div class="marquee-container" *ngIf="isNoticeActive">
-          <marquee behavior="scroll" direction="left" scrollamount="5">
-            {{ noticeList }}
-          </marquee>
-        </div>
-        <h6 class="card-title fw-bold">Order Item List</h6>
-      </div>
-      <div class="row p-3">
-        <div class="col-md-4 col-sm-6 mb-4" *ngFor="let element of itemList; let i = index">
-          <div class="card h-100 shadow-sm">
-            <img [src]="imageUrl + element.imageUrl" class="card-img-top" alt="{{ element.itemName }}"
-              style="height: 180px; object-fit: cover" />
-
-            <div class="card-body text-center">
-              <h6 class="fw-bold">{{ element.itemName }}</h6>
-              <p class="text-muted mt-2">{{ element.itemPriceDescriptin }}</p>
-              <h5 class="text-success fw-bold">₹{{ element.itemPrice }}</h5>
-            </div>
-
-            <div class="card-footer d-flex justify-content-between">
-              <button class="btn btn-sm btn-danger" (click)="removeItem(element)"
-                [disabled]="element.count === 0">-</button>
-              <span class="fw-bold">Qty:{{ element.count || 0 }}</span>
-              <button class="btn btn-sm btn-primary" (click)="addItem(element)"
-                [disabled]="!isItemOrderingAllowed(element)">+</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
   <div class="col-md-8">
     <div class="card text-center">
       <div class="card-header">
@@ -88,15 +53,12 @@
     </div>
   </div>
 
-
-
-
   <!-- ***** Right Side - Billing Summary ***** -->
-  <div class="col-md-4">
+  <!-- <div class="col-md-4">
     <div class="card text-center billing-summary-card">
       <div class="card-header">
         <h6 class="fw-bold">Billing Summary</h6>
-        <!-- <p class="text-muted mb-0">Order No: <strong>{{ orderNumber }}</strong></p> -->
+
       </div>
       <div class="card-body" *ngIf="filteredItems.length > 0">
         <table class="table table-bordered table-sm">
@@ -119,19 +81,13 @@
             </tr>
           </tbody>
         </table>
-        <!--  Grand Total + Payment Type in One Line -->
+
         <div class="border-top pt-2 pb-1">
           <div class="text-start mb-2">
             <h5 class="fw-bold text-success">Grand Total: ₹ {{ grandTotal }}</h5>
           </div>
-          <!-- <h5 class="fw-bold mb-0 text-success text-end">Grand Total: ₹ {{ grandTotal }}</h5> -->
 
-          <!-- Order Description - full width -->
-          <div class="mb-6" style="display: none;">
-            <label class="fw-semibold">Order Delivery Remarks<strong class="text-danger">*</strong></label>
-            <textarea rows="3" formControlName="orderDescriptin" class="form-control"
-              placeholder="Enter Order Description"></textarea>
-          </div>
+
           <div class="d-flex align-items-center flex-wrap gap-2">
             <label class="fw-semibold me-2 mb-0"> Payment Type <span class="text-danger">*</span></label>
             <div class="form-check form-check-inline mb-0">
@@ -157,7 +113,77 @@
           </div>
         </div>
         <button class="btn btn-success mt-2" (click)="orderPlace()" [disabled]="!isOrderingAllowed()">Order
-          Place</button> <!--[disabled]="!isOrderingAllowed()"-->
+          Place</button>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- ***** Right Side - Billing Summary ***** -->
+  <div class="col-md-4">
+    <div class="card text-center billing-summary-card">
+      <div class="card-header">
+        <h6 class="fw-bold">Billing Summary</h6>
+      </div>
+
+      <!-- BIND THE FORM GROUP HERE -->
+      <div class="card-body" *ngIf="filteredItems.length > 0">
+        <form [formGroup]="addpayNow" (ngSubmit)="orderPlace()" class="w-100">
+
+          <table class="table table-bordered table-sm">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of filteredItems; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.itemName }}</td>
+                <td>{{ item.count }}</td>
+                <td>₹{{ item.itemPrice }}</td>
+                <td>₹{{ item.count * item.itemPrice }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="border-top pt-2 pb-1">
+            <div class="text-start mb-2">
+              <h5 class="fw-bold text-success">Grand Total: ₹ {{ grandTotal }}</h5>
+            </div>
+
+            <!-- Order Description - uses reactive form control -->
+            <div class="mb-3">
+              <label class="fw-semibold">Order Delivery Remarks</label>
+              <textarea rows="3" formControlName="placeOrderDescriptin" class="form-control"
+                placeholder="Enter Place Order Description"></textarea>
+            </div>
+
+            <!-- Payment Type (switched to reactive formControlName) -->
+            <div class="d-flex align-items-center flex-wrap gap-2">
+              <label class="fw-semibold me-2 mb-0"> Payment Type <span class="text-danger">*</span></label>
+              <div class="form-check form-check-inline mb-0">
+                <input type="radio" style="border-color: black;" class="form-check-input" id="cash" name="paymentType"
+                  formControlName="paymentType" [value]="1" />
+                <label class="form-check-label" for="cash">Cash</label>
+              </div>
+              <div class="form-check form-check-inline mb-0">
+                <input type="radio" style="border-color: black;" class="form-check-input" id="upi" name="paymentType"
+                  formControlName="paymentType" [value]="3" />
+                <label class="form-check-label" for="upi">UPI</label>
+              </div>
+              <div class="form-check form-check-inline mb-0" *ngIf="userType === 'Staff'">
+                <input type="radio" style="border-color: black;" class="form-check-input" id="payLetter"
+                  name="paymentType" formControlName="paymentType" [value]="4" />
+                <label class="form-check-label" for="payLetter">PayLater</label>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success mt-2" [disabled]="!isOrderingAllowed()">Order Place</button>
+        </form>
       </div>
     </div>
   </div>

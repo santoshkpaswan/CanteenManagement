@@ -59,14 +59,10 @@ export class OrderItemComponent implements OnInit {
   isNoticeActive: boolean = false;
   placeOrderIsActiveList: boolean = false;
   userType: string = '';
- // orderDescriptin: string = '';
-
-
-
   imageUrl: any = environment.imageUrl;
 
 
-  displayedColumns: string[] = ['sno', 'itemno', 'imageurl', 'itemname', 'itemprice', 'itempricedescriptin','makingTime','closeTime'];
+  displayedColumns: string[] = ['sno', 'itemno', 'imageurl', 'itemname', 'itemprice', 'itempricedescriptin', 'makingTime', 'closeTime'];
   @Input("enableBulkAction") enableBulkAction: boolean = false;
   dataSource = new MatTableDataSource<any>();
   selection = new SelectionModel<any>(true, []);
@@ -93,8 +89,8 @@ export class OrderItemComponent implements OnInit {
     this.userType = userType;   // <-- ADD THIS LINE
 
     this.addpayNow = _formBuilder.group({
-      //orderDescriptin: ['', Validators.required],
-      dayId: [0,],
+      placeOrderDescriptin: [''],
+      dayId: [0],
       rgenId: [rgenId],
       userName: [''],
       userMobileNo: [''],
@@ -102,7 +98,7 @@ export class OrderItemComponent implements OnInit {
       userId: [userId],
       userType: [userType],
       totalAmount: [0],
-      paymentType: [0],
+      paymentType: [0, Validators.required],
       paymentStatus: [0],
       status: [0]
 
@@ -180,22 +176,22 @@ export class OrderItemComponent implements OnInit {
   }
 
   orderPlace() {
-    debugger
-    // Validate payment selection
-    if (!this.selectedPaymentType) {
+     if (!this.addpayNow.value.paymentType) {
       this._coreService.openSnackBar('Please select a payment type.', 'Ok');
       return;
     }
 
-    // Check if the form is valid
-    if (this.addpayNow.invalid) {
-      this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
-      return;
-    }
-    // if (!this.addpayNow.value.orderDescriptin?.trim()) {
+    // if (!this.addpayNow.value.placeOrderDescriptin?.trim()) {
     //   this._coreService.openSnackBar('Please enter order description.', 'Ok');
     //   return;
     // }
+
+    // Check if the form is valid
+    // if (this.addpayNow.invalid) {
+    //   this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
+    //   return;
+    // }
+
 
     // Get current user info
     const currentUser = this._authService.getUser();
@@ -213,11 +209,11 @@ export class OrderItemComponent implements OnInit {
       userMobileNo: userMobileNumber,
       enrollNo: userEnrollNumber,
       totalAmount: this.grandTotal,//Number(this.addpayNow.value.totalAmount),
-      //paymentType: Number(this.addpayNow.value.paymentType),
-      paymentType: Number(this.selectedPaymentType),
+      paymentType: Number(this.addpayNow.value.paymentType),
+      //paymentType: Number(this.selectedPaymentType),
       paymentStatus: Number(this.addpayNow.value.paymentStatus),
       status: Number(this.addpayNow.value.status),
-      //orderDescriptin: this.addpayNow.value.orderDescriptin,
+      placeOrderDescriptin: this.addpayNow.value.placeOrderDescriptin,
       createdDate: new Date(),
       orderItems: this.filteredItems.map(item => ({
         itemNo: item.count,

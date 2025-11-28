@@ -141,6 +141,7 @@ namespace RDIASCanteenAPI.Data
         public string? UserMobileNo { get; set; }
         public string? transtionId { get; set; }
         public DateTime? transtionDate { get; set; }
+        public string? PlaceOrderDescriptin {  get; set; }
     }
     #endregion
 

@@ -481,6 +481,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                  o.CreatedDate,
                  o.UserMobileNo,
                  o.transtionId,
+                 o.PlaceOrderDescriptin,
                  //fm.Time
              };
 
@@ -549,6 +550,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 transtionId = o.transtionId,
                 // Only time (24-hour format)
                 OrderTime = Convert.ToDateTime(o.CreatedDate).ToString("HH:mm"),
+                PlaceOrderDescriptin = o.PlaceOrderDescriptin,
                 //OrderDeliverTime = o.Time,
 
             }).ToList();
@@ -622,6 +624,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 CreatedBy = orderSaveModelView.RgenId,
                 CreatedDate = DateTime.Now,
                 UserMobileNo = orderSaveModelView.UserMobileNo,
+                PlaceOrderDescriptin = orderSaveModelView.PlaceOrderDescriptin,
                 OrderItems = orderSaveModelView.OrderItems.Select(s => new tblOrderItem()
                 {
                     ItemNo = s.ItemNo,
