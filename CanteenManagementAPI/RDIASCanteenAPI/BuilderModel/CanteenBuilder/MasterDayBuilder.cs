@@ -708,7 +708,7 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 {
                     existing.PaymentStatus = orderStatusUpdateModelView.PaymentStatus;
                     existing.Status = orderStatusUpdateModelView.Status;
-                    existing.Remark = orderStatusUpdateModelView.Remark;
+                    existing.Remark = existing.Remark + "\n" + orderStatusUpdateModelView.Remark;
                     existing.ModifiedDate = DateTime.Now;
                     existing.ModifiedBy = orderStatusUpdateModelView.RgenId;
                     await _context.SaveChangesAsync();
