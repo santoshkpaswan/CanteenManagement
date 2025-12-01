@@ -49,7 +49,7 @@ export class OrderHistoryComponent implements OnInit {
   //qrImageUrl: string =  'assets/images/CanteenPaymentGooglePayQR.jpg';
   qrImageUrl: string = 'assets/images/CanteenPaymentPaytmQR.jpg';
 
-  displayedColumns: string[] = ['sno', 'ordernumber', 'orderTime', 'oderDate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'transtionId','remark', 'delete'];
+  displayedColumns: string[] = ['sno', 'ordernumber', 'oderDate', 'orderDeliverTime', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'transtionId', 'remark', 'delete'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;
@@ -119,28 +119,15 @@ export class OrderHistoryComponent implements OnInit {
   ngOnInit(): void {
     debugger
     this.getGridData();
-    // Auto refresh listener
-    // this._canteenService.refresh$.pipe(takeUntil(this._destroy$)).subscribe(() => {
-    //   this.getGridData();
-    // });
     this.getDayNameData();
   }
-  // ngOnDestroy(): void {
-  //   this._destroy$.next();
-  //   this._destroy$.complete();
-  // }
-
   getGridData() {
+    debugger
     this._canteenService.getOrder({}).subscribe((response) => {
       this.orderList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.dataSource.filterPredicate = (data: any, filter: string) => {
-        const filters = JSON.parse(filter);
-        const statusMatch = filters.status ? data.status === +filters.status : true;
-        return statusMatch;
-      };
     });
   }
 
@@ -361,15 +348,22 @@ export class OrderHistoryComponent implements OnInit {
     return { label, cssClass };
   }
   orderSearchFilter() {
-
     const filterObj = {
       status: this.statusFilter.trim().toLowerCase(),
     };
+    debugger
+    this._canteenService.getOrder({}).subscribe((response) => {
+      this.orderList = response.data;
+      if (this.statusFilter != "") {
+        this.dataSource = new MatTableDataSource<any>(response.data.filter((x: any) => x.status == this.statusFilter));
+      }
+      else {
+        this.dataSource = new MatTableDataSource<any>(response.data);
+      }
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
 
-    this.dataSource.filter = JSON.stringify(filterObj);
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    });
   }
   resetOrderSearchFilter() {
     this.statusFilter = '';
@@ -377,6 +371,9 @@ export class OrderHistoryComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+    // reload full data
+    this.orderSearchFilter();
+
   }
 
   // paymentQR mode

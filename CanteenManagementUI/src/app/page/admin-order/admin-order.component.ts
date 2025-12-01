@@ -55,7 +55,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
   selectedOrderDetails: any[] = [];
   totalPaidAmount: any = 0;
 
-  displayedColumns: string[] = ['checkbox', 'sno', 'ordernumber', 'orderTime', 'username', 'usertype', 'userMobileNo', 'orderdate', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'transtionId','placeOrderDescriptin'];
+  displayedColumns: string[] = ['checkbox', 'sno', 'ordernumber', 'username', 'usertype', 'userMobileNo', 'orderdate', 'orderDeliverTime', 'totalamount', 'status', 'paymenttype', 'paymentstatus', 'transtionId', 'placeOrderDescriptin'];
   // expose enums for HTML template
   paymentType = OrderPaymentType;
   paymentStatus = OrderPaymentStatus;
@@ -131,47 +131,17 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
   getGridData() {
-
-    // this.sendObj = {
-    //   orderStatus: this.statusFilter.trim().toLowerCase(),
-    //   paymentStatus: this.statusFilter.trim().toLowerCase(),
-    //   userName: this.userNameFilter.trim().toLowerCase(),
-    //   orderFromDate: this.orderFromDateFilter,
-    //   orderToDate: this.orderToDateFilter,
-    // };
-
-
     this._canteenService.getOrder({}).subscribe((response) => {
       //this.dataSource = response.data;
       this.orderList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-
-      // // Set filter predicate once
-
-      // // Populate userNameList automatically
-      //  this.userNameList = Array.from(new Set(response.data.map((item: any) => {
-      //   userName:item.userName,
-      //   rgenId:item.rgenId
-      // }))).map(userName => ({ userName }));
-
       this.userNameList = Array.from(
         new Map(
           response.data.map((item: any) => [item.userName, { userName: item.userName, rgenId: item.rgenId }])
         ).values()
       );
-
-
-
-      // this.dataSource.filterPredicate = (data: any, filter: any) => {
-      //   const filters = JSON.parse(filter);
-      //   const statusMatch = filters.status ? data.status === +filters.status : true;
-      //   const dateMatch = filters.orderDate ? new Date(data.orderDate.replaceAll("/", "-").split('-')[2] + "-" + data.orderDate.replaceAll("/", "-").split('-')[1] + "-" + data.orderDate.replaceAll("/", "-").split('-')[0]).toDateString() === new Date(filters.orderDate).toDateString() : true;
-      //   const userNameMatch = filters.userName ? data.userName && data.userName.toLowerCase().includes(filters.userName) : true;
-
-      //   return statusMatch && dateMatch && userNameMatch;
-      // };
     });
   }
 
@@ -551,11 +521,12 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     const exportData = filteredData.map((item: any, index: number) => ({
       'S.No': index + 1,
       'Order Number': item.orderNumber,
-      'Order Time': item.orderTime,
+      //'Order Time': item.orderTime,
       'User Name': item.userName,
       'User Type': item.userType,
       'Mobile No': item.userMobileNo,
       'Order Date': item.orderDate,
+      'Order Deliver Time': item.orderDeliverTime,
       'Total Amount': Number(item.totalAmount).toFixed(2),
       'Status': this.getOrderStatusLabel(item.status).label,
       'Payment Type': this.getPaymentTypeLabel(item.paymentType),
@@ -574,11 +545,12 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     const columnWidths = [
       { wch: 6 },  // S.No
       { wch: 20 }, // Order Number
-      { wch: 10 }, // Time
+     // { wch: 10 }, // Time
       { wch: 20 }, // User Name
       { wch: 15 }, // User Type
       { wch: 15 }, // Mobile No
       { wch: 15 }, // Date
+      { wch: 15 }, // Deliver Date
       { wch: 15 }, // Total Amount
       { wch: 15 }, // Status
       { wch: 15 }, // Payment Type
@@ -612,11 +584,12 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
     const exportData = filteredData.map((item: any, index: number) => ([
       index + 1,
       item.orderNumber,
-      item.orderTime,
+      //item.orderTime,
       item.userName,
       item.userType,
       item.userMobileNo,
       item.orderDate,
+      item.orderDeliverTime,
       item.totalAmount,
       //'₹ ' + item.totalAmount,
       //'₹ ' + Number(item.totalAmount).toFixed(2),  // Clean numeric formatting
@@ -631,7 +604,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
 
 
     autoTable(doc, {
-      head: [['S.No', 'Order No', 'Time', 'User Name', 'User Type', 'Mobile', 'Date', 'Amount', 'Status', 'Pay Type', 'Pay Status', 'Transaction ID']],
+      head: [['S.No', 'Order No','User Name', 'User Type', 'Mobile', 'Date', 'Deliver Date', 'Amount', 'Status', 'Pay Type', 'Pay Status', 'Transaction ID']],
       body: exportData,
       startY: 50,
       styles: { fontSize: 8 },

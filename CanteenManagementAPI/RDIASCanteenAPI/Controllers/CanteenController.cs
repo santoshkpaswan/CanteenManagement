@@ -15,7 +15,7 @@ namespace RDIASCanteenAPI.Controllers
         private readonly MasterDayInterface _masterDayInterface;
         private readonly IConfiguration _configuration;
         // Constructor must be public for DI to work
-        public CanteenController(MasterDayInterface masterDayInterface,IConfiguration configuration)
+        public CanteenController(MasterDayInterface masterDayInterface, IConfiguration configuration)
         {
             _masterDayInterface = masterDayInterface;
             _configuration = configuration;
@@ -528,7 +528,7 @@ namespace RDIASCanteenAPI.Controllers
                     {
                         return Ok(new { Success = false, Message = "Invalid username or password." });
                     }
-                    return Ok(new { Success = true, objUser.account_id, objUser.account_type, account_type_name = model.Username });
+                    return Ok(new { Success = true, objUser.account_id, objUser.account_type, account_type_name = model.Username,is_canteen_db=1 });
                 }
                 else
                 {
@@ -544,9 +544,20 @@ namespace RDIASCanteenAPI.Controllers
                     // Convert to C# object
                     objUser = JsonSerializer.Deserialize<UserModel>(json);
                     if (objUser.response_id == 1)
-                        return Ok(new { Success = true, objUser.account_id, objUser.account_type_name, objUser.account_type });
+                        return Ok(new { Success = true, objUser.account_id, objUser.account_type_name, objUser.account_type,is_canteen_db=0 });
                     else
-                        return Ok(new { Success = false, objUser.account_id, objUser.account_type_name, objUser.account_type, Message = response });
+                    {
+                        objUser = await _masterDayInterface.GetLogin(model.Username, model.Password);
+
+                        if (objUser == null)
+                        {
+                            return Ok(new { Success = false, objUser.account_id, objUser.account_type_name, objUser.account_type, Message = response });
+                        }
+                        return Ok(new { Success = true, objUser.account_id, account_type=1, account_type_name = "Staff",is_canteen_db=1 });
+                        
+
+                    }
+
 
 
                 }
@@ -554,6 +565,20 @@ namespace RDIASCanteenAPI.Controllers
             catch (ArgumentException ex)
             {
                 return Ok(new { Success = false, Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { Success = false, Message = ex.Message });
+            }
+        }
+
+        [HttpGet("GetUserDetailsstudentId/{rgenId}")]
+        public async Task<IActionResult> GetUserDetailsstudentId(int rgenId)
+        {
+            try
+            {
+                var result = await _masterDayInterface.GetUserDetailsstudentId(rgenId);
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -588,7 +613,7 @@ namespace RDIASCanteenAPI.Controllers
         #endregion
 
 
-         
+
         #region Canteen Notice
         [HttpGet("ListNotice")]
         public IActionResult GetNotice()

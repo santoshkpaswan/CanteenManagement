@@ -12,7 +12,7 @@ import { SecureStorageService } from 'src/app/services/secure-storage.service';
 export class AuthService {
   private _authenticated: boolean = false;
   isLoggedIn = new BehaviorSubject<boolean>(false);
-  constructor(private _httpClient: HttpClient,private secureStore: SecureStorageService) {
+  constructor(private _httpClient: HttpClient, private secureStore: SecureStorageService) {
     // Restore login state from localStorage if available
     const savedUser = this.secureStore.getItem<any>('user');
     if (savedUser) this._authenticated = true;
@@ -45,21 +45,22 @@ export class AuthService {
    *
    * @param credentials
    */
-  signIn(model:any): Observable<any> {
+  signIn(model: any): Observable<any> {
     //this.authenticated = 'true';
     //this.userid ="1";
-     return this._httpClient.post(`${environment.apiUrl}/Canteen/login`, model).pipe(
+    return this._httpClient.post(`${environment.apiUrl}/Canteen/login`, model).pipe(
       switchMap((response: any) => {
 
         if (response.success) {
           // Set the authenticated flag to true
-         // this._authenticated = true;
+          // this._authenticated = true;
           // Save user info in localStorage
           const userData = {
             account_id: response.account_id,
             user_name: model.username,
-            usertype: response.account_type_name ,
-            isAdmin:response.account_id===1 || model.username.toLocaleLowerCase()=='canteen'
+            usertype: response.account_type_name,
+            isAdmin: response.account_id === 1 || model.username.toLocaleLowerCase() == 'canteen',
+            is_canteen_db: response.is_canteen_db
           };
           this.secureStore.setItem('user', JSON.stringify(userData));
         }
@@ -68,14 +69,14 @@ export class AuthService {
     );
   }
 
-  getUser(): { account_id: number; user_name: string; usertype:string; } {
+  getUser(): { account_id: number; user_name: string; usertype: string;is_canteen_db:Number } {
 
     const savedUser = this.secureStore.getItem<any>('user');
     if (savedUser) {
       return JSON.parse(savedUser);
     }
     // Return default values instead of null
-    return { account_id: 0, user_name: '', usertype:'' };
+    return { account_id: 0, user_name: '', usertype: '',is_canteen_db:-1 };
   }
 
   /**
@@ -102,7 +103,7 @@ export class AuthService {
     if (this.authenticated == 'true') {
       return of(true);
     }
-    else{
+    else {
       return of(false);
     }
 

@@ -57,7 +57,7 @@ namespace RDIASCanteenAPI.Interface.CanteenInterface
 
         #region admin User Login
         Task<UserModel> GetLogin(string username, string password);
-
+        Task<object> GetUserDetailsstudentId(int rgenId);
         #endregion
 
         #region Payment QR Transtion

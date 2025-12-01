@@ -142,6 +142,7 @@ namespace RDIASCanteenAPI.Data
         public string? transtionId { get; set; }
         public DateTime? transtionDate { get; set; }
         public string? PlaceOrderDescriptin {  get; set; }
+        public DateTime? DeliveredTime { get; set; }
     }
     #endregion
 
@@ -173,18 +174,20 @@ namespace RDIASCanteenAPI.Data
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UsersId { get; set; }
-        public string UsersName { get; set; }
-        public string Password { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Mobile { get; set; }
-        public string Email { get; set; }
-        public string QRCode_file { get; set; }
-        public bool IsActive { get; set; }
-        public int CreatedBy { get; set; }
+        public string? UsersName { get; set; }
+        public string? Password { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        //public string Mobile { get; set; }
+        public string? Email { get; set; }
+        public string? QRCode_file { get; set; }
+        public bool? IsActive { get; set; }
+        public int? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
+        public string? MobileNo{get;set;}
+        public string? EnrollNo { get; set; }
 
     }
     #endregion

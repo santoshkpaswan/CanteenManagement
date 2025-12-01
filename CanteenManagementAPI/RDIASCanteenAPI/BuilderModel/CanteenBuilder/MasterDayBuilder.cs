@@ -1,11 +1,12 @@
-﻿using System.Transactions;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using RDIASCanteenAPI.Data;
 using RDIASCanteenAPI.Interface.CanteenInterface;
 using RDIASCanteenAPI.Models.CanteenModel;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Linq;
+using System.Transactions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
 {
@@ -411,79 +412,56 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #region Order
         public async Task<List<OrderListGetModelView>> GetOrder(int rgenId, bool isAdmin, SearchOrderAdmin? modal)
         {
-            
-
-            // var query = from dfmi in _context.dayWiseFoodMenuItemModels
-            //             join oi in _context.orderItemModels on dfmi.FoodMenuItemId equals oi.FoodMenuItemId
-            //             join ou in _context.orderModels on oi.OrderId equals ou.OrderId
-            //             where dfmi.IsActive == true && oi.IsActive == true && ou.IsActive == true    //&& ou.RgenId == 11934
-
-            //             group new { dfmi, ou } by new
-            //             {
-            //                 ou.OrderId,
-            //                 ou.OrderNumber,
-            //                 ou.DayId,
-            //                 ou.RgenId,
-            //                 ou.UserName,
-            //                 ou.UserId,
-            //                 ou.UserType,
-            //                 ou.TotalAmount,
-            //                 ou.PaymentType,
-            //                 ou.PaymentStatus,
-            //                 ou.Status,
-            //                 ou.Remark,
-            //                 ou.CreatedDate,
-            //                 ou.UserMobileNo,
-            //                 ou.transtionId,
-            //                 ou.IsActive
-            //             } into g
-            //             select new
-            //             {
-            //                 g.Key.OrderId,
-            //                 g.Key.OrderNumber,
-            //                 g.Key.DayId,
-            //                 g.Key.RgenId,
-            //                 g.Key.UserName,
-            //                 g.Key.UserId,
-            //                 g.Key.UserType,
-            //                 g.Key.TotalAmount,
-            //                 g.Key.PaymentType,
-            //                 g.Key.PaymentStatus,
-            //                 g.Key.Status,
-            //                 g.Key.Remark,
-            //                 g.Key.CreatedDate,
-            //                 g.Key.UserMobileNo,
-            //                 g.Key.transtionId,
-            //                 g.Key.IsActive,
-            //                 Time = g.Max(x => x.dfmi.Time)   // MAX(Time)
-            //             };
 
 
+            var query = from dfmi in _context.dayWiseFoodMenuItemModels
+                        join oi in _context.orderItemModels on dfmi.FoodMenuItemId equals oi.FoodMenuItemId
+                        join ou in _context.orderModels on oi.OrderId equals ou.OrderId
+                        where dfmi.IsActive == true && oi.IsActive == true && ou.IsActive == true    //&& ou.RgenId == 11934
 
-            var query = from o in _context.orderModels
-                        join d in _context.masterDaysModels on o.DayId equals d.DayId                  
-                       where o.IsActive == true && d.IsActive == true 
-             select new
-             {
-                 o.OrderId,
-                 o.OrderNumber,
-                 o.DayId,
-                 d.DaysName,
-                 o.RgenId,
-                 o.UserName,
-                 o.UserId,
-                 o.UserType,
-                 o.TotalAmount,
-                 o.PaymentType,
-                 o.PaymentStatus,
-                 o.Status,
-                 o.Remark,
-                 o.CreatedDate,
-                 o.UserMobileNo,
-                 o.transtionId,
-                 o.PlaceOrderDescriptin,
-                 //fm.Time
-             };
+                        group new { dfmi, ou } by new
+                        {
+                            ou.OrderId,
+                            ou.OrderNumber,
+                            ou.DayId,
+                            ou.RgenId,
+                            ou.UserName,
+                            ou.UserId,
+                            ou.UserType,
+                            ou.TotalAmount,
+                            ou.PaymentType,
+                            ou.PaymentStatus,
+                            ou.Status,
+                            ou.Remark,
+                            ou.CreatedDate,
+                            ou.UserMobileNo,
+                            ou.transtionId,
+                            ou.IsActive,
+                            ou.PlaceOrderDescriptin,
+                            ou.DeliveredTime,
+                        } into g
+                        select new
+                        {
+                            g.Key.OrderId,
+                            g.Key.OrderNumber,
+                            g.Key.DayId,
+                            g.Key.RgenId,
+                            g.Key.UserName,
+                            g.Key.UserId,
+                            g.Key.UserType,
+                            g.Key.TotalAmount,
+                            g.Key.PaymentType,
+                            g.Key.PaymentStatus,
+                            g.Key.Status,
+                            g.Key.Remark,
+                            g.Key.CreatedDate,
+                            g.Key.UserMobileNo,
+                            g.Key.transtionId,
+                            g.Key.IsActive,
+                            g.Key.PlaceOrderDescriptin,
+                            g.Key.DeliveredTime,
+                            Time = g.Max(x => x.dfmi.Time)   // MAX(Time)
+                        };
 
 
             // Apply RgenId filter only for non-admin users
@@ -528,33 +506,85 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
             // Order descending
             query = query.OrderByDescending(o => o.OrderId);
             var data = await query.ToListAsync();
-            // Convert date format here (in-memory)
-            var result = data.Select(o => new OrderListGetModelView
-            {
-                OrderId = o.OrderId,
-                OrderNumber = o.OrderNumber,
-                DayId = o.DayId,
-                DaysName = o.DaysName,
-                RgenId = o.RgenId,
-                UserName = o.UserName,
-                UserId = o.UserId,
-                UserType = o.UserType,
-                TotalAmount = o.TotalAmount,
-                PaymentType = o.PaymentType,
-                PaymentStatus = o.PaymentStatus,
-                Status = o.Status,
-                Remark = o.Remark,
-                // Convert DateTime formatted string
-                OrderDate = Convert.ToDateTime(Convert.ToString(o.CreatedDate)).ToString("dd/MM/yyyy"),
-                UserMobileNo = o.UserMobileNo,
-                transtionId = o.transtionId,
-                // Only time (24-hour format)
-                OrderTime = Convert.ToDateTime(o.CreatedDate).ToString("HH:mm"),
-                PlaceOrderDescriptin = o.PlaceOrderDescriptin,
-                //OrderDeliverTime = o.Time,
 
+            var result = data.Select(o =>
+            {
+                //  Calculate Time Difference
+                string timeDiff = "";
+                int deliverMin = 0;
+                if (o.DeliveredTime != null)
+                {
+                    TimeSpan diff = Convert.ToDateTime(o.DeliveredTime) - Convert.ToDateTime(o.CreatedDate);
+                    deliverMin = ((int)diff.TotalHours * 60) + diff.Minutes;
+                    //timeDiff =  (int)diff.TotalHours>0 ? $"{(int)diff.TotalHours}h {diff.Minutes}m" : $"{diff.Minutes}m";
+                }
+
+                return new OrderListGetModelView
+                {
+                    OrderId = o.OrderId,
+                    OrderNumber = o.OrderNumber,
+                    DayId = o.DayId,
+                    //DaysName = o.DaysName,
+                    RgenId = o.RgenId,
+                    UserName = o.UserName,
+                    UserId = o.UserId,
+                    UserType = o.UserType,
+                    TotalAmount = o.TotalAmount,
+                    PaymentType = o.PaymentType,
+                    PaymentStatus = o.PaymentStatus,
+                    Status = o.Status,
+                    Remark = o.Remark,
+
+                    OrderDate = Convert.ToDateTime(o.CreatedDate).ToString("dd/MM/yyyy hh:mm tt"),
+                    //OrderDeliverTime = Convert.ToDateTime(o.DeliveredTime).ToString("dd/MM/yyyy hh:mm tt"),
+                    //OrderTime = Convert.ToDateTime(o.CreatedDate).ToString("HH:mm"),
+
+                    OrderDeliverTime = (o.DeliveredTime != DateTime.MinValue && o.DeliveredTime != null) ? Convert.ToDateTime(o.DeliveredTime).ToString("dd/MM/yyyy hh:mm tt") : "",
+
+                    UserMobileNo = o.UserMobileNo,
+                    transtionId = o.transtionId,
+                    PlaceOrderDescriptin = o.PlaceOrderDescriptin,
+                    // NEW — Time Difference
+                    //OrderDelayTime = o.Time < deliverMin ? "On Time" : "Delay " + (deliverMin - o.Time).ToString() + " Min"
+                    //OrderDelayTime =  deliverMin <= o.Time?  "On Time" : "Delay " + (deliverMin - o.Time).ToString() + " Min"
+                    OrderDelayTime = deliverMin <= o.Time ? "On Time " + (o.Time - deliverMin).ToString() + " Min" : "Delay " + (deliverMin - o.Time).ToString() + " Min",
+
+
+                };
             }).ToList();
             return result;
+
+            // Convert date format here (in-memory)
+            //var result = data.Select(o => new OrderListGetModelView
+            //{
+
+
+
+            //    OrderId = o.OrderId,
+            //    OrderNumber = o.OrderNumber,
+            //    DayId = o.DayId,
+            //    DaysName = o.DaysName,
+            //    RgenId = o.RgenId,
+            //    UserName = o.UserName,
+            //    UserId = o.UserId,
+            //    UserType = o.UserType,
+            //    TotalAmount = o.TotalAmount,
+            //    PaymentType = o.PaymentType,
+            //    PaymentStatus = o.PaymentStatus,
+            //    Status = o.Status,
+            //    Remark = o.Remark,
+            //    // Convert DateTime formatted string
+            //    OrderDate = Convert.ToDateTime(Convert.ToString(o.CreatedDate)).ToString("dd/MM/yyyy"),
+            //    UserMobileNo = o.UserMobileNo,
+            //    transtionId = o.transtionId,
+            //    // Only time (24-hour format)
+            //    OrderTime = Convert.ToDateTime(o.CreatedDate).ToString("HH:mm"),
+            //    PlaceOrderDescriptin = o.PlaceOrderDescriptin,
+            //    //DeliveredTime = Convert.ToDateTime(o.DeliveredTime).ToString("HH:mm"),
+            //    //OrderDeliverTime = o.Time,
+
+            //}).ToList();
+            //return result;
         }
 
         public async Task<List<OrderDetailsViewModel>> GetOrderItemDetails(int orderId)
@@ -708,12 +738,18 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
                 {
                     existing.PaymentStatus = orderStatusUpdateModelView.PaymentStatus;
                     existing.Status = orderStatusUpdateModelView.Status;
-                    existing.Remark = existing.Remark + "\n" + orderStatusUpdateModelView.Remark;
+                    existing.Remark = string.IsNullOrEmpty(existing.Remark) ? orderStatusUpdateModelView.Remark : existing.Remark + ",\n" + orderStatusUpdateModelView.Remark;  //existing.Remark + "\n" + orderStatusUpdateModelView.Remark;
                     existing.ModifiedDate = DateTime.Now;
                     existing.ModifiedBy = orderStatusUpdateModelView.RgenId;
+                    if (orderStatusUpdateModelView.Status == OrderStatus.Completed)  // DeliveredTime set only when status becomes "Complete"
+                    {
+                        existing.DeliveredTime = DateTime.Now;
+                    }
                     await _context.SaveChangesAsync();
                 }
             }
+
+
 
             // 🔥 Save **once**
 
@@ -887,12 +923,33 @@ namespace RDIASCanteenAPI.BuilderModel.CanteenBuilder
         #region Admin User Login
         public async Task<UserModel> GetLogin(string username, string password)
         {
-            return await _context.users.Where(u => u.UsersName.Trim().ToLower() == username.Trim().ToLower() && u.Password == password && u.IsActive).Select(u => new UserModel
+            return await _context.users.Where(u => u.UsersName.Trim().ToLower() == username.Trim().ToLower() && u.Password == password && u.IsActive == true).Select(u => new UserModel
             {
                 account_id = u.UsersId,
-                account_type_name = u.UsersName
+                account_type_name = u.UsersName,
+                MobileNo = u.MobileNo,
+                enroll_no = u.EnrollNo
             }).FirstOrDefaultAsync();
         }
+
+        public async Task<object> GetUserDetailsstudentId(int rgenId)
+        {
+            var existing = await _context.users.FirstOrDefaultAsync(x => x.UsersId == rgenId && x.IsActive == true);
+            if (existing == null)
+            {
+                throw new Exception("Record not found.");
+            }
+            return new
+            {
+                account_id = existing.UsersId,
+                Name = (existing.FirstName ?? "") + " " +(existing.LastName ?? ""),
+                MobileNo = existing.MobileNo ?? "",
+                enroll_no = existing.EnrollNo ?? ""
+
+            };
+        }
+
+
 
         #endregion
 

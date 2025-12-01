@@ -145,9 +145,24 @@ export class OrderItemComponent implements OnInit {
   getLoginUserNameGridData() {
     const currentUser = this._authService.getUser();
     const rgenId = currentUser.account_id;
-    this._canteenService.getLoginUserName(rgenId).subscribe((response) => {
-      this.response = response;
-    });
+    if (currentUser.is_canteen_db == 0) {
+      this._canteenService.getLoginUserName(rgenId).subscribe({
+        next: (response: any) => {
+          this.response = response;
+        }
+      });
+    }
+    else {
+      this._canteenService.getCanteenUserName(rgenId).subscribe((response) => {
+        debugger
+        this.response = {
+          account_id: response.account_id,
+          enroll_no: response.enroll_no,
+          MobileNo:response.mobileNo,
+          Name:response.name
+        };
+      });
+    }
   }
   pageChanged(event: PageEvent) {
     this.currentPage = event.pageIndex;
@@ -176,7 +191,8 @@ export class OrderItemComponent implements OnInit {
   }
 
   orderPlace() {
-     if (!this.addpayNow.value.paymentType) {
+    debugger
+    if (!this.addpayNow.value.paymentType) {
       this._coreService.openSnackBar('Please select a payment type.', 'Ok');
       return;
     }

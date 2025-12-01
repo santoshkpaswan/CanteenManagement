@@ -108,7 +108,9 @@ namespace RDIASCanteenAPI.Models.CanteenModel
         public string? DaysName { get; set; }
         public string OrderDate { get; set; }
         public string? OrderTime { get; set; }
-        public int? OrderDeliverTime { get; set; }
+        public string? OrderDeliverTime { get; set; }
+        public string? PlaceOrderDescriptin { get; set; }
+        public string? OrderDelayTime { get; set; }
     }
 
     public class OrderSaveModelView
@@ -240,11 +242,13 @@ namespace RDIASCanteenAPI.Models.CanteenModel
 
     public class UserModel
     {
-        public int response_id { get; set; }
-        public int account_id { get; set; }
-        public int account_type { get; set; }
-        public string account_type_name { get; set; }
-        public string response { get; set; }
+        public int? response_id { get; set; }
+        public int? account_id { get; set; }
+        public int? account_type { get; set; }
+        public string? account_type_name { get; set; }
+        public string? response { get; set; }
+        public string? MobileNo { get;set;}
+        public string? enroll_no { get; set; }
     }
     #endregion
 
