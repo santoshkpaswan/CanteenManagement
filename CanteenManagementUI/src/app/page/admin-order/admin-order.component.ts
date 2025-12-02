@@ -190,7 +190,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
 
   }
   updateOrder() {
-    debugger
+
     if (this.editCanteenOrderForm.invalid) {
       this._coreService.openSnackBar('Please enter mandatory fields.', 'Ok');
       return;
@@ -406,7 +406,7 @@ export class AdminOrderComponent implements OnInit, OnDestroy {
       return;
     }
 
-    debugger
+
     // Fetch full order objects from orderList
     const selectedOrders = this.selectedOrder.map((orderId: number) =>
       this.orderList.find((o: any) => o.orderId === orderId)

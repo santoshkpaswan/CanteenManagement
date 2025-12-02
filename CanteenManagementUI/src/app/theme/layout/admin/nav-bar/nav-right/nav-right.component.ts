@@ -179,19 +179,38 @@ export class NavRightComponent {
   }
 
   // fetch name from backend
-  getLoginUserNameGridData() {
+  // getLoginUserNameGridData() {
 
+  //   const currentUser = this._authService.getUser();
+  //   const rgenId = currentUser.account_id;
+
+  //   this._canteenService.getLoginUserName(rgenId).subscribe({
+  //     next: (response) => {
+  //       this.Name = response.Name;
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching name:', err);
+  //     }
+  //   });
+  // }
+
+
+  getLoginUserNameGridData() {
     const currentUser = this._authService.getUser();
     const rgenId = currentUser.account_id;
+    if (currentUser.is_canteen_db == 0) {
+      this._canteenService.getLoginUserName(rgenId).subscribe({
+        next: (response: any) => {
+          this.Name = response.Name;
+        }
+      });
+    }
+    else {
+      this._canteenService.getCanteenUserName(rgenId).subscribe((response) => {
 
-    this._canteenService.getLoginUserName(rgenId).subscribe({
-      next: (response) => {
-        this.Name = response.Name;
-      },
-      error: (err) => {
-        console.error('Error fetching name:', err);
-      }
-    });
+         this.Name = response.name;
+      });
+    }
   }
 
   ngDoCheck() {

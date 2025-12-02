@@ -90,11 +90,11 @@ export class FoodMenuItemPriceComponent implements OnInit {
       this.dataSource.sort = this.sort;
 
       // Filter predicate for search
-      this.dataSource.filterPredicate = (data: any, filter: string) => {
-        const filters = JSON.parse(filter);
-        const itemNameMatch = filters.itemName ? data.itemName.toLowerCase().includes(filters.itemName): true;
-        return itemNameMatch;
-      };
+      // this.dataSource.filterPredicate = (data: any, filter: string) => {
+      //   const filters = JSON.parse(filter);
+      //   const itemNameMatch = filters.itemName ? data.itemName.toLowerCase().includes(filters.itemName): true;
+      //   return itemNameMatch;
+      // };
 
     });
   }
@@ -203,13 +203,30 @@ export class FoodMenuItemPriceComponent implements OnInit {
     const filterObj = {
       itemName: this.itemNameFilter.trim().toLowerCase(),
     };
-    this.dataSource.filter = JSON.stringify(filterObj);
-    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
+    this._canteenService.getFoodItemPrice().subscribe((response) => {
+      this.itemNameList = response.data;
+      if (this.itemNameFilter != "") {
+        this.dataSource = new MatTableDataSource<any>(response.data.filter((x: any) => x.itemName == this.itemNameFilter));
+      }
+      else {
+        this.dataSource = new MatTableDataSource<any>(response.data);
+      }
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
   }
   resetPriceSearchFilter() {
     this.itemNameFilter = '';
-    this.dataSource.filter = JSON.stringify({ itemName: '' });
-    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
+    this.dataSource.filter = '';
+    if (this.dataSource.paginator)
+    {
+       this.dataSource.paginator.firstPage();
+    }
+    this.priceSearchFilter();
   }
-
 }
+
+
+
+
+

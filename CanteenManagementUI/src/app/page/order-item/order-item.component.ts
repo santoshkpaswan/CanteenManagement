@@ -154,7 +154,7 @@ export class OrderItemComponent implements OnInit {
     }
     else {
       this._canteenService.getCanteenUserName(rgenId).subscribe((response) => {
-        debugger
+
         this.response = {
           account_id: response.account_id,
           enroll_no: response.enroll_no,
@@ -191,7 +191,7 @@ export class OrderItemComponent implements OnInit {
   }
 
   orderPlace() {
-    debugger
+
     if (!this.addpayNow.value.paymentType) {
       this._coreService.openSnackBar('Please select a payment type.', 'Ok');
       return;

@@ -117,12 +117,12 @@ export class OrderHistoryComponent implements OnInit {
 
 
   ngOnInit(): void {
-    debugger
+
     this.getGridData();
     this.getDayNameData();
   }
   getGridData() {
-    debugger
+
     this._canteenService.getOrder({}).subscribe((response) => {
       this.orderList = response.data;
       this.dataSource = new MatTableDataSource<any>(response.data);
@@ -351,7 +351,7 @@ export class OrderHistoryComponent implements OnInit {
     const filterObj = {
       status: this.statusFilter.trim().toLowerCase(),
     };
-    debugger
+
     this._canteenService.getOrder({}).subscribe((response) => {
       this.orderList = response.data;
       if (this.statusFilter != "") {

@@ -111,10 +111,10 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
       this.dataSource.sort = this.sort;
 
       // Filter predicate for search
-      this.dataSource.filterPredicate = (data: any, filter: string) => {
-        const filters = JSON.parse(filter);
-        return (!filters.daysName || data.daysName?.toLowerCase() === filters.daysName);
-      };
+      // this.dataSource.filterPredicate = (data: any, filter: string) => {
+      //   const filters = JSON.parse(filter);
+      //   return (!filters.daysName || data.daysName?.toLowerCase() === filters.daysName);
+      // };
 
     });
   }
@@ -243,14 +243,36 @@ export class DayWiseFoodMenuItemComponent implements OnInit {
     const filterObj = {
       daysName: this.dayNameFilter.trim().toLowerCase(),
     };
-    this.dataSource.filter = JSON.stringify(filterObj);
-    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
+   this._canteenService.getDayWiseFoodItem().subscribe((response) => {
+    this.dayWiseitemNameList = response.data;
+    if(this.dayNameFilter !="")
+    {
+      this.dataSource = new MatTableDataSource<any> (response.data.filter((x:any)=>x.daysName == this.dayNameFilter));
+    }
+    else {
+        this.dataSource = new MatTableDataSource<any>(response.data);
+      }
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+   });
   }
+
+
 
   resetPriceSearchFilter() {
     this.dayNameFilter = '';
     this.dataSource.filter = JSON.stringify({ daysName: '' });
-    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
+    if (this.dataSource.paginator)
+      {
+        this.dataSource.paginator.firstPage();
+      }
+      this.priceSearchFilter();
   }
+
+
+
+
+
+
 
 }

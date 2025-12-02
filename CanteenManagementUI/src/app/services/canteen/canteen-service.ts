@@ -247,7 +247,7 @@ export class CanteenService {
   }
 
   deleteOrder(id: any): Observable<any> {
-    debugger
+
     return this._httpClient.post(`${environment.apiUrl}/Canteen/DeleteOrder`, id).pipe(
       switchMap((response: any) => {
         return of(response);
@@ -256,7 +256,7 @@ export class CanteenService {
   }
 
   canceledOrder(id: any): Observable<any> {
-    debugger
+
     return this._httpClient.post(`${environment.apiUrl}/Canteen/CanceledOrder/${id}`, {}).pipe(
       switchMap((response: any) => {
         return of(response);
